@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youth Home | Reiz EZ Life</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap">
+    <style>
+        :root {
+            /* 品牌暖色调定义 */
+            --primary: #8da9c4;      /* 宁静蓝 - 代表成长与空间 */
+            --secondary: #d4a373;    /* 琥珀色 - 代表温暖与声音 */
+            --bg-warm: #fefae0;      /* 奶油底色 - 代表家的感觉 */
+            --text-main: #333d29;    /* 深绿灰 - 稳重而不冰冷 */
+            --glass: rgba(255, 255, 255, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-warm);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 极光背景 - 柔和过渡版 */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, #e9edc9 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, #faedcd 0%, transparent 40%);
+            z-index: -1;
+            filter: blur(80px);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.4rem; /* 增加 0.2rem */
+            letter-spacing: 2px;
+            color: var(--text-main);
+        }
+
+        .logo-text span {
+            font-weight: 300;
+            opacity: 0.7;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            margin-left: 2rem;
+            font-size: 1.1rem; /* 从 0.9rem 增加到 1.1rem */
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+            padding: 0 5% 5% 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 左侧面板 */
+        .main-panel {
+            background: var(--glass);
+            padding: 4rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+        }
+
+        .formal-subtitle {
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 1.1rem; /* 从 0.9rem 增加到 1.1rem */
+            color: var(--secondary);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .formal-title {
+            font-size: 3rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+        }
+
+        .formal-description {
+            font-size: 1.4rem; /* 从 1.2rem 增加到 1.4rem */
+            opacity: 0.8;
+            max-width: 80%;
+            margin-bottom: 3rem;
+        }
+
+        .investigator-section {
+            border-left: 3px solid var(--primary);
+            padding-left: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .investigator-label {
+            font-size: 1rem; /* 从 0.8rem 增加到 1rem */
+            text-transform: uppercase;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
+
+        .investigator-name {
+            font-size: 2rem; /* 原为 1.8rem */
+            font-weight: 600;
+            margin: 0.5rem 0;
+        }
+
+        /* 右侧侧边栏 */
+        .hub {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .hub-card {
+            background: var(--glass);
+            padding: 2.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid transparent;
+        }
+
+        .hub-card:hover {
+            transform: translateY(-10px);
+            background: white;
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+        }
+
+        .accent-text {
+            font-size: 0.95rem; /* 从 0.75rem 增加到 0.95rem */
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .hub-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.7rem; /* 原为 1.5rem */
+        }
+
+        .hub-card p {
+            font-size: 1.15rem; /* 从 0.95rem 增加到 1.15rem */
+            opacity: 0.7;
+        }
+
+        .cta-button {
+            background: var(--text-main);
+            color: white;
+            padding: 1.2rem 2rem;
+            border-radius: 50px;
+            width: 100%;
+            margin-top: 1rem;
+            font-weight: 600;
+            font-size: 1.2rem; /* 增加清晰度 */
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .cta-button:hover {
+            background: var(--secondary);
+            transform: scale(1.02);
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.5);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 1.05rem; /* 从 0.85rem 增加到 1.05rem */
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .footer-text {
+            padding: 4rem;
+            text-align: center;
+            opacity: 0.5;
+            font-size: 1rem; /* 从 0.8rem 增加到 1rem */
+            letter-spacing: 2px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 968px) {
+            .wrapper { grid-template-columns: 1fr; }
+            .formal-title { font-size: 2.2rem; }
+            .main-panel { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aurora-bg"></div>
+
+    <nav>
+        <div class="logo-text">REIZ EZ LIFE <span>YOUTH HOME</span></div>
+        <div class="nav-links">
+            <a href="#">家长空间</a>
+            <a href="#">实用支持</a>
+            <a href="#" style="color: var(--secondary); border: 1.5px solid var(--secondary); padding: 8px 20px; border-radius: 50px;">加入我们</a>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        <main class="main-panel">
+            <div class="formal-header">
+                <span class="formal-subtitle">A Place to Grow, Belong, and Become</span>
+                <h1 class="formal-title">一个可以成长、归属，并成为自己的地方</h1>
+                <p class="formal-description">
+                    <strong>Youth Home</strong> 是为新移民子女与留学生打造的支持性空间，陪伴走过适应与成长的阶段。
+                </p>
+            </div>
+
+            <div class="investigator-section">
+                <span class="investigator-label">Welcome Home | 欢迎回家</span>
+                <div class="investigator-name">在这里，</div>
+                <p class="investigator-title" style="font-size: 1.4rem;">
+                    你不需要什么都想清楚，不需要走得很快，也不需要一个人扛下所有。
+                </p>
+            </div>
+
+            <div class="tag-container">
+                <div class="tag">新移民家庭子女</div>
+                <div class="tag">北美留学生</div>
+                <div class="tag">身份认同探索</div>
+                <div class="tag">允许慢下来</div>
+            </div>
+        </main>
+
+        <aside class="hub">
+            <div class="hub-card">
+                <span class="accent-text">内在与能力成长</span>
+                <h3>Grow | 成长</h3>
+                <p>成长不一定要张扬或竞争，它是安静、渐进且只属于你自己的过程。</p>
+                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;">→ 探索你的节奏</p>
+            </div>
+
+            <div class="hub-card">
+                <span class="accent-text">关系与安全感</span>
+                <h3>Connect | 社区</h3>
+                <p>没有人应该独自承受改变。在同龄人圈子中找到真正的接纳。</p>
+                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;">→ 寻找同伴支持</p>
+            </div>
+
+            <div class="hub-card" style="border-bottom: 4px solid var(--secondary);">
+                <span class="accent-text">主体性与被听见</span>
+                <h3>Voices | 声音</h3>
+                <p>无论你的声音是安静还是坚定，这里都有它的一席之地。</p>
+                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;">→ 分享你的故事</p>
+            </div>
+
+            <div style="padding: 10px 20px;">
+                <p style="font-size: 1.1rem; opacity: 0.7; margin-bottom: 10px;">
+                    “这里是安全的” —— 这是我们唯一的判断标准。
+                </p>
+                <button class="cta-button">Stay Connected</button>
+            </div>
+        </aside>
+    </div>
+
+    <footer class="footer-text">
+        © 2026 REIZ EZ LIFE YOUTH HOME | A SUPPORTIVE SPACE FOR GROWTH
+    </footer>
+
+</body>
+</html>
