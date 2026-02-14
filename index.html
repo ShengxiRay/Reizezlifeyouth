@@ -7,19 +7,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap">
     <style>
         :root {
-            /* 品牌暖色调定义 */
-            --primary: #8da9c4;      /* 宁静蓝 - 代表成长与空间 */
-            --secondary: #d4a373;    /* 琥珀色 - 代表温暖与声音 */
-            --bg-warm: #fefae0;      /* 奶油底色 - 代表家的感觉 */
-            --text-main: #333d29;    /* 深绿灰 - 稳重而不冰冷 */
+            --primary: #8da9c4;
+            --secondary: #d4a373;
+            --bg-warm: #fefae0;
+            --text-main: #333d29;
             --glass: rgba(255, 255, 255, 0.7);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Outfit', 'Noto Sans SC', sans-serif;
@@ -29,13 +24,9 @@
             overflow-x: hidden;
         }
 
-        /* 极光背景 - 柔和过渡版 */
         .aurora-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 20% 30%, #e9edc9 0%, transparent 40%),
                         radial-gradient(circle at 80% 70%, #faedcd 0%, transparent 40%);
             z-index: -1;
@@ -55,27 +46,35 @@
 
         .logo-text {
             font-weight: 800;
-            font-size: 1.4rem; /* 增加 0.2rem */
+            font-size: 1.4rem;
             letter-spacing: 2px;
             color: var(--text-main);
         }
 
-        .logo-text span {
-            font-weight: 300;
-            opacity: 0.7;
-        }
+        .logo-text span { font-weight: 300; opacity: 0.7; }
+
+        .nav-links { display: flex; align-items: center; }
 
         .nav-links a {
             text-decoration: none;
             color: var(--text-main);
-            margin-left: 2rem;
-            font-size: 1.1rem; /* 从 0.9rem 增加到 1.1rem */
+            margin-left: 1.5rem;
+            font-size: 1.1rem;
             font-weight: 500;
             transition: 0.3s;
         }
 
-        .nav-links a:hover {
-            color: var(--secondary);
+        .nav-links a:hover { color: var(--secondary); }
+
+        /* 语言切换按钮样式 */
+        #lang-switch {
+            background: rgba(141, 169, 196, 0.15);
+            padding: 5px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+            border: 1px solid var(--primary);
         }
 
         .wrapper {
@@ -87,7 +86,6 @@
             margin: 0 auto;
         }
 
-        /* 左侧面板 */
         .main-panel {
             background: var(--glass);
             padding: 4rem;
@@ -99,26 +97,16 @@
         .formal-subtitle {
             text-transform: uppercase;
             letter-spacing: 4px;
-            font-size: 1.1rem; /* 从 0.9rem 增加到 1.1rem */
+            font-size: 1.1rem;
             color: var(--secondary);
             font-weight: 600;
             display: block;
             margin-bottom: 1rem;
         }
 
-        .formal-title {
-            font-size: 3rem;
-            font-weight: 600;
-            line-height: 1.2;
-            margin-bottom: 2rem;
-        }
+        .formal-title { font-size: 3rem; font-weight: 600; line-height: 1.2; margin-bottom: 2rem; }
 
-        .formal-description {
-            font-size: 1.4rem; /* 从 1.2rem 增加到 1.4rem */
-            opacity: 0.8;
-            max-width: 80%;
-            margin-bottom: 3rem;
-        }
+        .formal-description { font-size: 1.4rem; opacity: 0.8; max-width: 80%; margin-bottom: 3rem; }
 
         .investigator-section {
             border-left: 3px solid var(--primary);
@@ -126,25 +114,11 @@
             margin: 3rem 0;
         }
 
-        .investigator-label {
-            font-size: 1rem; /* 从 0.8rem 增加到 1rem */
-            text-transform: uppercase;
-            opacity: 0.6;
-            letter-spacing: 1px;
-        }
+        .investigator-label { font-size: 1rem; text-transform: uppercase; opacity: 0.6; letter-spacing: 1px; }
 
-        .investigator-name {
-            font-size: 2rem; /* 原为 1.8rem */
-            font-weight: 600;
-            margin: 0.5rem 0;
-        }
+        .investigator-name { font-size: 2rem; font-weight: 600; margin: 0.5rem 0; }
 
-        /* 右侧侧边栏 */
-        .hub {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
+        .hub { display: flex; flex-direction: column; gap: 1.5rem; }
 
         .hub-card {
             background: var(--glass);
@@ -163,7 +137,7 @@
         }
 
         .accent-text {
-            font-size: 0.95rem; /* 从 0.75rem 增加到 0.95rem */
+            font-size: 0.95rem;
             font-weight: 800;
             color: var(--primary);
             text-transform: uppercase;
@@ -171,15 +145,9 @@
             display: block;
         }
 
-        .hub-card h3 {
-            margin-bottom: 1rem;
-            font-size: 1.7rem; /* 原为 1.5rem */
-        }
+        .hub-card h3 { margin-bottom: 1rem; font-size: 1.7rem; }
 
-        .hub-card p {
-            font-size: 1.15rem; /* 从 0.95rem 增加到 1.15rem */
-            opacity: 0.7;
-        }
+        .hub-card p { font-size: 1.15rem; opacity: 0.7; }
 
         .cta-button {
             background: var(--text-main);
@@ -189,41 +157,26 @@
             width: 100%;
             margin-top: 1rem;
             font-weight: 600;
-            font-size: 1.2rem; /* 增加清晰度 */
+            font-size: 1.2rem;
             transition: 0.3s;
             cursor: pointer;
             border: none;
         }
 
-        .cta-button:hover {
-            background: var(--secondary);
-            transform: scale(1.02);
-        }
+        .cta-button:hover { background: var(--secondary); transform: scale(1.02); }
 
-        .tag-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 2rem;
-        }
+        .tag-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 2rem; }
 
         .tag {
             background: rgba(255,255,255,0.5);
             padding: 8px 18px;
             border-radius: 20px;
-            font-size: 1.05rem; /* 从 0.85rem 增加到 1.05rem */
+            font-size: 1.05rem;
             border: 1px solid rgba(0,0,0,0.05);
         }
 
-        .footer-text {
-            padding: 4rem;
-            text-align: center;
-            opacity: 0.5;
-            font-size: 1rem; /* 从 0.8rem 增加到 1rem */
-            letter-spacing: 2px;
-        }
+        .footer-text { padding: 4rem; text-align: center; opacity: 0.5; font-size: 1rem; letter-spacing: 2px; }
 
-        /* 移动端适配 */
         @media (max-width: 968px) {
             .wrapper { grid-template-columns: 1fr; }
             .formal-title { font-size: 2.2rem; }
@@ -236,11 +189,12 @@
     <div class="aurora-bg"></div>
 
     <nav>
-        <div class="logo-text">REIZ EZ LIFE <span>YOUTH HOME</span></div>
+        <div class="logo-text">REIZ EZ LIFE <span data-zh="YOUTH HOME" data-en="YOUTH HOME">YOUTH HOME</span></div>
         <div class="nav-links">
-            <a href="#">家长空间</a>
-            <a href="#">实用支持</a>
-            <a href="#" style="color: var(--secondary); border: 1.5px solid var(--secondary); padding: 8px 20px; border-radius: 50px;">加入我们</a>
+            <a href="#" data-zh="家长空间" data-en="Parents">家长空间</a>
+            <a href="#" data-zh="实用支持" data-en="Support">实用支持</a>
+            <a href="#" class="join-btn" data-zh="加入我们" data-en="Join Us" style="color: var(--secondary); border: 1.5px solid var(--secondary); padding: 8px 20px; border-radius: 50px;">加入我们</a>
+            <a href="javascript:void(0);" id="lang-switch">EN / 中</a>
         </div>
     </nav>
 
@@ -248,62 +202,85 @@
         <main class="main-panel">
             <div class="formal-header">
                 <span class="formal-subtitle">A Place to Grow, Belong, and Become</span>
-                <h1 class="formal-title">一个可以成长、归属，并成为自己的地方</h1>
-                <p class="formal-description">
-                    <strong>Youth Home</strong> 是为新移民子女与留学生打造的支持性空间，陪伴走过适应与成长的阶段。
+                <h1 class="formal-title" data-zh="一个可以成长、归属，并成为自己的地方" data-en="A Place to Grow, Belong, and Become">一个可以成长、归属，并成为自己的地方</h1>
+                <p class="formal-description" data-zh="Youth Home 是为新移民子女与留学生打造的支持性空间，陪伴走过适应与成长的阶段。" data-en="Youth Home is a supportive space designed for children of new immigrants and international students, accompanying them through stages of adaptation and growth.">
+                    Youth Home 是为新移民子女与留学生打造的支持性空间，陪伴走过适应与成长的阶段。
                 </p>
             </div>
 
             <div class="investigator-section">
-                <span class="investigator-label">Welcome Home | 欢迎回家</span>
-                <div class="investigator-name">在这里，</div>
-                <p class="investigator-title" style="font-size: 1.4rem;">
+                <span class="investigator-label" data-zh="Welcome Home | 欢迎回家" data-en="Welcome Home">Welcome Home | 欢迎回家</span>
+                <div class="investigator-name" data-zh="在这里，" data-en="In here,">在这里，</div>
+                <p class="investigator-title" style="font-size: 1.4rem;" data-zh="你不需要什么都想清楚，不需要走得很快，也不需要一个人扛下所有。" data-en="You don't need to have everything figured out, you don't need to move fast, and you don't have to carry it all alone.">
                     你不需要什么都想清楚，不需要走得很快，也不需要一个人扛下所有。
                 </p>
             </div>
 
             <div class="tag-container">
-                <div class="tag">新移民家庭子女</div>
-                <div class="tag">北美留学生</div>
-                <div class="tag">身份认同探索</div>
-                <div class="tag">允许慢下来</div>
+                <div class="tag" data-zh="新移民家庭子女" data-en="Immigrant Youth">新移民家庭子女</div>
+                <div class="tag" data-zh="北美留学生" data-en="International Students">北美留学生</div>
+                <div class="tag" data-zh="身份认同探索" data-en="Identity Exploration">身份认同探索</div>
+                <div class="tag" data-zh="允许慢下来" data-en="Space to Slow Down">允许慢下来</div>
             </div>
         </main>
 
         <aside class="hub">
             <div class="hub-card">
-                <span class="accent-text">内在与能力成长</span>
-                <h3>生活 ｜ Life</h3>
-                <p>成长不一定要张扬或竞争，它是安静、渐进且只属于你自己的过程。</p>
-                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;">→ 探索你的节奏</p>
+                <span class="accent-text" data-zh="内在与能力成长" data-en="Growth & Mindset">内在与能力成长</span>
+                <h3 data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
+                <p data-zh="成长不一定要张扬或竞争，它是安静、渐进且只属于你自己的过程。" data-en="Growth doesn't have to be loud or competitive; it is a quiet, gradual process that belongs only to you.">成长不一定要张扬或竞争，它是安静、渐进且只属于你自己的过程。</p>
+                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;" data-zh="→ 探索你的节奏" data-en="→ Find your rhythm">→ 探索你的节奏</p>
             </div>
 
             <div class="hub-card">
-                <span class="accent-text">关系与安全感</span>
-                <h3>资源 ｜ Resources</h3>
-                <p>没有人应该独自承受改变。在同龄人圈子中找到真正的接纳。</p>
-                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;">→ 寻找同伴支持</p>
+                <span class="accent-text" data-zh="关系与安全感" data-en="Belonging & Safety">关系与安全感</span>
+                <h3 data-zh="资源 ｜ Resources" data-en="Resources">资源 ｜ Resources</h3>
+                <p data-zh="没有人应该独自承受改变。在同龄人圈子中找到真正的接纳。" data-en="No one should face change alone. Find genuine acceptance within a community of peers.">没有人应该独自承受改变。在同龄人圈子中找到真正的接纳。</p>
+                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;" data-zh="→ 寻找同伴支持" data-en="→ Seek peer support">→ 寻找同伴支持</p>
             </div>
 
             <div class="hub-card" style="border-bottom: 4px solid var(--secondary);">
-                <span class="accent-text">主体性与被听见</span>
-                <h3>升学 ｜ College Applecation</h3>
-                <p>无论你的声音是安静还是坚定，这里都有它的一席之地。</p>
-                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;">→ 分享你的故事</p>
+                <span class="accent-text" data-zh="主体性与被听见" data-en="Agency & Voice">主体性与被听见</span>
+                <h3 data-zh="升学 ｜ College Application" data-en="College Application">升学 ｜ College Application</h3>
+                <p data-zh="无论你的声音是安静还是坚定，这里都有它的一席之地。" data-en="Whether your voice is quiet or firm, there is a place for it here.">无论你的声音是安静还是坚定，这里都有它的一席之地。</p>
+                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;" data-zh="→ 分享你的故事" data-en="→ Share your story">→ 分享你的故事</p>
             </div>
 
             <div style="padding: 10px 20px;">
-                <p style="font-size: 1.1rem; opacity: 0.7; margin-bottom: 10px;">
+                <p style="font-size: 1.1rem; opacity: 0.7; margin-bottom: 10px;" data-zh="“这里是安全的” —— 这是我们唯一的判断标准。" data-en="'It is safe here' — our only standard of judgment.">
                     “这里是安全的” —— 这是我们唯一的判断标准。
                 </p>
-                <button class="cta-button">Stay Connected</button>
+                <button class="cta-button" data-zh="Stay Connected" data-en="Stay Connected">Stay Connected</button>
             </div>
         </aside>
     </div>
 
-    <footer class="footer-text">
+    <footer class="footer-text" data-zh="© 2026 REIZ EZ LIFE YOUTH HOME | A SUPPORTIVE SPACE FOR GROWTH" data-en="© 2026 REIZ EZ LIFE YOUTH HOME | A SUPPORTIVE SPACE FOR GROWTH">
         © 2026 REIZ EZ LIFE YOUTH HOME | A SUPPORTIVE SPACE FOR GROWTH
     </footer>
+
+    <script>
+        const langBtn = document.getElementById('lang-switch');
+        let currentLang = 'zh';
+
+        langBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            
+            // 扫描所有带有 data-zh 属性的元素
+            const elements = document.querySelectorAll('[data-zh]');
+            
+            elements.forEach(el => {
+                // 切换显示内容
+                el.textContent = el.getAttribute(`data-${currentLang}`);
+            });
+
+            // 切换按钮文字
+            langBtn.textContent = currentLang === 'zh' ? 'EN / 中' : '中 / EN';
+            
+            // 可选：切换网页的 lang 属性以利于 SEO
+            document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+        });
+    </script>
 
 </body>
 </html>
