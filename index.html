@@ -9,278 +9,387 @@
         :root {
             --primary: #8da9c4;
             --secondary: #d4a373;
-            --bg-warm: #fefae0;
-            --text-main: #333d29;
-            --glass: rgba(255, 255, 255, 0.7);
+            --apple-blue: #0071e3;
+            --text-main: #1d1d1f;
+            --glass-white: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --radius-xl: 40px;
+            --radius-md: 24px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Outfit', 'Noto Sans SC', sans-serif;
-            background-color: var(--bg-warm);
+            background: radial-gradient(circle at 10% 10%, #f0f4f8 0%, #e2ebf0 50%, #fef9e7 100%);
             color: var(--text-main);
-            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
             overflow-x: hidden;
         }
 
-        .aurora-bg {
+        .aurora {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            filter: blur(100px);
             background: radial-gradient(circle at 20% 30%, #e9edc9 0%, transparent 40%),
                         radial-gradient(circle at 80% 70%, #faedcd 0%, transparent 40%);
-            z-index: -1;
-            filter: blur(80px);
         }
 
-        nav {
+        /* --- 创始人欢迎弹窗样式 --- */
+        .welcome-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(45px) saturate(180%);
+            -webkit-backdrop-filter: blur(45px) saturate(180%);
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            padding: 2rem 5%;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .logo-text {
-            font-weight: 800;
-            font-size: 1.4rem;
-            letter-spacing: 2px;
-            color: var(--text-main);
+        .welcome-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
-        .logo-text span { font-weight: 300; opacity: 0.7; }
+        .founder-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 60px;
+            border-radius: var(--radius-xl);
+            width: 95%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
+            transform: translateY(30px);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-        .nav-links { display: flex; align-items: center; }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-main);
-            margin-left: 1.5rem;
+        .welcome-lang-btn {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: rgba(0,0,0,0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
             font-size: 1.1rem;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover { color: var(--secondary); }
-
-        /* 语言切换按钮样式 */
-        #lang-switch {
-            background: rgba(141, 169, 196, 0.15);
-            padding: 5px 12px;
-            border-radius: 8px;
-            cursor: pointer;
             font-weight: 600;
-            color: var(--primary);
-            border: 1px solid var(--primary);
+            color: var(--apple-blue);
+            cursor: pointer;
+            border: 1px solid rgba(0,113,227,0.2);
         }
 
-        .wrapper {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 2rem;
-            padding: 0 5% 5% 5%;
-            max-width: 1400px;
-            margin: 0 auto;
+        .welcome-overlay.active .founder-card {
+            transform: translateY(0);
         }
 
-        .main-panel {
-            background: var(--glass);
-            padding: 4rem;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+        .welcome-main-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--text-main);
+            letter-spacing: -1px;
         }
 
-        .formal-subtitle {
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 1.1rem;
+        .founder-header {
             color: var(--secondary);
-            font-weight: 600;
-            display: block;
-            margin-bottom: 1rem;
-        }
-
-        .formal-title { font-size: 3rem; font-weight: 600; line-height: 1.2; margin-bottom: 2rem; }
-
-        .formal-description { font-size: 1.4rem; opacity: 0.8; max-width: 80%; margin-bottom: 3rem; }
-
-        .investigator-section {
-            border-left: 3px solid var(--primary);
-            padding-left: 1.5rem;
-            margin: 3rem 0;
-        }
-
-        .investigator-label { font-size: 1rem; text-transform: uppercase; opacity: 0.6; letter-spacing: 1px; }
-
-        .investigator-name { font-size: 2rem; font-weight: 600; margin: 0.5rem 0; }
-
-        .hub { display: flex; flex-direction: column; gap: 1.5rem; }
-
-        .hub-card {
-            background: var(--glass);
-            padding: 2.5rem;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid transparent;
-        }
-
-        .hub-card:hover {
-            transform: translateY(-10px);
-            background: white;
-            border-color: var(--primary);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
-        }
-
-        .accent-text {
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 25px;
             text-transform: uppercase;
-            margin-bottom: 1rem;
-            display: block;
+            letter-spacing: 2px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding-bottom: 15px;
         }
 
-        .hub-card h3 { margin-bottom: 1rem; font-size: 1.7rem; }
+        .founder-text {
+            font-size: 1.4rem;
+            line-height: 1.7;
+            color: #333;
+            margin-bottom: 40px;
+            text-align: justify;
+        }
 
-        .hub-card p { font-size: 1.15rem; opacity: 0.7; }
-
-        .cta-button {
+        .enter-site-btn {
             background: var(--text-main);
             color: white;
-            padding: 1.2rem 2rem;
-            border-radius: 50px;
-            width: 100%;
-            margin-top: 1rem;
+            padding: 18px 45px;
+            border-radius: 40px;
+            font-size: 1.4rem;
             font-weight: 600;
-            font-size: 1.2rem;
-            transition: 0.3s;
-            cursor: pointer;
             border: none;
+            cursor: pointer;
+            float: right;
+            transition: 0.3s;
         }
 
-        .cta-button:hover { background: var(--secondary); transform: scale(1.02); }
-
-        .tag-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 2rem; }
-
-        .tag {
-            background: rgba(255,255,255,0.5);
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 1.05rem;
-            border: 1px solid rgba(0,0,0,0.05);
+        .enter-site-btn:hover {
+            background: var(--apple-blue);
+            transform: scale(1.05);
         }
 
-        .footer-text { padding: 4rem; text-align: center; opacity: 0.5; font-size: 1rem; letter-spacing: 2px; }
+        /* --- 主容器布局 --- */
+        .container-glass {
+            width: 95%;
+            max-width: 1400px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            padding: 50px;
+            display: grid;
+            grid-template-areas: 
+                "nav nav nav"
+                "main card1 card2"
+                "tag card3 card4"
+                "footer footer footer";
+            grid-template-columns: 1.3fr 1fr 1fr;
+            gap: 28px;
+        }
 
-        @media (max-width: 968px) {
-            .wrapper { grid-template-columns: 1fr; }
-            .formal-title { font-size: 2.2rem; }
-            .main-panel { padding: 2rem; }
+        nav { grid-area: nav; display: flex; justify-content: space-between; align-items: center; padding-bottom: 30px; }
+        .logo { font-weight: 800; font-size: 1.9rem; letter-spacing: 1px; }
+        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links a { text-decoration: none; color: var(--text-main); font-size: 1.45rem; }
+
+        .join-btn-nav {
+            color: var(--secondary) !important;
+            border: 2px solid var(--secondary);
+            padding: 10px 25px;
+            border-radius: 60px;
+            font-weight: 600;
+        }
+
+        .hero-section { grid-area: main; padding: 20px; }
+        .hero-section h1 { font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.1; font-weight: 600; }
+        .hero-section p { font-size: 1.7rem; opacity: 0.8; margin-bottom: 2.5rem; line-height: 1.4; }
+
+        .glass-card {
+            background: var(--glass-white);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 35px;
+            transition: all 0.4s ease;
+        }
+        .card-tag { font-size: 1.3rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; display: block; }
+        .glass-card h3 { font-size: 2rem; margin-bottom: 15px; }
+        .glass-card p { font-size: 1.55rem; opacity: 0.7; line-height: 1.5; }
+
+        .cta-btn {
+            background: var(--text-main);
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            border-radius: 45px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.4rem;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .tag-area { grid-area: tag; display: flex; flex-wrap: wrap; gap: 12px; align-content: flex-start; padding: 15px; }
+        .tag-item { background: rgba(255,255,255,0.5); border: 1px solid var(--glass-border); padding: 10px 20px; border-radius: 25px; font-size: 1.35rem; }
+
+        footer { grid-area: footer; text-align: center; font-size: 1.4rem; opacity: 0.4; padding-top: 50px; letter-spacing: 2px; }
+
+        @media (max-width: 1100px) {
+            .container-glass {
+                grid-template-areas: "nav" "main" "card1" "card2" "tag" "card3" "card4" "footer";
+                grid-template-columns: 1fr;
+                padding: 25px;
+            }
+            .hero-section h1 { font-size: 2.8rem; }
+            .logo { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="aurora-bg"></div>
+    <div class="aurora"></div>
 
-    <nav>
-        <div class="logo-text">REIZ EZ LIFE <span data-zh="YOUTH HOME" data-en="YOUTH HOME">YOUTH HOME</span></div>
-        <div class="nav-links">
-            <a href="#" data-zh="家长空间" data-en="Parents">家长空间</a>
-            <a href="#" data-zh="实用支持" data-en="Support">实用支持</a>
-            <a href="#" class="join-btn" data-zh="加入我们" data-en="Join Us" style="color: var(--secondary); border: 1.5px solid var(--secondary); padding: 8px 20px; border-radius: 50px;">加入我们</a>
-            <a href="javascript:void(0);" id="lang-switch">EN / 中</a>
+    <div id="welcome-modal" class="welcome-overlay">
+        <div class="founder-card">
+            <div class="welcome-lang-btn" id="welcome-lang-switch">EN / 中</div>
+            
+            <h1 class="welcome-main-title" data-zh="欢迎来到 Reiz EZ Life Youth Home" data-en="Welcome to Reiz EZ Life Youth Home">
+                欢迎来到 Reiz EZ Life Youth Home
+            </h1>
+            
+            <div class="founder-header" data-zh="创始人视角 ｜ Founder's Perspective" data-en="Founder's Perspective">
+                创始人视角 ｜ Founder's Perspective
+            </div>
+            
+            <div class="founder-text" id="founder-content">
+                </div>
+            
+            <button class="enter-site-btn" onclick="closeWelcome()" data-zh="进入网站 | Enter Website" data-en="Enter Website">
+                进入网站 | Enter Website
+            </button>
         </div>
-    </nav>
-
-    <div class="wrapper">
-        <main class="main-panel">
-            <div class="formal-header">
-                <span class="formal-subtitle">A Place to Grow, Belong, and Become</span>
-                <h1 class="formal-title" data-zh="一个可以成长、归属，并成为自己的地方" data-en="A Place to Grow, Belong, and Become">一个可以成长、归属，并成为自己的地方</h1>
-                <p class="formal-description" data-zh="Youth Home 是为新移民子女与留学生打造的支持性空间，陪伴走过适应与成长的阶段。" data-en="Youth Home is a supportive space designed for children of new immigrants and international students, accompanying them through stages of adaptation and growth.">
-                    Youth Home 是为新移民子女与留学生打造的支持性空间，陪伴走过适应与成长的阶段。
-                </p>
-            </div>
-
-            <div class="investigator-section">
-                <span class="investigator-label" data-zh="Welcome Home | 欢迎回家" data-en="Welcome Home">Welcome Home | 欢迎回家</span>
-                <div class="investigator-name" data-zh="在这里，" data-en="In here,">在这里，</div>
-                <p class="investigator-title" style="font-size: 1.4rem;" data-zh="你不需要什么都想清楚，不需要走得很快，也不需要一个人扛下所有。" data-en="You don't need to have everything figured out, you don't need to move fast, and you don't have to carry it all alone.">
-                    你不需要什么都想清楚，不需要走得很快，也不需要一个人扛下所有。
-                </p>
-            </div>
-
-            <div class="tag-container">
-                <div class="tag" data-zh="新移民家庭子女" data-en="Immigrant Youth">新移民家庭子女</div>
-                <div class="tag" data-zh="北美留学生" data-en="International Students">北美留学生</div>
-                <div class="tag" data-zh="身份认同探索" data-en="Identity Exploration">身份认同探索</div>
-                <div class="tag" data-zh="允许慢下来" data-en="Space to Slow Down">允许慢下来</div>
-            </div>
-        </main>
-
-        <aside class="hub">
-            <div class="hub-card">
-                <span class="accent-text" data-zh="内在与能力成长" data-en="Growth & Mindset">内在与能力成长</span>
-                <h3 data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
-                <p data-zh="成长不一定要张扬或竞争，它是安静、渐进且只属于你自己的过程。" data-en="Growth doesn't have to be loud or competitive; it is a quiet, gradual process that belongs only to you.">成长不一定要张扬或竞争，它是安静、渐进且只属于你自己的过程。</p>
-                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;" data-zh="→ 探索你的节奏" data-en="→ Find your rhythm">→ 探索你的节奏</p>
-            </div>
-
-            <div class="hub-card">
-                <span class="accent-text" data-zh="关系与安全感" data-en="Belonging & Safety">关系与安全感</span>
-                <h3 data-zh="资源 ｜ Resources" data-en="Resources">资源 ｜ Resources</h3>
-                <p data-zh="没有人应该独自承受改变。在同龄人圈子中找到真正的接纳。" data-en="No one should face change alone. Find genuine acceptance within a community of peers.">没有人应该独自承受改变。在同龄人圈子中找到真正的接纳。</p>
-                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;" data-zh="→ 寻找同伴支持" data-en="→ Seek peer support">→ 寻找同伴支持</p>
-            </div>
-
-            <div class="hub-card" style="border-bottom: 4px solid var(--secondary);">
-                <span class="accent-text" data-zh="主体性与被听见" data-en="Agency & Voice">主体性与被听见</span>
-                <h3 data-zh="升学 ｜ College Application" data-en="College Application">升学 ｜ College Application</h3>
-                <p data-zh="无论你的声音是安静还是坚定，这里都有它的一席之地。" data-en="Whether your voice is quiet or firm, there is a place for it here.">无论你的声音是安静还是坚定，这里都有它的一席之地。</p>
-                <p style="color: var(--secondary); font-size: 1rem; margin-top: 15px; font-weight: 600;" data-zh="→ 分享你的故事" data-en="→ Share your story">→ 分享你的故事</p>
-            </div>
-
-            <div style="padding: 10px 20px;">
-                <p style="font-size: 1.1rem; opacity: 0.7; margin-bottom: 10px;" data-zh="“这里是安全的” —— 这是我们唯一的判断标准。" data-en="'It is safe here' — our only standard of judgment.">
-                    “这里是安全的” —— 这是我们唯一的判断标准。
-                </p>
-                <button class="cta-button" data-zh="Stay Connected" data-en="Stay Connected">Stay Connected</button>
-            </div>
-        </aside>
     </div>
 
-    <footer class="footer-text" data-zh="© 2026 REIZ EZ LIFE YOUTH HOME | A SUPPORTIVE SPACE FOR GROWTH" data-en="© 2026 REIZ EZ LIFE YOUTH HOME | A SUPPORTIVE SPACE FOR GROWTH">
-        © 2026 REIZ EZ LIFE YOUTH HOME | A SUPPORTIVE SPACE FOR GROWTH
-    </footer>
+    <div class="container-glass">
+        <nav>
+            <div class="logo">REIZ EZ LIFE <span style="font-weight:300; opacity:0.6">YOUTH HOME</span></div>
+            <div class="nav-links">
+                <a href="#" data-zh="家长空间" data-en="Parents">家长空间</a>
+                <a href="javascript:void(0);" class="join-btn-nav join-trigger" data-zh="加入我们" data-en="Join Us">加入我们</a>
+                <a href="javascript:void(0);" id="lang-switch" style="color: var(--apple-blue); font-weight: 600;">EN / 中</a>
+            </div>
+        </nav>
+
+        <main class="hero-section">
+            <h1 data-zh="一个可以成长、归属，并成为自己的地方" data-en="A Place to Grow, Belong, and Become">一个可以成长、归属，并成为自己的地方</h1>
+            <p data-zh="Youth Home 是为新移民子女与留学生打造的支持性空间。" data-en="Supportive space for children of immigrants and international students.">Youth Home 是为新移民子女与留学生打造的支持性空间。</p>
+            <button class="cta-btn join-trigger" data-zh="保持联系" data-en="Stay Connected">保持联系</button>
+        </main>
+
+        <div class="glass-card">
+            <span class="card-tag" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
+            <h3 data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
+            <p data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
+        </div>
+
+        <div class="glass-card">
+            <span class="card-tag" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
+            <h3 data-zh="资源 ｜ Resources" data-en="Resources">资源 ｜ Resources</h3>
+            <p data-zh="没有人应该独自承受改变。在圈子中找到接纳。" data-en="No one should face change alone. Find acceptance here.">没有人应该独自承受改变。在圈子中找到接纳。</p>
+        </div>
+
+        <div class="tag-area">
+            <div class="tag-item" data-zh="新移民家庭" data-en="Immigrant Youth">新移民家庭</div>
+            <div class="tag-item" data-zh="北美留学生" data-en="Students">北美留学生</div>
+            <div class="tag-item" data-zh="身份认同" data-en="Identity">身份认同</div>
+            <div class="tag-item" data-zh="允许慢下来" data-en="Slow Down">允许慢下来</div>
+        </div>
+
+        <div class="glass-card">
+            <span class="card-tag" data-zh="主体性" data-en="Agency">主体性</span>
+            <h3 data-zh="升学 ｜ Application" data-en="Application">升学 ｜ Application</h3>
+            <p data-zh="无论你的声音是安静还是坚定，这里都有它的一席之地。" data-en="There is a place for your voice, whether quiet or firm.">无论你的声音是安静还是坚定，这里都有它的一席之地。</p>
+        </div>
+
+        <div class="glass-card" style="background: rgba(255,255,255,0.6); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <h3 style="margin-bottom: 8px; font-size: 2.5rem;">Ready?</h3>
+                <p style="font-size: 1.7rem; font-weight: 500;">“这里是安全的”</p>
+            </div>
+            <button class="cta-btn join-trigger" style="width: 100%; margin-top: 15px;" data-zh="加入我们" data-en="Join Us">加入我们</button>
+        </div>
+
+        <footer>© 2026 REIZ EZ LIFE YOUTH HOME</footer>
+    </div>
 
     <script>
-        const langBtn = document.getElementById('lang-switch');
+        // --- 核心文本定义 ---
+        const founderStory = {
+            en: `I came to the United States as an immigrant with little understanding of the language, culture, or school system. I remember how isolating it felt, not knowing how to make friends, how to fit in, or even how to ask for help. Over time, through persistence and openness, I learned to adapt, build friendships, and grow confident in a new environment.<br><br>As I adjusted, I felt a responsibility to support others facing the same transition. I created a WeChat public account at a young age to share my experiences and stories about real life in America, helping people who want to learn about America or just want to hear some interesting stories. Not long later, I volunteered to teach younger students English and reading skills for free, believing that language is the first bridge to belonging.<br><br>Today, now I serve as the Founder and President of Reiz EZ Life, a nonprofit organization dedicated to helping newly arrived Chinese students transition smoothly into life in the U.S. My mission is simple: to turn uncertainty into confidence and help young immigrants build a strong, supported start in their new home.`,
+            zh: `我作为一名移民来到美国时，对语言、文化或学校系统知之甚少。我清楚地记得那种孤独感——不知道如何交朋友，不知道如何融入，甚至不知道如何寻求帮助。随着时间的推移，通过坚持和开放的心态，我学会了适应，建立了友谊，并在新环境中变得自信。<br><br>当我适应后，我感到有一种责任去支持那些面临同样转变的人。我在很小的时候就创办了一个微信公众号，分享我在美国生活的经验和故事，帮助那些想了解美国或只是想听听趣闻的人。不久后，我开始志愿免费教授低年级学生英语和阅读技巧，因为我相信语言是通往归属感的第一座桥梁。<br><br>今天，我担任 Reiz EZ Life 的创始人兼主席，这是一家致力于帮助新近抵美的中国学生顺利过渡到美国生活的非营利组织。我的使命很简单：将不确定性转化为信心，帮助年轻移民在他们的新家园建立一个强大、有支持的开始。`
+        };
+
         let currentLang = 'zh';
 
-        langBtn.addEventListener('click', () => {
-            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+        // --- 统一更新语言函数 ---
+        function updateLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                el.innerHTML = el.getAttribute(`data-${lang}`);
+            });
             
-            // 扫描所有带有 data-zh 属性的元素
-            const elements = document.querySelectorAll('[data-zh]');
+            // 更新创始人故事内容
+            document.getElementById('founder-content').innerHTML = founderStory[lang];
             
-            elements.forEach(el => {
-                // 切换显示内容
-                el.textContent = el.getAttribute(`data-${currentLang}`);
+            // 更新切换按钮文字
+            const switchBtns = [document.getElementById('lang-switch'), document.getElementById('welcome-lang-switch')];
+            switchBtns.forEach(btn => {
+                if(btn) btn.textContent = lang === 'zh' ? 'EN / 中' : '中 / EN';
+            });
+        }
+
+        // --- 初始化显示 ---
+        window.onload = () => {
+            updateLanguage('zh'); // 默认中文
+            setTimeout(() => {
+                document.getElementById('welcome-modal').classList.add('active');
+            }, 500);
+        };
+
+        // --- 欢迎弹窗切换逻辑 ---
+        document.getElementById('welcome-lang-switch').onclick = () => {
+            updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
+        };
+
+        // --- 主页面切换逻辑 ---
+        document.getElementById('lang-switch').onclick = () => {
+            updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
+        };
+
+        function closeWelcome() {
+            const modal = document.getElementById('welcome-modal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 800);
+        }
+
+        // --- 3. 加入我们弹窗逻辑 ---
+        const openModal = () => {
+            const modal = document.createElement('div');
+            Object.assign(modal.style, {
+                position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
+                backgroundColor: 'rgba(29, 29, 31, 0.4)', backdropFilter: 'blur(20px)',
+                display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: '10000'
             });
 
-            // 切换按钮文字
-            langBtn.textContent = currentLang === 'zh' ? 'EN / 中' : '中 / EN';
-            
-            // 可选：切换网页的 lang 属性以利于 SEO
-            document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+            const trans = {
+                title: { zh: '您想如何联系我们？', en: 'How would you like to reach us?' },
+                email: { zh: '发送邮件', en: 'Email Us' },
+                call: { zh: '拨打电话', en: 'Call Us' },
+                cancel: { zh: '取消', en: 'Cancel' }
+            };
+
+            const gmailUrl = "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzDsPjJjRflqbGJssRVMvqdgXbMGmPHCjzpBMFrnmZZZbBkwhxqcnWCrPNqMmwJqlbKmXWP";
+
+            modal.innerHTML = `
+                <div style="background: rgba(255,255,255,0.9); backdrop-filter: blur(30px); padding: 50px; border-radius: 45px; width: 90%; max-width: 600px; text-align: center; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 40px 80px rgba(0,0,0,0.15);">
+                    <h2 style="font-size: 2.3rem; margin-bottom: 30px; color: #1d1d1f; font-weight: 700;">${trans.title[currentLang]}</h2>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <a href="${gmailUrl}" target="_blank" style="text-decoration: none; background: var(--primary); color: white; padding: 25px; border-radius: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px;">
+                            <span style="font-size: 2rem;">📧</span> <span style="font-weight: 600; font-size: 1.7rem;">${trans.email[currentLang]}</span>
+                        </a>
+                        <a href="tel:+16176595400" style="text-decoration: none; background: var(--secondary); color: white; padding: 25px; border-radius: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px;">
+                            <span style="font-size: 2rem;">📞</span> <span style="font-weight: 600; font-size: 1.7rem;">${trans.call[currentLang]}</span>
+                        </a>
+                        <div id="close-contact-modal" style="background: rgba(0,0,0,0.05); color: #666; padding: 20px; border-radius: 25px; cursor: pointer; font-weight: 600; font-size: 1.5rem; margin-top: 15px;">
+                            ${trans.cancel[currentLang]}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            const close = () => { if(document.body.contains(modal)) document.body.removeChild(modal); };
+            document.getElementById('close-contact-modal').onclick = close;
+            modal.onclick = (e) => { if(e.target === modal) close(); };
+        };
+
+        document.querySelectorAll('.join-trigger').forEach(btn => {
+            btn.addEventListener('click', openModal);
         });
     </script>
-
 </body>
 </html>
