@@ -15,6 +15,7 @@
             --glass-border: rgba(255, 255, 255, 0.6);
             --radius-xl: 40px;
             --radius-md: 24px;
+            --bezier: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -40,7 +41,7 @@
                         radial-gradient(circle at 80% 70%, #faedcd 0%, transparent 40%);
         }
 
-        /* --- 弹窗通用样式 (创始人 & 联系我们 & 文章) --- */
+        /* --- 弹窗样式 --- */
         .welcome-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -53,7 +54,7 @@
             z-index: 9999;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.6s var(--bezier);
         }
 
         .welcome-overlay.active { opacity: 1; visibility: visible; }
@@ -70,11 +71,34 @@
             box-shadow: 0 50px 100px rgba(0,0,0,0.1);
             border: 1px solid rgba(255,255,255,0.5);
             transform: translateY(30px);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.6s var(--bezier);
         }
 
         .welcome-overlay.active .founder-card { transform: translateY(0); }
 
+        /* --- 统一互动的可点击响应板块 --- */
+        .glass-card, .sub-card, .tag-item, .cta-btn, .enter-site-btn, .article-preview-item, .join-trigger {
+            cursor: pointer;
+            transition: all 0.4s var(--bezier) !important;
+        }
+
+        .glass-card:hover, .sub-card:hover, .tag-item:hover, .cta-btn:hover, .enter-site-btn:hover {
+            transform: scale(1.03) translateY(-5px);
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        .join-trigger:hover {
+            transform: scale(1.03) translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .glass-card:active, .sub-card:active, .tag-item:active, .cta-btn:active, .enter-site-btn:active, .join-trigger:active {
+            transform: scale(0.97) translateY(0);
+            transition: all 0.1s ease !important;
+        }
+
+        /* --- 弹窗内部按钮样式 --- */
         .welcome-lang-btn {
             position: absolute;
             top: 30px;
@@ -87,34 +111,9 @@
             color: var(--apple-blue);
             cursor: pointer;
             border: 1px solid rgba(0,113,227,0.2);
+            transition: 0.3s;
         }
-
-        .welcome-main-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: var(--text-main);
-            letter-spacing: -1px;
-        }
-
-        .founder-header {
-            color: var(--secondary);
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            padding-bottom: 15px;
-        }
-
-        .founder-text {
-            font-size: 1.4rem;
-            line-height: 1.7;
-            color: #333;
-            margin-bottom: 40px;
-            text-align: justify;
-        }
+        .welcome-lang-btn:hover { background: rgba(0,113,227,0.1); }
 
         .enter-site-btn {
             background: var(--text-main);
@@ -124,51 +123,26 @@
             font-size: 1.4rem;
             font-weight: 600;
             border: none;
-            cursor: pointer;
             float: right;
-            transition: 0.3s;
+            margin-top: 10px;
         }
 
-        .enter-site-btn:hover {
-            background: var(--apple-blue);
-            transform: scale(1.05);
-        }
-
-        /* --- 拆分方框 & 交互样式 --- */
-        .split-card-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: 100%;
-        }
-
+        /* --- 拆分方框 --- */
+        .split-card-container { display: flex; flex-direction: column; gap: 20px; height: 100%; }
+        
         .sub-card {
             background: var(--glass-white);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius-md);
             padding: 30px;
             flex: 1;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
-        .sub-card:hover {
-            transform: scale(1.03);
-            background: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-        }
-
-        /* --- 文章列表 & 详情样式 --- */
-        .article-list-scroll {
-            max-height: 450px;
-            overflow-y: auto;
-            padding-right: 15px;
-            margin-top: 20px;
-        }
-
+        /* --- 文章列表样式 --- */
+        .article-list-scroll { max-height: 450px; overflow-y: auto; padding-right: 15px; margin-top: 20px; }
         .article-list-scroll::-webkit-scrollbar { width: 6px; }
         .article-list-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
 
@@ -178,27 +152,28 @@
             padding: 25px;
             border-radius: 20px;
             text-align: left;
-            transition: 0.3s ease;
-            cursor: pointer;
         }
-
         .article-preview-item:hover {
             background: rgba(0,113,227,0.08);
-            transform: translateX(8px);
+            transform: translateX(10px); /* 列表项独有的横向交互 */
         }
 
         .back-nav-btn {
             display: none;
-            background: rgba(0,0,0,0.05);
-            padding: 10px 20px;
-            border-radius: 15px;
+            background: rgba(0,0,0,0.08);
+            padding: 12px 24px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: 600;
             margin-bottom: 20px;
             width: fit-content;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            transition: all 0.3s ease;
         }
+        .back-nav-btn:hover { background: rgba(0,0,0,0.15); transform: translateX(-5px); }
 
-        /* --- 布局容器 --- */
+        /* --- 主容器布局 --- */
         .container-glass {
             width: 95%;
             max-width: 1400px;
@@ -222,20 +197,17 @@
         nav { grid-area: nav; display: flex; justify-content: space-between; align-items: center; padding-bottom: 30px; }
         .logo { font-weight: 800; font-size: 1.9rem; letter-spacing: 1px; }
         .nav-links { display: flex; align-items: center; gap: 25px; }
-        .nav-links a { text-decoration: none; color: var(--text-main); font-size: 1.45rem; }
-        .join-btn-nav { color: var(--secondary) !important; border: 2px solid var(--secondary); padding: 10px 25px; border-radius: 60px; font-weight: 600; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
-        .join-btn-nav:hover { transform: scale(1.03); background: rgba(212, 163, 115, 0.1); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
+        .nav-links a { text-decoration: none; color: var(--text-main); font-size: 1.45rem; cursor: pointer; transition: 0.3s; }
+        .nav-links a:hover { color: var(--apple-blue); transform: translateY(-2px); }
+        
         .hero-section { grid-area: main; padding: 20px; }
         .hero-section h1 { font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.1; font-weight: 600; }
         .hero-section p { font-size: 1.7rem; opacity: 0.8; margin-bottom: 2.5rem; line-height: 1.4; }
 
-        .glass-card { background: var(--glass-white); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 35px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
-        .glass-card:hover { transform: scale(1.03); background: rgba(255, 255, 255, 0.6); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
-        .card-tag { font-size: 1.3rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; display: block; }
-        .cta-btn { background: var(--text-main); color: white; border: none; padding: 16px 35px; border-radius: 45px; cursor: pointer; font-weight: 600; font-size: 1.4rem; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .cta-btn:hover { transform: scale(1.03); background: var(--apple-blue); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
+        .glass-card { background: var(--glass-white); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 35px; }
         .tag-area { grid-area: tag; display: flex; flex-wrap: wrap; gap: 12px; align-content: flex-start; padding: 15px; }
         .tag-item { background: rgba(255,255,255,0.5); border: 1px solid var(--glass-border); padding: 10px 20px; border-radius: 25px; font-size: 1.35rem; }
+        
         footer { grid-area: footer; text-align: center; font-size: 1.4rem; opacity: 0.4; padding-top: 50px; }
 
         @media (max-width: 1100px) {
@@ -249,36 +221,21 @@
 
     <div id="welcome-modal" class="welcome-overlay">
         <div class="founder-card">
-            <div class="welcome-lang-btn" id="welcome-lang-switch">EN / 中</div>
-            
-            <h1 class="welcome-main-title" data-zh="欢迎来到 Reiz EZ Life Youth Home" data-en="Welcome to Reiz EZ Life Youth Home">
-                欢迎来到 Reiz EZ Life Youth Home
-            </h1>
-            
-            <div class="founder-header" data-zh="创始人视角 ｜ Founder's Perspective" data-en="Founder's Perspective">
-                创始人视角 ｜ Founder's Perspective
-            </div>
-            
-            <div class="founder-text" id="founder-content"></div>
-            
-            <button class="enter-site-btn" onclick="closeWelcome()" data-zh="进入网站 | Enter Website" data-en="Enter Website">
-                进入网站 | Enter Website
-            </button>
+            <div id="welcome-lang-switch" class="welcome-lang-btn">EN / 中</div>
+            <h1 style="font-size:2.8rem; margin-bottom:10px; font-weight:800;" data-zh="欢迎来到 Reiz EZ Life Youth Home" data-en="Welcome to Reiz EZ Life Youth Home">欢迎来到 Reiz EZ Life Youth Home</h1>
+            <div style="color:var(--secondary); font-size:1.4rem; font-weight:700; margin-bottom:25px; text-transform:uppercase; border-bottom:1px solid rgba(0,0,0,0.05); padding-bottom:15px;" data-zh="创始人视角 ｜ Founder's Perspective" data-en="Founder's Perspective">创始人视角 ｜ Founder's Perspective</div>
+            <div id="founder-content" style="font-size:1.4rem; line-height:1.7; color:#333; margin-bottom:40px; text-align:justify;"></div>
+            <button class="enter-site-btn" onclick="window.closeWelcome()" data-zh="进入网站 | Enter Website" data-en="Enter Website">进入网站 | Enter Website</button>
         </div>
     </div>
 
     <div id="stories-modal" class="welcome-overlay">
         <div class="founder-card" style="max-width: 950px;">
-            <div id="article-back-btn" class="back-nav-btn">← Back to List</div>
-            <h1 id="stories-title" style="font-size: 2.8rem; margin-bottom: 20px;" data-zh="创始人趣闻" data-en="My Stories">创始人趣闻</h1>
-            
-            <div id="article-list-view" class="article-list-scroll">
-                </div>
-
-            <div id="article-detail-view" class="founder-text" style="display: none; text-align: left; margin-top: 20px;">
-                </div>
-
-            <button onclick="closeStories()" style="margin-top: 30px; background:rgba(0,0,0,0.1); border:none; padding:15px 30px; border-radius:30px; cursor:pointer; font-weight:600;">关闭窗口</button>
+            <div id="article-back-btn" class="back-nav-btn" onclick="window.backToStoriesList()" data-zh="← 返回列表" data-en="← Back to List">← 返回列表</div>
+            <h1 id="stories-title" style="font-size: 2.8rem; margin-bottom: 20px; font-weight:800;" data-zh="创始人趣闻" data-en="My Stories">创始人趣闻</h1>
+            <div id="article-list-view" class="article-list-scroll"></div>
+            <div id="article-detail-view" style="display: none; text-align: left; margin-top: 20px; font-size:1.4rem; line-height:1.7;"></div>
+            <button onclick="window.closeStories()" class="enter-site-btn" style="float:none; display:inline-block; margin-top:30px; background:rgba(0,0,0,0.1); color:var(--text-main);" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
         </div>
     </div>
 
@@ -287,30 +244,30 @@
             <div class="logo">REIZ EZ LIFE <span style="font-weight:300; opacity:0.6">YOUTH HOME</span></div>
             <div class="nav-links">
                 <a href="#" data-zh="进入空间" data-en="Zone Entrance">进入空间</a>
-                <a href="javascript:void(0);" class="join-btn-nav join-trigger" data-zh="加入我们" data-en="Join Us">加入我们</a>
-                <a href="javascript:void(0);" id="lang-switch" style="color: var(--apple-blue); font-weight: 600;">EN / 中</a>
+                <a class="join-trigger" style="color:var(--secondary); border:2px solid var(--secondary); padding:8px 25px; border-radius:60px; font-weight:600;" data-zh="加入我们" data-en="Join Us">加入我们</a>
+                <a id="lang-switch" style="color: var(--apple-blue); font-weight: 600;">EN / 中</a>
             </div>
         </nav>
 
         <main class="hero-section">
             <h1 data-zh="一个可以成长、归属，并成为自己的地方" data-en="A Place to Grow, Belong, & Become">一个可以成长、归属，并成为自己的地方</h1>
             <p data-zh="Youth Home 是为新移民子女与留学生打造的支持性空间。" data-en="Supportive space for children of immigrants and international students.">Youth Home 是为新移民子女与留学生打造的支持性空间。</p>
-            <button class="cta-btn join-trigger" data-zh="保持联系" data-en="Stay Connected">保持联系</button>
+            <button class="join-trigger" style="background:var(--text-main); color:white; border:none; padding:16px 35px; border-radius:45px; font-weight:600; font-size:1.4rem;" data-zh="保持联系" data-en="Stay Connected">保持联系</button>
         </main>
 
         <div class="glass-card">
-            <span class="card-tag" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
+            <span style="font-size:1.3rem; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
             <h3 style="font-size:2rem; margin-bottom:15px;" data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
             <p style="font-size:1.55rem; opacity:0.7;" data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
         </div>
 
         <div class="split-card-container">
             <div class="sub-card">
-                <span class="card-tag" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
+                <span style="font-size:1.3rem; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
                 <h3 style="font-size:1.8rem;" data-zh="资源 ｜ Resources" data-en="Resources">资源 ｜ Resources</h3>
             </div>
-            <div class="sub-card" onclick="openStories()">
-                <span class="card-tag" style="color:var(--secondary)" data-zh="个人故事" data-en="Stories">个人故事</span>
+            <div class="sub-card" onclick="window.openStories()">
+                <span style="font-size:1.3rem; font-weight:800; color:var(--secondary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="个人故事" data-en="Stories">个人故事</span>
                 <h3 style="font-size:1.8rem;" data-zh="创始人趣闻 ｜ MyStories" data-en="MyStories">创始人趣闻 ｜ MyStories</h3>
             </div>
         </div>
@@ -323,117 +280,228 @@
         </div>
 
         <div class="glass-card">
-            <span class="card-tag" data-zh="主体性" data-en="Agency">主体性</span>
+            <span style="font-size:1.3rem; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="主体性" data-en="Agency">主体性</span>
             <h3 style="font-size:2rem; margin-bottom:15px;" data-zh="升学 ｜ Application" data-en="Application">升学 ｜ Application</h3>
             <p style="font-size:1.55rem; opacity:0.7;" data-zh="千里之行，始于足下。" data-en="Dream big, work hard.">千里之行，始于足下。</p>
         </div>
 
         <div class="glass-card" style="background: rgba(255,255,255,0.6); display: flex; flex-direction: column; justify-content: space-between;">
-            <div><h3 style="font-size: 2.5rem;">Ready?</h3><p style="font-size:1.6rem; opacity:0.8;">Whether you want to join our community or just say hi ...</p></div>
-            <button class="cta-btn join-trigger" style="width:100%;" data-zh="加入我们" data-en="Join Us">加入我们</button>
+            <div><h3 style="font-size: 2.5rem; margin-bottom:10px;">Ready?</h3><p style="font-size:1.6rem; opacity:0.8;">Whether you want to join our community or just say hi ...</p></div>
+            <button class="join-trigger" style="width:100%; background:var(--text-main); color:white; border:none; padding:15px; border-radius:30px; font-weight:600; font-size:1.4rem; margin-top:20px;" data-zh="加入我们" data-en="Join Us">加入我们</button>
         </div>
 
         <footer>© 2026 REIZ EZ LIFE YOUTH HOME</footer>
     </div>
 
     <script>
-        // --- 1. 数据配置 (文章请放在同目录 articles 文件夹) ---
+        // --- 完整无删减的 72 篇文章数组 ---
         const articles = [
-            { id: '1', title_zh: "初到美国的第一天", title_en: "First Day in the US", date: "2024.01", file: "1.html" },
-            { id: '2', title_zh: "创办微信公众号的故事", title_en: "Story of WeChat Channel", date: "2024.02", file: "2.html" },
-            { id: '3', title_zh: "支教经历与感悟", title_en: "Volunteering Memories", date: "2024.03", file: "3.html" }
+            { id: '1', zh: "Kemy与Jason的阅读小课堂-How Spider save the sun", en: "Kemy & Jason's Reading Class - How Spider Saved the Sun", date: "2020年8月18日" },
+            { id: '2', zh: "英语成语：(Happy Part) ~~~", en: "English Idioms: (Happy Part)", date: "2020年7月24日" },
+            { id: '3', zh: "英你而语—for your English", en: "English for You", date: "2020年7月16日" },
+            { id: '4', zh: "难忘的美国夏令营", en: "Unforgettable US Summer Camp", date: "2018年9月11日" },
+            { id: '5', zh: "Fright dream day", en: "Fright Dream Day", date: "2018年5月5日" },
+            { id: '6', zh: "我和最强大脑王峰&李威的近距离接触", en: "Meeting 'Super Brain' Champions", date: "2018年3月26日" },
+            { id: '7', zh: "迪士尼邮轮上过春节", en: "CNY on Disney Cruise", date: "2018年3月14日" },
+            { id: '8', zh: "奥兰多之行", en: "Trip to Orlando", date: "2018年3月14日" },
+            { id: '9', zh: "上医院", en: "Going to the Hospital", date: "2018年3月8日" },
+            { id: '10', zh: "小提琴表演记", en: "Violin Performance", date: "2018年2月3日" },
+            { id: '11', zh: "“冬补”这事也有南北差异！这5个区域的人有福了......", en: "Regional Winter Nourishment", date: "2018年2月1日" },
+            { id: '12', zh: "补发Pierce School滑冰记滑雪视频", en: "Pierce School Skating Videos", date: "2018年1月15日" },
+            { id: '13', zh: "第一次亲密接触击剑", en: "First Experience with Fencing", date: "2018年1月15日" },
+            { id: '14', zh: "Pierce School滑冰记", en: "Skating at Pierce School", date: "2018年1月9日" },
+            { id: '15', zh: "厦门地铁出现不文明现象有哪些", en: "Uncivilized Behaviors on Metro", date: "2018年1月5日" },
+            { id: '16', zh: "今起厦门进入“两会”时间", en: "Xiamen 'Two Sessions' Time", date: "2018年1月5日" },
+            { id: '17', zh: "2018厦门马拉松1月7日开跑 来自42个国家和地区的33239人参赛", en: "2018 Xiamen Marathon", date: "2018年1月5日" },
+            { id: '18', zh: "补发上篇的图片与视频", en: "Additional Photos & Videos", date: "2017年12月31日" },
+            { id: '19', zh: "写在圣诞节前", en: "Written Before Christmas", date: "2017年12月31日" },
+            { id: '20', zh: "厦门地铁1号线运营时段正式发布 起步价2元全程7元", en: "Xiamen Metro Line 1 Opens", date: "2017年12月31日" },
+            { id: '21', zh: "波士顿的第二场雪", en: "Second Snow in Boston", date: "2017年12月26日" },
+            { id: '22', zh: "拉近父母和孩子之间距离的办法就两个字", en: "Bridge Gap with Parents", date: "2017年12月26日" },
+            { id: '23', zh: "如何讲一口标准的普通话", en: "Speak Standard Mandarin", date: "2017年12月25日" },
+            { id: '24', zh: "如何有效持久的维持身材", en: "Maintain Your Body Shape", date: "2017年12月24日" },
+            { id: '25', zh: "佛系单身", en: "Buddhist-style Singlehood", date: "2017年12月22日" },
+            { id: '26', zh: "学好英语有多重要？", en: "Importance of English", date: "2017年12月21日" },
+            { id: '27', zh: "你是不是对创业有误解，你做的可能是假的创业。", en: "Entrepreneurship Myths", date: "2017年12月20日" },
+            { id: '28', zh: "导游的就业前景", en: "Tour Guide Prospects", date: "2017年12月20日" },
+            { id: '29', zh: "2017，考题。(不得满分明年就算白过了！)", en: "2017 Examination", date: "2017年12月19日" },
+            { id: '30', zh: "2017年全球发生了哪些大事？", en: "Major Global Events 2017", date: "2017年12月19日" },
+            { id: '31', zh: "你还记得你的梦想吗？！", en: "Remember Your Dream?", date: "2017年12月18日" },
+            { id: '32', zh: "“剩男”“剩女”究竟为啥被剩", en: "Reasons for Singlehood", date: "2017年12月18日" },
+            { id: '33', zh: "大龄青年男女择偶注意事项", en: "Dating Tips for Mature Singles", date: "2017年12月18日" },
+            { id: '34', zh: "波士顿的第一场雪", en: "First Snow in Boston", date: "2017年12月14日" },
+            { id: '35', zh: "想跑赢物价应如何投资", en: "Invest to Beat Inflation", date: "2017年12月14日" },
+            { id: '36', zh: "厦房价现如今还能撑住吗？", en: "Xiamen Housing Prices", date: "2017年12月13日" },
+            { id: '37', zh: "感恩节说感恩", en: "Thanksgiving Gratitude", date: "2017年11月26日" },
+            { id: '38', zh: "遇见好心人", en: "Meeting a Kind Person", date: "2017年11月22日" },
+            { id: '39', zh: "奇妙的乐高城", en: "Wonderful Lego Land", date: "2017年11月12日" },
+            { id: '40', zh: "爸爸与Kemy的聊天记录", en: "Dad & Kemy Chat Logs", date: "2017年11月12日" },
+            { id: '41', zh: "波士顿科学博物馆游览记", en: "Museum of Science Visit", date: "2017年11月11日" },
+            { id: '42', zh: "专治宅懒馋！华人最爱速食大盘点，原来美帝还有这样美味", en: "Best Instant Foods in US", date: "2017年11月11日" },
+            { id: '43', zh: "【睿途中国少年行】2018年冬寒假美国私校微留学项目火热招募中", en: "US Micro-study Abroad", date: "2017年11月11日" },
+            { id: '44', zh: "美国衣食住行篇", en: "Life in America: Basics", date: "2017年11月5日" },
+            { id: '45', zh: "11月5日爸爸写给Kemy的信", en: "Letter to Kemy (Nov 5)", date: "2017年11月5日" },
+            { id: '46', zh: "【睿途中国少年行】2018年哈佛—MIT青少年机器人冬令营火热招募中", en: "Harvard-MIT Robotics Camp", date: "2017年11月5日" },
+            { id: '47', zh: "11月2日爸爸写给Kemy的信", en: "Letter to Kemy (Nov 2)", date: "2017年11月3日" },
+            { id: '48', zh: "快乐分享百分百", en: "100% Happiness Sharing", date: "2017年11月3日" },
+            { id: '49', zh: "在美国需要了解的小费知识", en: "US Tipping Etiquette", date: "2017年11月3日" },
+            { id: '50', zh: "奇妙的美国万圣节", en: "Halloween in America", date: "2017年11月2日" },
+            { id: '51', zh: "万圣节特辑——来自世界各地的31种可怕怪物", en: "Halloween Monster Special", date: "2017年11月2日" },
+            { id: '52', zh: "10月31日爸爸写给Kemy的信", en: "Letter to Kemy (Oct 31)", date: "2017年11月2日" },
+            { id: '53', zh: "美国生活趣事", en: "Fun Stories in America", date: "2017年10月31日" },
+            { id: '54', zh: "10月20日Kemy写给爸爸的信", en: "Kemy's Letter to Dad", date: "2017年10月31日" },
+            { id: '55', zh: "分享知道的国外保健品（女士篇）", en: "Health Supplements (Women)", date: "2017年10月31日" },
+            { id: '56', zh: "爸爸回国了", en: "Dad Returned to China", date: "2017年10月30日" },
+            { id: '57', zh: "父亲的回信", en: "Father's Reply Letter", date: "2017年10月30日" },
+            { id: '58', zh: "哈佛大学和MIT", en: "Harvard University & MIT", date: "2017年10月29日" },
+            { id: '59', zh: "Kemy写给老师同学们的一封信", en: "Letter to Classmates", date: "2017年10月29日" },
+            { id: '60', zh: "为什么全民都疯王者荣耀", en: "Why Honor of Kings?", date: "2017年10月29日" },
+            { id: '61', zh: "波士顿美术博物馆之行", en: "MFA Boston Visit", date: "2017年10月28日" },
+            { id: '62', zh: "美国学记", en: "Study Notes in America", date: "2017年10月28日" },
+            { id: '63', zh: "人工智能是未来的趋势", en: "AI Future Trends", date: "2017年10月28日" },
+            { id: '64', zh: "美国游览篇", en: "Sightseeing in America", date: "2017年10月27日" },
+            { id: '65', zh: "多让小孩接触外面世界的意义", en: "Exposing Kids to World", date: "2017年10月27日" },
+            { id: '66', zh: "写给Kemy的一封信", en: "A Letter to Kemy", date: "2017年10月27日" },
+            { id: '67', zh: "美国上学篇", en: "Schooling in America", date: "2017年10月26日" },
+            { id: '68', zh: "阅读的力量，推荐两本有关关于失败的书", en: "Power of Reading", date: "2017年10月26日" },
+            { id: '69', zh: "美国到达篇", en: "Arriving in America", date: "2017年10月23日" },
+            { id: '70', zh: "分享知道的国外保健品（男士篇）", en: "Health Supplements (Men)", date: "2017年10月23日" },
+            { id: '71', zh: "美国出发篇", en: "Departing for America", date: "2017年10月22日" },
+            { id: '72', zh: "当世界已然是地球村，你需要聆听和了解全世界，一起来了解美国波士顿(Boston)", en: "Understanding Boston", date: "2017年10月22日" }
         ];
 
+        // --- 创始人寄语 ---
         const founderStory = {
-            en: `I came to the United States as an immigrant with little understanding of the language, culture, or school system. I remember how isolating it felt, not knowing how to make friends, how to fit in, or even how to ask for help. Over time, through persistence and openness, I learned to adapt, build friendships, and grow confident in a new environment.<br><br>As I adjusted, I felt a responsibility to support others facing the same transition. I created a WeChat public account at a young age to share my experiences and stories about real life in America, helping people who want to learn about America or just want to hear some interesting stories. Not long later, I volunteered to teach younger students English and reading skills for free, believing that language is the first bridge to belonging.<br><br>Today, now I serve as the Founder and President of Reiz EZ Life, a nonprofit organization dedicated to helping newly arrived Chinese students transition smoothly into life in the U.S. My mission is simple: to turn uncertainty into confidence and help young immigrants build a strong, supported start in their new home.`,
-            zh: `我作为一名移民来到美国时，对语言、文化或学校系统知之甚少。我清楚地记得那种孤独感——不知道如何交朋友，不知道如何融入，甚至不知道如何寻求帮助。随着时间的推移，通过坚持和开放的心态，我学会了适应，建立了友谊，并在新环境中变得自信。<br><br>当我适应后，我感到有一种责任去支持那些面临同样转变的人。我在很小的时候就创办了一个微信公众号，分享我在美国生活的经验和故事，帮助那些想了解美国或只是想听听趣闻的人。不久后，我开始志愿免费教授低年级学生英语和阅读技巧，因为我相信语言是通往归属感的第一座桥梁。<br><br>今天，我担任 Reiz EZ Life 的创始人兼主席，这是一家致力于帮助新近抵美的中国学生顺利过渡到美国生活的非营利组织。我的使命很简单：将不确定性转化为信心，帮助年轻移民在他们的新家园建立一个强大、有支持的开始。`
+            en: `I came to the United States as an immigrant with little understanding of the language, culture, or school system. I remember how isolating it felt, not knowing how to make friends, how to fit in, or even how to ask for help. Over time, through persistence and openness, I learned to adapt, build friendships, and grow confident in a new environment.<br><br>As I adjusted, I felt a responsibility to support others facing the same transition. I created a WeChat public account at a young age to share my experiences and stories about real life in America, helping people who want to learn about America or just want to hear some interesting stories. Not long later, I volunteered to teach younger students English and reading skills for free, believing that language is the first bridge to belonging. Where I also fell in love with helping others with my own ability, trying my best.<br><br>Today, after all those years of challenges and experience, my integration into American life is complete, even though I still have a lot to learn. One thing that I never forget is my dedication to helping others, where now I serve as the Founder and President of Reiz EZ Life, a nonprofit organization dedicated to helping newly arrived Chinese students transition smoothly into life in the U.S. Through mentorship, cultural guidance, and shared resources, I strive to ensure that no student feels as lost as I once did. My mission is simple: to turn uncertainty into confidence and help young immigrants build a strong, supported start in their new home.`,
+            zh: `我作为一名移民来到美国时，对语言、文化或学校系统知之甚少。我清楚地记得那种孤独感——不知道如何交朋友，不知道如何融入，甚至不知道如何寻求帮助。随着时间的推移，通过坚持和开放的心态，我学会了适应，建立了友谊，并在新环境中变得自信。<br><br>当我适应后，我感到有一种责任去支持那些面临同样转变的人。我在很小的时候就创办了一个微信公众号，分享我在美国生活的经验和故事，帮助那些想了解美国或只是想听听趣闻的人。不久后，我开始志愿免费教授低年级学生英语和阅读技巧，因为我相信语言是通往归属感的第一座桥梁。在那里，我也爱上了尽自己所能去帮助别人。<br><br>今天，经历了这些年的挑战和经验后，我已经完全融入了美国生活，尽管我还有很多东西要学。我永远不会忘记的一件事就是致力于帮助他人。现在，我担任 Reiz EZ Life 的创始人兼主席，这是一家致力于帮助新近抵美的中国学生顺利过渡到美国生活的非营利组织。通过导师指导、文化指引和共享资源，我努力确保没有学生会像我曾经那样感到迷茫。我的使命很简单：将不确定性转化为信心，帮助年轻移民在他们的新家园建立一个强大、有支持的开始。`
         };
 
-        let currentLang = 'zh';
+        // --- 全局核心函数绑定 ---
+        window.currentLang = 'zh';
 
-        // --- 2. 语言切换逻辑 ---
-        function updateLanguage(lang) {
-            currentLang = lang;
+        window.updateLanguage = function(lang) {
+            window.currentLang = lang;
             document.querySelectorAll('[data-zh]').forEach(el => {
-                el.innerHTML = el.getAttribute(`data-${lang}`);
+                const text = el.getAttribute(`data-${lang}`);
+                if (text) el.innerHTML = text;
             });
             document.getElementById('founder-content').innerHTML = founderStory[lang];
-            const switchBtns = [document.getElementById('lang-switch'), document.getElementById('welcome-lang-switch')];
-            switchBtns.forEach(btn => { if(btn) btn.textContent = lang === 'zh' ? 'EN / 中' : '中 / EN'; });
-            renderArticleList();
-        }
-
-        // --- 3. 欢迎弹窗逻辑 ---
-        window.onload = () => {
-            updateLanguage('zh');
-            setTimeout(() => { document.getElementById('welcome-modal').classList.add('active'); }, 500);
+            
+            // 同步顶部和弹窗的语言按钮
+            const btns = ['lang-switch', 'welcome-lang-switch'];
+            btns.forEach(id => {
+                const b = document.getElementById(id);
+                if(b) b.textContent = lang === 'zh' ? 'EN / 中' : '中 / EN';
+            });
+            window.renderArticleList();
         };
-        function closeWelcome() { document.getElementById('welcome-modal').classList.remove('active'); setTimeout(() => { document.getElementById('welcome-modal').style.display = 'none'; }, 800); }
-        document.getElementById('welcome-lang-switch').onclick = () => updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
-        document.getElementById('lang-switch').onclick = () => updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
 
-        // --- 4. 文章系统逻辑 ---
-        function renderArticleList() {
+        window.closeWelcome = function() {
+            const modal = document.getElementById('welcome-modal');
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; }, 600);
+        };
+
+        window.openStories = function() {
+            document.getElementById('stories-modal').classList.add('active');
+            window.renderArticleList();
+        };
+
+        window.closeStories = function() {
+            document.getElementById('stories-modal').classList.remove('active');
+            window.backToStoriesList();
+        };
+
+        window.renderArticleList = function() {
             const listContainer = document.getElementById('article-list-view');
+            if(!listContainer) return;
             listContainer.innerHTML = articles.map(art => `
-                <div class="article-preview-item" onclick="loadArticleDetail('${art.file}', '${currentLang === 'zh' ? art.title_zh : art.title_en}')">
-                    <h4 style="font-size:1.8rem; margin-bottom:5px;">${currentLang === 'zh' ? art.title_zh : art.title_en}</h4>
-                    <p style="opacity:0.5; font-size:1.2rem;">Date: ${art.date}</p>
+                <div class="article-preview-item" onclick="window.loadArticleDetail('${art.id}', '${window.currentLang === 'zh' ? art.zh : art.en}')">
+                    <h4 style="font-size:1.8rem; margin-bottom:5px; font-weight:600; color:var(--text-main);">${window.currentLang === 'zh' ? art.zh : art.en}</h4>
+                    <p style="opacity:0.5; font-size:1.2rem; color:var(--text-main);">${art.date}</p>
                 </div>
             `).join('');
-        }
+        };
 
-        async function loadArticleDetail(fileName, title) {
-            const detailView = document.getElementById('article-detail-view');
-            const listView = document.getElementById('article-list-view');
-            const backBtn = document.getElementById('article-back-btn');
-            
-            listView.style.display = 'none';
-            detailView.style.display = 'block';
-            backBtn.style.display = 'block';
+        window.loadArticleDetail = function(id, title) {
+            document.getElementById('article-list-view').style.display = 'none';
+            document.getElementById('article-detail-view').style.display = 'block';
+            document.getElementById('article-back-btn').style.display = 'block';
             document.getElementById('stories-title').innerText = title;
+            // 此处为文章详情占位，后续可接入本地文件 fetch 逻辑
+            document.getElementById('article-detail-view').innerHTML = `
+                <div style="padding:50px; text-align:center; background:rgba(0,0,0,0.03); border-radius:20px;">
+                    <span style="font-size:3rem; margin-bottom:20px; display:block;">📄</span>
+                    <p style="font-size:1.6rem; font-weight:600; color:var(--text-main);">文章内容加载区 (文件编号: ${id}.html)</p>
+                    <p style="font-size:1.2rem; opacity:0.6; margin-top:10px;">请将导出的 PDF 或 HTML 文件连接至此处。</p>
+                </div>
+            `;
+        };
 
-            try {
-                // 自动尝试从本地 articles 文件夹读取
-                const response = await fetch(`./articles/${fileName}`);
-                if (response.ok) {
-                    detailView.innerHTML = await response.text();
-                } else {
-                    detailView.innerHTML = `<p>文章文件加载失败。请确保文件存在于 articles/${fileName}</p>`;
-                }
-            } catch (e) {
-                detailView.innerHTML = `<p>加载错误：由于浏览器安全限制，请通过 Live Server 或部署到服务器后预览本地文件内容。</p>`;
-            }
-        }
-
-        function backToStoriesList() {
+        window.backToStoriesList = function() {
             document.getElementById('article-detail-view').style.display = 'none';
             document.getElementById('article-list-view').style.display = 'block';
             document.getElementById('article-back-btn').style.display = 'none';
-            document.getElementById('stories-title').innerText = currentLang === 'zh' ? "创始人趣闻" : "My Stories";
-        }
-
-        function openStories() { document.getElementById('stories-modal').classList.add('active'); renderArticleList(); }
-        function closeStories() { document.getElementById('stories-modal').classList.remove('active'); backToStoriesList(); }
-        document.getElementById('article-back-btn').onclick = backToStoriesList;
-
-        // --- 5. 加入我们弹窗逻辑 ---
-        const openModal = () => {
-            const modal = document.createElement('div');
-            Object.assign(modal.style, { position:'fixed', top:'0', left:'0', width:'100%', height:'100%', backgroundColor:'rgba(29, 29, 31, 0.4)', backdropFilter:'blur(20px)', display:'flex', justifyContent:'center', alignItems:'center', zIndex:'10000' });
-            const trans = { title: { zh: '您想如何联系我们？', en: 'Reach Us' }, email: { zh: '发送邮件', en: 'Email Us' }, call: { zh: '拨打电话', en: 'Call Us' }, cancel: { zh: '取消', en: 'Cancel' } };
-            const gmailUrl = "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzDsPjJjRflqbGJssRVMvqdgXbMGmPHCjzpBMFrnmZZZbBkwhxqcnWCrPNqMmwJqlbKmXWP";
-            modal.innerHTML = `<div style="background:rgba(255,255,255,0.9); backdrop-filter:blur(30px); padding:50px; border-radius:45px; width:90%; max-width:600px; text-align:center; box-shadow:0 40px 80px rgba(0,0,0,0.15);">
-                <h2 style="font-size:2.3rem; margin-bottom:30px;">${trans.title[currentLang]}</h2>
-                <div style="display:flex; flex-direction:column; gap:20px;">
-                    <a href="${gmailUrl}" target="_blank" style="text-decoration:none; background:var(--primary); color:white; padding:25px; border-radius:25px; font-weight:600; font-size:1.7rem;">📧 ${trans.email[currentLang]}</a>
-                    <a href="tel:+16176595400" style="text-decoration:none; background:var(--secondary); color:white; padding:25px; border-radius:25px; font-weight:600; font-size:1.7rem;">📞 ${trans.call[currentLang]}</a>
-                    <div id="close-contact-modal" style="background:rgba(0,0,0,0.05); padding:20px; border-radius:25px; cursor:pointer; font-size:1.5rem;">${trans.cancel[currentLang]}</div>
-                </div></div>`;
-            document.body.appendChild(modal);
-            document.getElementById('close-contact-modal').onclick = () => document.body.removeChild(modal);
+            document.getElementById('stories-title').innerText = window.currentLang === 'zh' ? "创始人趣闻" : "My Stories";
         };
-        document.querySelectorAll('.join-trigger').forEach(btn => btn.addEventListener('click', openModal));
+
+        // --- DOM 加载完毕后执行初始化 ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. 初始化显示欢迎弹窗与语言
+            window.updateLanguage('zh');
+            setTimeout(() => { document.getElementById('welcome-modal').classList.add('active'); }, 500);
+
+            // 2. 绑定语言切换按钮
+            document.getElementById('lang-switch').onclick = () => window.updateLanguage(window.currentLang === 'zh' ? 'en' : 'zh');
+            document.getElementById('welcome-lang-switch').onclick = () => window.updateLanguage(window.currentLang === 'zh' ? 'en' : 'zh');
+
+            // 3. 事件委托：联系我们弹窗（解决所有按钮的点击问题）
+            document.body.addEventListener('click', (e) => {
+                if (e.target.closest('.join-trigger')) {
+                    const modal = document.createElement('div');
+                    Object.assign(modal.style, { 
+                        position:'fixed', top:'0', left:'0', width:'100%', height:'100%', 
+                        backgroundColor:'rgba(29, 29, 31, 0.4)', backdropFilter:'blur(20px)', 
+                        display:'flex', justifyContent:'center', alignItems:'center', zIndex:'10000',
+                        opacity: '0', transition: 'opacity 0.3s ease'
+                    });
+                    
+                    const texts = {
+                        title: window.currentLang === 'zh' ? '您想如何联系我们？' : 'How would you like to reach us?',
+                        email: window.currentLang === 'zh' ? '发送邮件' : 'Email Us',
+                        call: window.currentLang === 'zh' ? '拨打电话' : 'Call Us',
+                        cancel: window.currentLang === 'zh' ? '取消' : 'Cancel'
+                    };
+                    
+                    const gmailUrl = "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzDsPjJjRflqbGJssRVMvqdgXbMGmPHCjzpBMFrnmZZZbBkwhxqcnWCrPNqMmwJqlbKmXWP";
+
+                    modal.innerHTML = `
+                        <div style="background:rgba(255,255,255,0.95); padding:50px; border-radius:40px; text-align:center; width:90%; max-width:500px; box-shadow:0 30px 60px rgba(0,0,0,0.15); transform:translateY(20px); transition:all 0.3s ease;" id="contact-modal-card">
+                            <h2 style="font-size:2.2rem; margin-bottom:30px; font-weight:700; color:var(--text-main);">${texts.title}</h2>
+                            <div style="display:flex; flex-direction:column; gap:15px;">
+                                <a href="${gmailUrl}" target="_blank" style="display:block; padding:20px; background:var(--primary); color:white; border-radius:25px; text-decoration:none; font-weight:600; font-size:1.5rem; transition:0.3s;">📧 ${texts.email}</a>
+                                <a href="tel:6176595400" style="display:block; padding:20px; background:var(--secondary); color:white; border-radius:25px; text-decoration:none; font-weight:600; font-size:1.5rem; transition:0.3s;">📞 ${texts.call}</a>
+                                <div id="close-contact" style="padding:20px; background:rgba(0,0,0,0.05); color:var(--text-main); border-radius:25px; cursor:pointer; font-weight:600; font-size:1.3rem; margin-top:10px; transition:0.3s;">${texts.cancel}</div>
+                            </div>
+                        </div>`;
+                        
+                    document.body.appendChild(modal);
+                    
+                    // 弹窗淡入动画
+                    setTimeout(() => { 
+                        modal.style.opacity = '1'; 
+                        document.getElementById('contact-modal-card').style.transform = 'translateY(0)';
+                    }, 10);
+
+                    // 关闭逻辑
+                    document.getElementById('close-contact').onclick = () => {
+                        modal.style.opacity = '0';
+                        document.getElementById('contact-modal-card').style.transform = 'translateY(20px)';
+                        setTimeout(() => document.body.removeChild(modal), 300);
+                    };
+                }
+            });
+        });
     </script>
 </body>
 </html>
