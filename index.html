@@ -40,7 +40,7 @@
                         radial-gradient(circle at 80% 70%, #faedcd 0%, transparent 40%);
         }
 
-        /* --- 创始人欢迎弹窗样式 --- */
+        /* --- 弹窗通用样式 (创始人 & 联系我们 & 文章) --- */
         .welcome-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -56,10 +56,7 @@
             transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .welcome-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .welcome-overlay.active { opacity: 1; visibility: visible; }
 
         .founder-card {
             background: rgba(255, 255, 255, 0.9);
@@ -76,6 +73,8 @@
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        .welcome-overlay.active .founder-card { transform: translateY(0); }
+
         .welcome-lang-btn {
             position: absolute;
             top: 30px;
@@ -88,10 +87,6 @@
             color: var(--apple-blue);
             cursor: pointer;
             border: 1px solid rgba(0,113,227,0.2);
-        }
-
-        .welcome-overlay.active .founder-card {
-            transform: translateY(0);
         }
 
         .welcome-main-title {
@@ -139,7 +134,71 @@
             transform: scale(1.05);
         }
 
-        /* --- 主容器布局 --- */
+        /* --- 拆分方框 & 交互样式 --- */
+        .split-card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .sub-card {
+            background: var(--glass-white);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            flex: 1;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .sub-card:hover {
+            transform: scale(1.03);
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        /* --- 文章列表 & 详情样式 --- */
+        .article-list-scroll {
+            max-height: 450px;
+            overflow-y: auto;
+            padding-right: 15px;
+            margin-top: 20px;
+        }
+
+        .article-list-scroll::-webkit-scrollbar { width: 6px; }
+        .article-list-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+        .article-preview-item {
+            background: rgba(0,0,0,0.03);
+            margin-bottom: 15px;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: left;
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+
+        .article-preview-item:hover {
+            background: rgba(0,113,227,0.08);
+            transform: translateX(8px);
+        }
+
+        .back-nav-btn {
+            display: none;
+            background: rgba(0,0,0,0.05);
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+            width: fit-content;
+        }
+
+        /* --- 布局容器 --- */
         .container-glass {
             width: 95%;
             max-width: 1400px;
@@ -164,56 +223,23 @@
         .logo { font-weight: 800; font-size: 1.9rem; letter-spacing: 1px; }
         .nav-links { display: flex; align-items: center; gap: 25px; }
         .nav-links a { text-decoration: none; color: var(--text-main); font-size: 1.45rem; }
-
-        .join-btn-nav {
-            color: var(--secondary) !important;
-            border: 2px solid var(--secondary);
-            padding: 10px 25px;
-            border-radius: 60px;
-            font-weight: 600;
-        }
-
+        .join-btn-nav { color: var(--secondary) !important; border: 2px solid var(--secondary); padding: 10px 25px; border-radius: 60px; font-weight: 600; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
+        .join-btn-nav:hover { transform: scale(1.03); background: rgba(212, 163, 115, 0.1); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
         .hero-section { grid-area: main; padding: 20px; }
         .hero-section h1 { font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.1; font-weight: 600; }
         .hero-section p { font-size: 1.7rem; opacity: 0.8; margin-bottom: 2.5rem; line-height: 1.4; }
 
-        .glass-card {
-            background: var(--glass-white);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md);
-            padding: 35px;
-            transition: all 0.4s ease;
-        }
+        .glass-card { background: var(--glass-white); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 35px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
+        .glass-card:hover { transform: scale(1.03); background: rgba(255, 255, 255, 0.6); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
         .card-tag { font-size: 1.3rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; display: block; }
-        .glass-card h3 { font-size: 2rem; margin-bottom: 15px; }
-        .glass-card p { font-size: 1.55rem; opacity: 0.7; line-height: 1.5; }
-
-        .cta-btn {
-            background: var(--text-main);
-            color: white;
-            border: none;
-            padding: 16px 35px;
-            border-radius: 45px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1.4rem;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
-
+        .cta-btn { background: var(--text-main); color: white; border: none; padding: 16px 35px; border-radius: 45px; cursor: pointer; font-weight: 600; font-size: 1.4rem; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .cta-btn:hover { transform: scale(1.03); background: var(--apple-blue); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
         .tag-area { grid-area: tag; display: flex; flex-wrap: wrap; gap: 12px; align-content: flex-start; padding: 15px; }
         .tag-item { background: rgba(255,255,255,0.5); border: 1px solid var(--glass-border); padding: 10px 20px; border-radius: 25px; font-size: 1.35rem; }
-
-        footer { grid-area: footer; text-align: center; font-size: 1.4rem; opacity: 0.4; padding-top: 50px; letter-spacing: 2px; }
+        footer { grid-area: footer; text-align: center; font-size: 1.4rem; opacity: 0.4; padding-top: 50px; }
 
         @media (max-width: 1100px) {
-            .container-glass {
-                grid-template-areas: "nav" "main" "card1" "card2" "tag" "card3" "card4" "footer";
-                grid-template-columns: 1fr;
-                padding: 25px;
-            }
-            .hero-section h1 { font-size: 2.8rem; }
-            .logo { font-size: 1.6rem; }
+            .container-glass { grid-template-areas: "nav" "main" "card1" "card2" "tag" "card3" "card4" "footer"; grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -233,12 +259,26 @@
                 创始人视角 ｜ Founder's Perspective
             </div>
             
-            <div class="founder-text" id="founder-content">
-                </div>
+            <div class="founder-text" id="founder-content"></div>
             
             <button class="enter-site-btn" onclick="closeWelcome()" data-zh="进入网站 | Enter Website" data-en="Enter Website">
                 进入网站 | Enter Website
             </button>
+        </div>
+    </div>
+
+    <div id="stories-modal" class="welcome-overlay">
+        <div class="founder-card" style="max-width: 950px;">
+            <div id="article-back-btn" class="back-nav-btn">← Back to List</div>
+            <h1 id="stories-title" style="font-size: 2.8rem; margin-bottom: 20px;" data-zh="创始人趣闻" data-en="My Stories">创始人趣闻</h1>
+            
+            <div id="article-list-view" class="article-list-scroll">
+                </div>
+
+            <div id="article-detail-view" class="founder-text" style="display: none; text-align: left; margin-top: 20px;">
+                </div>
+
+            <button onclick="closeStories()" style="margin-top: 30px; background:rgba(0,0,0,0.1); border:none; padding:15px 30px; border-radius:30px; cursor:pointer; font-weight:600;">关闭窗口</button>
         </div>
     </div>
 
@@ -260,14 +300,19 @@
 
         <div class="glass-card">
             <span class="card-tag" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
-            <h3 data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
-            <p data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
+            <h3 style="font-size:2rem; margin-bottom:15px;" data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
+            <p style="font-size:1.55rem; opacity:0.7;" data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
         </div>
 
-        <div class="glass-card">
-            <span class="card-tag" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
-            <h3 data-zh="资源 ｜ Resources" data-en="Resources">资源 ｜ Resources</h3>
-            <p data-zh="没有人应该独自承受改变。在圈子中找到接纳。" data-en="No one should face change alone. Find acceptance here.">没有人应该独自承受改变。在圈子中找到接纳。</p>
+        <div class="split-card-container">
+            <div class="sub-card">
+                <span class="card-tag" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
+                <h3 style="font-size:1.8rem;" data-zh="资源 ｜ Resources" data-en="Resources">资源 ｜ Resources</h3>
+            </div>
+            <div class="sub-card" onclick="openStories()">
+                <span class="card-tag" style="color:var(--secondary)" data-zh="个人故事" data-en="Stories">个人故事</span>
+                <h3 style="font-size:1.8rem;" data-zh="创始人趣闻 ｜ MyStories" data-en="MyStories">创始人趣闻 ｜ MyStories</h3>
+            </div>
         </div>
 
         <div class="tag-area">
@@ -279,24 +324,26 @@
 
         <div class="glass-card">
             <span class="card-tag" data-zh="主体性" data-en="Agency">主体性</span>
-            <h3 data-zh="升学 ｜ Application" data-en="Application">升学 ｜ Application</h3>
-            <p data-zh="千里之行，始于足下。" data-en="Dream big, work hard.">千里之行，始于足下。</p>
+            <h3 style="font-size:2rem; margin-bottom:15px;" data-zh="升学 ｜ Application" data-en="Application">升学 ｜ Application</h3>
+            <p style="font-size:1.55rem; opacity:0.7;" data-zh="千里之行，始于足下。" data-en="Dream big, work hard.">千里之行，始于足下。</p>
         </div>
 
         <div class="glass-card" style="background: rgba(255,255,255,0.6); display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-                <h3 style="margin-bottom: 8px; font-size: 2.5rem;">Ready?</h3>
-                <p style="font-size: 1.6rem; opacity: 0.8;">Whether you want to join our community, volunteer, or just say hi ...</p>
-                <p style="font-size: 1.6rem; opacity: 0.8;">we would love to hear from you!</p>
-            </div>
-            <button class="cta-btn join-trigger" style="width: 100%; margin-top: 15px;" data-zh="加入我们" data-en="Join Us">加入我们</button>
+            <div><h3 style="font-size: 2.5rem;">Ready?</h3><p style="font-size:1.6rem; opacity:0.8;">Whether you want to join our community or just say hi ...</p></div>
+            <button class="cta-btn join-trigger" style="width:100%;" data-zh="加入我们" data-en="Join Us">加入我们</button>
         </div>
 
         <footer>© 2026 REIZ EZ LIFE YOUTH HOME</footer>
     </div>
 
     <script>
-        // --- 核心文本定义 ---
+        // --- 1. 数据配置 (文章请放在同目录 articles 文件夹) ---
+        const articles = [
+            { id: '1', title_zh: "初到美国的第一天", title_en: "First Day in the US", date: "2024.01", file: "1.html" },
+            { id: '2', title_zh: "创办微信公众号的故事", title_en: "Story of WeChat Channel", date: "2024.02", file: "2.html" },
+            { id: '3', title_zh: "支教经历与感悟", title_en: "Volunteering Memories", date: "2024.03", file: "3.html" }
+        ];
+
         const founderStory = {
             en: `I came to the United States as an immigrant with little understanding of the language, culture, or school system. I remember how isolating it felt, not knowing how to make friends, how to fit in, or even how to ask for help. Over time, through persistence and openness, I learned to adapt, build friendships, and grow confident in a new environment.<br><br>As I adjusted, I felt a responsibility to support others facing the same transition. I created a WeChat public account at a young age to share my experiences and stories about real life in America, helping people who want to learn about America or just want to hear some interesting stories. Not long later, I volunteered to teach younger students English and reading skills for free, believing that language is the first bridge to belonging.<br><br>Today, now I serve as the Founder and President of Reiz EZ Life, a nonprofit organization dedicated to helping newly arrived Chinese students transition smoothly into life in the U.S. My mission is simple: to turn uncertainty into confidence and help young immigrants build a strong, supported start in their new home.`,
             zh: `我作为一名移民来到美国时，对语言、文化或学校系统知之甚少。我清楚地记得那种孤独感——不知道如何交朋友，不知道如何融入，甚至不知道如何寻求帮助。随着时间的推移，通过坚持和开放的心态，我学会了适应，建立了友谊，并在新环境中变得自信。<br><br>当我适应后，我感到有一种责任去支持那些面临同样转变的人。我在很小的时候就创办了一个微信公众号，分享我在美国生活的经验和故事，帮助那些想了解美国或只是想听听趣闻的人。不久后，我开始志愿免费教授低年级学生英语和阅读技巧，因为我相信语言是通往归属感的第一座桥梁。<br><br>今天，我担任 Reiz EZ Life 的创始人兼主席，这是一家致力于帮助新近抵美的中国学生顺利过渡到美国生活的非营利组织。我的使命很简单：将不确定性转化为信心，帮助年轻移民在他们的新家园建立一个强大、有支持的开始。`
@@ -304,93 +351,89 @@
 
         let currentLang = 'zh';
 
-        // --- 统一更新语言函数 ---
+        // --- 2. 语言切换逻辑 ---
         function updateLanguage(lang) {
             currentLang = lang;
             document.querySelectorAll('[data-zh]').forEach(el => {
                 el.innerHTML = el.getAttribute(`data-${lang}`);
             });
-            
-            // 更新创始人故事内容
             document.getElementById('founder-content').innerHTML = founderStory[lang];
-            
-            // 更新切换按钮文字
             const switchBtns = [document.getElementById('lang-switch'), document.getElementById('welcome-lang-switch')];
-            switchBtns.forEach(btn => {
-                if(btn) btn.textContent = lang === 'zh' ? 'EN / 中' : '中 / EN';
-            });
+            switchBtns.forEach(btn => { if(btn) btn.textContent = lang === 'zh' ? 'EN / 中' : '中 / EN'; });
+            renderArticleList();
         }
 
-        // --- 初始化显示 ---
+        // --- 3. 欢迎弹窗逻辑 ---
         window.onload = () => {
-            updateLanguage('zh'); // 默认中文
-            setTimeout(() => {
-                document.getElementById('welcome-modal').classList.add('active');
-            }, 500);
+            updateLanguage('zh');
+            setTimeout(() => { document.getElementById('welcome-modal').classList.add('active'); }, 500);
         };
+        function closeWelcome() { document.getElementById('welcome-modal').classList.remove('active'); setTimeout(() => { document.getElementById('welcome-modal').style.display = 'none'; }, 800); }
+        document.getElementById('welcome-lang-switch').onclick = () => updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
+        document.getElementById('lang-switch').onclick = () => updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
 
-        // --- 欢迎弹窗切换逻辑 ---
-        document.getElementById('welcome-lang-switch').onclick = () => {
-            updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
-        };
-
-        // --- 主页面切换逻辑 ---
-        document.getElementById('lang-switch').onclick = () => {
-            updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
-        };
-
-        function closeWelcome() {
-            const modal = document.getElementById('welcome-modal');
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 800);
+        // --- 4. 文章系统逻辑 ---
+        function renderArticleList() {
+            const listContainer = document.getElementById('article-list-view');
+            listContainer.innerHTML = articles.map(art => `
+                <div class="article-preview-item" onclick="loadArticleDetail('${art.file}', '${currentLang === 'zh' ? art.title_zh : art.title_en}')">
+                    <h4 style="font-size:1.8rem; margin-bottom:5px;">${currentLang === 'zh' ? art.title_zh : art.title_en}</h4>
+                    <p style="opacity:0.5; font-size:1.2rem;">Date: ${art.date}</p>
+                </div>
+            `).join('');
         }
 
-        // --- 3. 加入我们弹窗逻辑 ---
+        async function loadArticleDetail(fileName, title) {
+            const detailView = document.getElementById('article-detail-view');
+            const listView = document.getElementById('article-list-view');
+            const backBtn = document.getElementById('article-back-btn');
+            
+            listView.style.display = 'none';
+            detailView.style.display = 'block';
+            backBtn.style.display = 'block';
+            document.getElementById('stories-title').innerText = title;
+
+            try {
+                // 自动尝试从本地 articles 文件夹读取
+                const response = await fetch(`./articles/${fileName}`);
+                if (response.ok) {
+                    detailView.innerHTML = await response.text();
+                } else {
+                    detailView.innerHTML = `<p>文章文件加载失败。请确保文件存在于 articles/${fileName}</p>`;
+                }
+            } catch (e) {
+                detailView.innerHTML = `<p>加载错误：由于浏览器安全限制，请通过 Live Server 或部署到服务器后预览本地文件内容。</p>`;
+            }
+        }
+
+        function backToStoriesList() {
+            document.getElementById('article-detail-view').style.display = 'none';
+            document.getElementById('article-list-view').style.display = 'block';
+            document.getElementById('article-back-btn').style.display = 'none';
+            document.getElementById('stories-title').innerText = currentLang === 'zh' ? "创始人趣闻" : "My Stories";
+        }
+
+        function openStories() { document.getElementById('stories-modal').classList.add('active'); renderArticleList(); }
+        function closeStories() { document.getElementById('stories-modal').classList.remove('active'); backToStoriesList(); }
+        document.getElementById('article-back-btn').onclick = backToStoriesList;
+
+        // --- 5. 加入我们弹窗逻辑 ---
         const openModal = () => {
             const modal = document.createElement('div');
-            Object.assign(modal.style, {
-                position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
-                backgroundColor: 'rgba(29, 29, 31, 0.4)', backdropFilter: 'blur(20px)',
-                display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: '10000'
-            });
-
-            const trans = {
-                title: { zh: '您想如何联系我们？', en: 'How would you like to reach us?' },
-                email: { zh: '发送邮件', en: 'Email Us' },
-                call: { zh: '拨打电话', en: 'Call Us' },
-                cancel: { zh: '取消', en: 'Cancel' }
-            };
-
+            Object.assign(modal.style, { position:'fixed', top:'0', left:'0', width:'100%', height:'100%', backgroundColor:'rgba(29, 29, 31, 0.4)', backdropFilter:'blur(20px)', display:'flex', justifyContent:'center', alignItems:'center', zIndex:'10000' });
+            const trans = { title: { zh: '您想如何联系我们？', en: 'Reach Us' }, email: { zh: '发送邮件', en: 'Email Us' }, call: { zh: '拨打电话', en: 'Call Us' }, cancel: { zh: '取消', en: 'Cancel' } };
             const gmailUrl = "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzDsPjJjRflqbGJssRVMvqdgXbMGmPHCjzpBMFrnmZZZbBkwhxqcnWCrPNqMmwJqlbKmXWP";
-
-            modal.innerHTML = `
-                <div style="background: rgba(255,255,255,0.9); backdrop-filter: blur(30px); padding: 50px; border-radius: 45px; width: 90%; max-width: 600px; text-align: center; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 40px 80px rgba(0,0,0,0.15);">
-                    <h2 style="font-size: 2.3rem; margin-bottom: 30px; color: #1d1d1f; font-weight: 700;">${trans.title[currentLang]}</h2>
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <a href="${gmailUrl}" target="_blank" style="text-decoration: none; background: var(--primary); color: white; padding: 25px; border-radius: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px;">
-                            <span style="font-size: 2rem;">📧</span> <span style="font-weight: 600; font-size: 1.7rem;">${trans.email[currentLang]}</span>
-                        </a>
-                        <a href="tel:+16176595400" style="text-decoration: none; background: var(--secondary); color: white; padding: 25px; border-radius: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px;">
-                            <span style="font-size: 2rem;">📞</span> <span style="font-weight: 600; font-size: 1.7rem;">${trans.call[currentLang]}</span>
-                        </a>
-                        <div id="close-contact-modal" style="background: rgba(0,0,0,0.05); color: #666; padding: 20px; border-radius: 25px; cursor: pointer; font-weight: 600; font-size: 1.5rem; margin-top: 15px;">
-                            ${trans.cancel[currentLang]}
-                        </div>
-                    </div>
-                </div>
-            `;
-
+            modal.innerHTML = `<div style="background:rgba(255,255,255,0.9); backdrop-filter:blur(30px); padding:50px; border-radius:45px; width:90%; max-width:600px; text-align:center; box-shadow:0 40px 80px rgba(0,0,0,0.15);">
+                <h2 style="font-size:2.3rem; margin-bottom:30px;">${trans.title[currentLang]}</h2>
+                <div style="display:flex; flex-direction:column; gap:20px;">
+                    <a href="${gmailUrl}" target="_blank" style="text-decoration:none; background:var(--primary); color:white; padding:25px; border-radius:25px; font-weight:600; font-size:1.7rem;">📧 ${trans.email[currentLang]}</a>
+                    <a href="tel:+16176595400" style="text-decoration:none; background:var(--secondary); color:white; padding:25px; border-radius:25px; font-weight:600; font-size:1.7rem;">📞 ${trans.call[currentLang]}</a>
+                    <div id="close-contact-modal" style="background:rgba(0,0,0,0.05); padding:20px; border-radius:25px; cursor:pointer; font-size:1.5rem;">${trans.cancel[currentLang]}</div>
+                </div></div>`;
             document.body.appendChild(modal);
-            const close = () => { if(document.body.contains(modal)) document.body.removeChild(modal); };
-            document.getElementById('close-contact-modal').onclick = close;
-            modal.onclick = (e) => { if(e.target === modal) close(); };
+            document.getElementById('close-contact-modal').onclick = () => document.body.removeChild(modal);
         };
-
-        document.querySelectorAll('.join-trigger').forEach(btn => {
-            btn.addEventListener('click', openModal);
-        });
+        document.querySelectorAll('.join-trigger').forEach(btn => btn.addEventListener('click', openModal));
     </script>
 </body>
 </html>
