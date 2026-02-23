@@ -113,6 +113,7 @@
             border: 1px solid rgba(0,113,227,0.2);
             transition: 0.3s;
         }
+
         .welcome-lang-btn:hover { background: rgba(0,113,227,0.1); }
 
         .enter-site-btn {
@@ -155,7 +156,7 @@
         }
         .article-preview-item:hover {
             background: rgba(0,113,227,0.08);
-            transform: translateX(10px); /* 列表项独有的横向交互 */
+            transform: translateX(10px);
         }
 
         .back-nav-btn {
@@ -286,7 +287,10 @@
         </div>
 
         <div class="glass-card" style="background: rgba(255,255,255,0.6); display: flex; flex-direction: column; justify-content: space-between;">
-            <div><h3 style="font-size: 2.5rem; margin-bottom:10px;">Ready?</h3><p style="font-size:1.6rem; opacity:0.8;">Whether you want to join our community or just say hi ...</p></div>
+            <div>
+                <h3 style="font-size: 2.5rem; margin-bottom:10px;">Ready?</h3>
+                <p style="font-size:1.6rem; opacity:0.8;">Whether you want to join our community or just say hi ...</p>
+            </div>
             <button class="join-trigger" style="width:100%; background:var(--text-main); color:white; border:none; padding:15px; border-radius:30px; font-weight:600; font-size:1.4rem; margin-top:20px;" data-zh="加入我们" data-en="Join Us">加入我们</button>
         </div>
 
@@ -294,80 +298,80 @@
     </div>
 
     <script>
-        // --- 完整无删减的 72 篇文章数组 ---
+        // --- 完整无删减的 72 篇文章数组 (合并了对应的微信 URL) ---
         const articles = [
-            { id: '1', zh: "Kemy与Jason的阅读小课堂-How Spider save the sun", en: "Kemy & Jason's Reading Class - How Spider Saved the Sun", date: "2020年8月18日" },
-            { id: '2', zh: "英语成语：(Happy Part) ~~~", en: "English Idioms: (Happy Part)", date: "2020年7月24日" },
-            { id: '3', zh: "英你而语—for your English", en: "English for You", date: "2020年7月16日" },
-            { id: '4', zh: "难忘的美国夏令营", en: "Unforgettable US Summer Camp", date: "2018年9月11日" },
-            { id: '5', zh: "Fright dream day", en: "Fright Dream Day", date: "2018年5月5日" },
-            { id: '6', zh: "我和最强大脑王峰&李威的近距离接触", en: "Meeting 'Super Brain' Champions", date: "2018年3月26日" },
-            { id: '7', zh: "迪士尼邮轮上过春节", en: "CNY on Disney Cruise", date: "2018年3月14日" },
-            { id: '8', zh: "奥兰多之行", en: "Trip to Orlando", date: "2018年3月14日" },
-            { id: '9', zh: "上医院", en: "Going to the Hospital", date: "2018年3月8日" },
-            { id: '10', zh: "小提琴表演记", en: "Violin Performance", date: "2018年2月3日" },
-            { id: '11', zh: "“冬补”这事也有南北差异！这5个区域的人有福了......", en: "Regional Winter Nourishment", date: "2018年2月1日" },
-            { id: '12', zh: "补发Pierce School滑冰记滑雪视频", en: "Pierce School Skating Videos", date: "2018年1月15日" },
-            { id: '13', zh: "第一次亲密接触击剑", en: "First Experience with Fencing", date: "2018年1月15日" },
-            { id: '14', zh: "Pierce School滑冰记", en: "Skating at Pierce School", date: "2018年1月9日" },
-            { id: '15', zh: "厦门地铁出现不文明现象有哪些", en: "Uncivilized Behaviors on Metro", date: "2018年1月5日" },
-            { id: '16', zh: "今起厦门进入“两会”时间", en: "Xiamen 'Two Sessions' Time", date: "2018年1月5日" },
-            { id: '17', zh: "2018厦门马拉松1月7日开跑 来自42个国家和地区的33239人参赛", en: "2018 Xiamen Marathon", date: "2018年1月5日" },
-            { id: '18', zh: "补发上篇的图片与视频", en: "Additional Photos & Videos", date: "2017年12月31日" },
-            { id: '19', zh: "写在圣诞节前", en: "Written Before Christmas", date: "2017年12月31日" },
-            { id: '20', zh: "厦门地铁1号线运营时段正式发布 起步价2元全程7元", en: "Xiamen Metro Line 1 Opens", date: "2017年12月31日" },
-            { id: '21', zh: "波士顿的第二场雪", en: "Second Snow in Boston", date: "2017年12月26日" },
-            { id: '22', zh: "拉近父母和孩子之间距离的办法就两个字", en: "Bridge Gap with Parents", date: "2017年12月26日" },
-            { id: '23', zh: "如何讲一口标准的普通话", en: "Speak Standard Mandarin", date: "2017年12月25日" },
-            { id: '24', zh: "如何有效持久的维持身材", en: "Maintain Your Body Shape", date: "2017年12月24日" },
-            { id: '25', zh: "佛系单身", en: "Buddhist-style Singlehood", date: "2017年12月22日" },
-            { id: '26', zh: "学好英语有多重要？", en: "Importance of English", date: "2017年12月21日" },
-            { id: '27', zh: "你是不是对创业有误解，你做的可能是假的创业。", en: "Entrepreneurship Myths", date: "2017年12月20日" },
-            { id: '28', zh: "导游的就业前景", en: "Tour Guide Prospects", date: "2017年12月20日" },
-            { id: '29', zh: "2017，考题。(不得满分明年就算白过了！)", en: "2017 Examination", date: "2017年12月19日" },
-            { id: '30', zh: "2017年全球发生了哪些大事？", en: "Major Global Events 2017", date: "2017年12月19日" },
-            { id: '31', zh: "你还记得你的梦想吗？！", en: "Remember Your Dream?", date: "2017年12月18日" },
-            { id: '32', zh: "“剩男”“剩女”究竟为啥被剩", en: "Reasons for Singlehood", date: "2017年12月18日" },
-            { id: '33', zh: "大龄青年男女择偶注意事项", en: "Dating Tips for Mature Singles", date: "2017年12月18日" },
-            { id: '34', zh: "波士顿的第一场雪", en: "First Snow in Boston", date: "2017年12月14日" },
-            { id: '35', zh: "想跑赢物价应如何投资", en: "Invest to Beat Inflation", date: "2017年12月14日" },
-            { id: '36', zh: "厦房价现如今还能撑住吗？", en: "Xiamen Housing Prices", date: "2017年12月13日" },
-            { id: '37', zh: "感恩节说感恩", en: "Thanksgiving Gratitude", date: "2017年11月26日" },
-            { id: '38', zh: "遇见好心人", en: "Meeting a Kind Person", date: "2017年11月22日" },
-            { id: '39', zh: "奇妙的乐高城", en: "Wonderful Lego Land", date: "2017年11月12日" },
-            { id: '40', zh: "爸爸与Kemy的聊天记录", en: "Dad & Kemy Chat Logs", date: "2017年11月12日" },
-            { id: '41', zh: "波士顿科学博物馆游览记", en: "Museum of Science Visit", date: "2017年11月11日" },
-            { id: '42', zh: "专治宅懒馋！华人最爱速食大盘点，原来美帝还有这样美味", en: "Best Instant Foods in US", date: "2017年11月11日" },
-            { id: '43', zh: "【睿途中国少年行】2018年冬寒假美国私校微留学项目火热招募中", en: "US Micro-study Abroad", date: "2017年11月11日" },
-            { id: '44', zh: "美国衣食住行篇", en: "Life in America: Basics", date: "2017年11月5日" },
-            { id: '45', zh: "11月5日爸爸写给Kemy的信", en: "Letter to Kemy (Nov 5)", date: "2017年11月5日" },
-            { id: '46', zh: "【睿途中国少年行】2018年哈佛—MIT青少年机器人冬令营火热招募中", en: "Harvard-MIT Robotics Camp", date: "2017年11月5日" },
-            { id: '47', zh: "11月2日爸爸写给Kemy的信", en: "Letter to Kemy (Nov 2)", date: "2017年11月3日" },
-            { id: '48', zh: "快乐分享百分百", en: "100% Happiness Sharing", date: "2017年11月3日" },
-            { id: '49', zh: "在美国需要了解的小费知识", en: "US Tipping Etiquette", date: "2017年11月3日" },
-            { id: '50', zh: "奇妙的美国万圣节", en: "Halloween in America", date: "2017年11月2日" },
-            { id: '51', zh: "万圣节特辑——来自世界各地的31种可怕怪物", en: "Halloween Monster Special", date: "2017年11月2日" },
-            { id: '52', zh: "10月31日爸爸写给Kemy的信", en: "Letter to Kemy (Oct 31)", date: "2017年11月2日" },
-            { id: '53', zh: "美国生活趣事", en: "Fun Stories in America", date: "2017年10月31日" },
-            { id: '54', zh: "10月20日Kemy写给爸爸的信", en: "Kemy's Letter to Dad", date: "2017年10月31日" },
-            { id: '55', zh: "分享知道的国外保健品（女士篇）", en: "Health Supplements (Women)", date: "2017年10月31日" },
-            { id: '56', zh: "爸爸回国了", en: "Dad Returned to China", date: "2017年10月30日" },
-            { id: '57', zh: "父亲的回信", en: "Father's Reply Letter", date: "2017年10月30日" },
-            { id: '58', zh: "哈佛大学和MIT", en: "Harvard University & MIT", date: "2017年10月29日" },
-            { id: '59', zh: "Kemy写给老师同学们的一封信", en: "Letter to Classmates", date: "2017年10月29日" },
-            { id: '60', zh: "为什么全民都疯王者荣耀", en: "Why Honor of Kings?", date: "2017年10月29日" },
-            { id: '61', zh: "波士顿美术博物馆之行", en: "MFA Boston Visit", date: "2017年10月28日" },
-            { id: '62', zh: "美国学记", en: "Study Notes in America", date: "2017年10月28日" },
-            { id: '63', zh: "人工智能是未来的趋势", en: "AI Future Trends", date: "2017年10月28日" },
-            { id: '64', zh: "美国游览篇", en: "Sightseeing in America", date: "2017年10月27日" },
-            { id: '65', zh: "多让小孩接触外面世界的意义", en: "Exposing Kids to World", date: "2017年10月27日" },
-            { id: '66', zh: "写给Kemy的一封信", en: "A Letter to Kemy", date: "2017年10月27日" },
-            { id: '67', zh: "美国上学篇", en: "Schooling in America", date: "2017年10月26日" },
-            { id: '68', zh: "阅读的力量，推荐两本有关关于失败的书", en: "Power of Reading", date: "2017年10月26日" },
-            { id: '69', zh: "美国到达篇", en: "Arriving in America", date: "2017年10月23日" },
-            { id: '70', zh: "分享知道的国外保健品（男士篇）", en: "Health Supplements (Men)", date: "2017年10月23日" },
-            { id: '71', zh: "美国出发篇", en: "Departing for America", date: "2017年10月22日" },
-            { id: '72', zh: "当世界已然是地球村，你需要聆听和了解全世界，一起来了解美国波士顿(Boston)", en: "Understanding Boston", date: "2017年10月22日" }
+            { id: '1', zh: "Kemy与Jason的阅读小课堂-How Spider save the sun", en: "Kemy & Jason's Reading Class - How Spider Saved the Sun", date: "2020年8月18日", url: "https://mp.weixin.qq.com/s/P2xezLGmkkPfdXDmGULF0A" },
+            { id: '2', zh: "英语成语：(Happy Part) ~~~", en: "English Idioms: (Happy Part)", date: "2020年7月24日", url: "https://mp.weixin.qq.com/s/D9WZDFBXHlbgP3vJh-LHnQ" },
+            { id: '3', zh: "英你而语—for your English", en: "English for You", date: "2020年7月16日", url: "https://mp.weixin.qq.com/s/pZ-xmK6rg8dfDmY7mrnx_A" },
+            { id: '4', zh: "难忘的美国夏令营", en: "Unforgettable US Summer Camp", date: "2018年9月11日", url: "https://mp.weixin.qq.com/s/8EG4dA2WkftfqHNb98CJjg" },
+            { id: '5', zh: "Fright dream day", en: "Fright Dream Day", date: "2018年5月5日", url: "https://mp.weixin.qq.com/s/pjbmW5eou1P7kwWIPcLoIQ" },
+            { id: '6', zh: "我和最强大脑王峰&李威的近距离接触", en: "Meeting 'Super Brain' Champions", date: "2018年3月26日", url: "https://mp.weixin.qq.com/s/8ehd4e1PKbTIbXaCEmPzaw" },
+            { id: '7', zh: "迪士尼邮轮上过春节", en: "CNY on Disney Cruise", date: "2018年3月14日", url: "https://mp.weixin.qq.com/s/dNyw8wZFsesrmOrn8Tth7A" },
+            { id: '8', zh: "奥兰多之行", en: "Trip to Orlando", date: "2018年3月14日", url: "https://mp.weixin.qq.com/s/dznQAeM30bvgtHoroQPuWA" },
+            { id: '9', zh: "上医院", en: "Going to the Hospital", date: "2018年3月8日", url: "https://mp.weixin.qq.com/s/UFH9iSxBFZaNoAqKkeOB8g" },
+            { id: '10', zh: "小提琴表演记", en: "Violin Performance", date: "2018年2月3日", url: "https://mp.weixin.qq.com/s/sXFmtBCTL8dsq68lVYi7pw" },
+            { id: '11', zh: "“冬补”这事也有南北差异！这5个区域的人有福了......", en: "Regional Winter Nourishment", date: "2018年2月1日", url: "https://mp.weixin.qq.com/s/qm-1JXHmNg8MwLxdPYtMlw" },
+            { id: '12', zh: "补发Pierce School滑冰记滑雪视频", en: "Pierce School Skating Videos", date: "2018年1月15日", url: "https://mp.weixin.qq.com/s/fz-JUVUMSclvViL8oQi4hw" },
+            { id: '13', zh: "第一次亲密接触击剑", en: "First Experience with Fencing", date: "2018年1月15日", url: "https://mp.weixin.qq.com/s/XslQXF5ebW6kydzISnLt4w" },
+            { id: '14', zh: "Pierce School滑冰记", en: "Skating at Pierce School", date: "2018年1月9日", url: "https://mp.weixin.qq.com/s/wB9Uto1uU8jiqZR7CrBmPQ" },
+            { id: '15', zh: "厦门地铁出现不文明现象有哪些", en: "Uncivilized Behaviors on Metro", date: "2018年1月5日", url: "https://mp.weixin.qq.com/s/omN6H1eCcP2UOQDIMcFeJQ" },
+            { id: '16', zh: "今起厦门进入“两会”时间", en: "Xiamen 'Two Sessions' Time", date: "2018年1月5日", url: "https://mp.weixin.qq.com/s/96DXG6WdONfcRQaKTNBtww" },
+            { id: '17', zh: "2018厦门马拉松1月7日开跑 来自42个国家和地区的33239人参赛", en: "2018 Xiamen Marathon", date: "2018年1月5日", url: "https://mp.weixin.qq.com/s/OYtblb608h-buMGNie7QFQ" },
+            { id: '18', zh: "补发上篇的图片与视频", en: "Additional Photos & Videos", date: "2017年12月31日", url: "https://mp.weixin.qq.com/s/AMyCN3o4dbBLcDSLgEtpdA" },
+            { id: '19', zh: "写在圣诞节前", en: "Written Before Christmas", date: "2017年12月31日", url: "https://mp.weixin.qq.com/s/vWfBsCx8LdQOP3OOPc8HaA" },
+            { id: '20', zh: "厦门地铁1号线运营时段正式发布 起步价2元全程7元", en: "Xiamen Metro Line 1 Opens", date: "2017年12月31日", url: "https://mp.weixin.qq.com/s/v5QfNFlOom6-GW0TAPATiQ" },
+            { id: '21', zh: "波士顿的第二场雪", en: "Second Snow in Boston", date: "2017年12月26日", url: "https://mp.weixin.qq.com/s/NMgMnKB4zkB2sBaLGoU4tQ?poc_token=HEDSm2mjAoOUfLt7UrO-S8rfqVqtreR2GOapiDPp" },
+            { id: '22', zh: "拉近父母和孩子之间距离的办法就两个字", en: "Bridge Gap with Parents", date: "2017年12月26日", url: "https://mp.weixin.qq.com/s/8q3XKt5g10Wp158eZxxDvw" },
+            { id: '23', zh: "如何讲一口标准的普通话", en: "Speak Standard Mandarin", date: "2017年12月25日", url: "https://mp.weixin.qq.com/s/aeAKsNKjKGgTRNCA4Jx_qg" },
+            { id: '24', zh: "如何有效持久的维持身材", en: "Maintain Your Body Shape", date: "2017年12月24日", url: "https://mp.weixin.qq.com/s/UmD1Ph16zBfS50H8mTT95w" },
+            { id: '25', zh: "佛系单身", en: "Buddhist-style Singlehood", date: "2017年12月22日", url: "https://mp.weixin.qq.com/s/yZs-wdkOYzo0Xcp8GWA6Lw" },
+            { id: '26', zh: "学好英语有多重要？", en: "Importance of English", date: "2017年12月21日", url: "https://mp.weixin.qq.com/s/Wx-xJb1oSNTsaSbzaemSdQ" },
+            { id: '27', zh: "你是不是对创业有误解，你做的可能是假的创业。", en: "Entrepreneurship Myths", date: "2017年12月20日", url: "https://mp.weixin.qq.com/s/dgtNaFPSDSV3Q-LS40Xfzw" },
+            { id: '28', zh: "导游的就业前景", en: "Tour Guide Prospects", date: "2017年12月20日", url: "https://mp.weixin.qq.com/s/Qjg3R_KDN8B5N8ml5YVvQg" },
+            { id: '29', zh: "2017，考题。(不得满分明年就算白过了！)", en: "2017 Examination", date: "2017年12月19日", url: "https://mp.weixin.qq.com/s/pfBYpOqCMKNhYzVw94nyAg" },
+            { id: '30', zh: "2017年全球发生了哪些大事？", en: "Major Global Events 2017", date: "2017年12月19日", url: "https://mp.weixin.qq.com/s/0-jl9yYH5pIe_A8rkg_4dg" },
+            { id: '31', zh: "你还记得你的梦想吗？！", en: "Remember Your Dream?", date: "2017年12月18日", url: "https://mp.weixin.qq.com/s/9dtiIPikO0WomqRvL-ERKQ" },
+            { id: '32', zh: "“剩男”“剩女”究竟为啥被剩", en: "Reasons for Singlehood", date: "2017年12月18日", url: "https://mp.weixin.qq.com/s/dbKyRP9SWdPKxExU3iI0LQ" },
+            { id: '33', zh: "大龄青年男女择偶注意事项", en: "Dating Tips for Mature Singles", date: "2017年12月18日", url: "https://mp.weixin.qq.com/s/-a-MFI4wUA1JdMvAE2Arkw" },
+            { id: '34', zh: "波士顿的第一场雪", en: "First Snow in Boston", date: "2017年12月14日", url: "https://mp.weixin.qq.com/s/YB9OttPKo4URp15ClyFQJQ" },
+            { id: '35', zh: "想跑赢物价应如何投资", en: "Invest to Beat Inflation", date: "2017年12月14日", url: "https://mp.weixin.qq.com/s/BGtGxhN1DZkIn0amOBgPRA" },
+            { id: '36', zh: "厦房价现如今还能撑住吗？", en: "Xiamen Housing Prices", date: "2017年12月13日", url: "https://mp.weixin.qq.com/s/nLrUJ5KmQyZZNF2XWJxjKQ" },
+            { id: '37', zh: "感恩节说感恩", en: "Thanksgiving Gratitude", date: "2017年11月26日", url: "https://mp.weixin.qq.com/s/IR-ySOv0BDOoeHOCPfdlHQ" },
+            { id: '38', zh: "遇见好心人", en: "Meeting a Kind Person", date: "2017年11月22日", url: "https://mp.weixin.qq.com/s/TVb1IT9PeW-koUfYqoN73Q" },
+            { id: '39', zh: "奇妙的乐高城", en: "Wonderful Lego Land", date: "2017年11月12日", url: "https://mp.weixin.qq.com/s/pdxOiYKN-GRgGPDESYuuBQ" },
+            { id: '40', zh: "爸爸与Kemy的聊天记录", en: "Dad & Kemy Chat Logs", date: "2017年11月12日", url: "https://mp.weixin.qq.com/s/Olok17oYQXoGIBeywKaG4A" },
+            { id: '41', zh: "波士顿科学博物馆游览记", en: "Museum of Science Visit", date: "2017年11月11日", url: "https://mp.weixin.qq.com/s/9ldTQaPngGoT1s6SztIECA" },
+            { id: '42', zh: "专治宅懒馋！华人最爱速食大盘点，原来美帝还有这样美味", en: "Best Instant Foods in US", date: "2017年11月11日", url: "https://mp.weixin.qq.com/s/PNhwO23GVNaFwxkMIuMdjg" },
+            { id: '43', zh: "【睿途中国少年行】2018年冬寒假美国私校微留学项目火热招募中", en: "US Micro-study Abroad", date: "2017年11月11日", url: "https://mp.weixin.qq.com/s/POTqHM776_BumTeV6Th9eg" },
+            { id: '44', zh: "美国衣食住行篇", en: "Life in America: Basics", date: "2017年11月5日", url: "https://mp.weixin.qq.com/s/cnZF3DGDygAOeotbYqOnpg" },
+            { id: '45', zh: "11月5日爸爸写给Kemy的信", en: "Letter to Kemy (Nov 5)", date: "2017年11月5日", url: "https://mp.weixin.qq.com/s/O601Sb1N0Sy9SjQf7Rkosw" },
+            { id: '46', zh: "【睿途中国少年行】2018年哈佛—MIT青少年机器人冬令营火热招募中", en: "Harvard-MIT Robotics Camp", date: "2017年11月5日", url: "https://mp.weixin.qq.com/s/yF-DLT0k8Mw74ClppYkwJA" },
+            { id: '47', zh: "11月2日爸爸写给Kemy的信", en: "Letter to Kemy (Nov 2)", date: "2017年11月3日", url: "https://mp.weixin.qq.com/s/j5VOPfFLIvqabCTt-GwG2w" },
+            { id: '48', zh: "快乐分享百分百", en: "100% Happiness Sharing", date: "2017年11月3日", url: "https://mp.weixin.qq.com/s/L1ZEtmznztSjeFHh8hnN3w" },
+            { id: '49', zh: "在美国需要了解的小费知识", en: "US Tipping Etiquette", date: "2017年11月3日", url: "https://mp.weixin.qq.com/s/2lIJWezI8A0xXUsbkIO9ag" },
+            { id: '50', zh: "奇妙的美国万圣节", en: "Halloween in America", date: "2017年11月2日", url: "https://mp.weixin.qq.com/s/tP40XPUGbXdyCyqHIkOoxQ" },
+            { id: '51', zh: "万圣节特辑——来自世界各地的31种可怕怪物", en: "Halloween Monster Special", date: "2017年11月2日", url: "https://mp.weixin.qq.com/s/Qf6AQJwyy9apwEq_NrRp8g" },
+            { id: '52', zh: "10月31日爸爸写给Kemy的信", en: "Letter to Kemy (Oct 31)", date: "2017年11月2日", url: "https://mp.weixin.qq.com/s/GnozWM1IRbm_Wv_FsJvCQw" },
+            { id: '53', zh: "美国生活趣事", en: "Fun Stories in America", date: "2017年10月31日", url: "https://mp.weixin.qq.com/s/4KihBrvtufD6GOJsdZwhLQ" },
+            { id: '54', zh: "10月20日Kemy写给爸爸的信", en: "Kemy's Letter to Dad", date: "2017年10月31日", url: "https://mp.weixin.qq.com/s/AtKYPaUrOw6R_fgKKOIdvA" },
+            { id: '55', zh: "分享知道的国外保健品（女士篇）", en: "Health Supplements (Women)", date: "2017年10月31日", url: "https://mp.weixin.qq.com/s/t-Rz8WZjO6Ra5v2henDXag" },
+            { id: '56', zh: "爸爸回国了", en: "Dad Returned to China", date: "2017年10月30日", url: "https://mp.weixin.qq.com/s/O1MZK5Eh--_wetabxaxJ4w" },
+            { id: '57', zh: "父亲的回信", en: "Father's Reply Letter", date: "2017年10月30日", url: "https://mp.weixin.qq.com/s/SYSWCUOIloXWcjxbhCt_XA" },
+            { id: '58', zh: "哈佛大学和MIT", en: "Harvard University & MIT", date: "2017年10月29日", url: "https://mp.weixin.qq.com/s/qH7tuwBPdfeRzkzs4ykNvA" },
+            { id: '59', zh: "Kemy写给老师同学们的一封信", en: "Letter to Classmates", date: "2017年10月29日", url: "https://mp.weixin.qq.com/s/YvCQRbeaido5yqnVQWeK2Q" },
+            { id: '60', zh: "为什么全民都疯王者荣耀", en: "Why Honor of Kings?", date: "2017年10月29日", url: "https://mp.weixin.qq.com/s/_62xMKDWNukCUtxis6j8OQ" },
+            { id: '61', zh: "波士顿美术博物馆之行", en: "MFA Boston Visit", date: "2017年10月28日", url: "https://mp.weixin.qq.com/s/aZRisuyiUmD13octsVl4Wg" },
+            { id: '62', zh: "美国学记", en: "Study Notes in America", date: "2017年10月28日", url: "https://mp.weixin.qq.com/s/OZbu5C2G_S0TEFkIBcs7jA" },
+            { id: '63', zh: "人工智能是未来的趋势", en: "AI Future Trends", date: "2017年10月28日", url: "https://mp.weixin.qq.com/s/hBrDug5s8aVAhnzclFct_Q" },
+            { id: '64', zh: "美国游览篇", en: "Sightseeing in America", date: "2017年10月27日", url: "https://mp.weixin.qq.com/s/5IBNS8Z2XqXRhLDGmTTCow" },
+            { id: '65', zh: "多让小孩接触外面世界的意义", en: "Exposing Kids to World", date: "2017年10月27日", url: "https://mp.weixin.qq.com/s/f3kWEys9lOQGzXCsHPt7Bw" },
+            { id: '66', zh: "写给Kemy的一封信", en: "A Letter to Kemy", date: "2017年10月27日", url: "https://mp.weixin.qq.com/s/vx9GA3waIikjWXxkDYFaog" },
+            { id: '67', zh: "美国上学篇", en: "Schooling in America", date: "2017年10月26日", url: "https://mp.weixin.qq.com/s/wtkvCfwCFvl053gD2RjYGg" },
+            { id: '68', zh: "阅读的力量，推荐两本有关关于失败的书", en: "Power of Reading", date: "2017年10月26日", url: "https://mp.weixin.qq.com/s/hm96jCWIo0xYstmmBVazjw" },
+            { id: '69', zh: "美国到达篇", en: "Arriving in America", date: "2017年10月23日", url: "https://mp.weixin.qq.com/s/6VKFQex76COPP_UqLvHdJg" },
+            { id: '70', zh: "分享知道的国外保健品（男士篇）", en: "Health Supplements (Men)", date: "2017年10月23日", url: "https://mp.weixin.qq.com/s/jBGjehi1WgKlKiH1qQ1cdg" },
+            { id: '71', zh: "美国出发篇", en: "Departing for America", date: "2017年10月22日", url: "https://mp.weixin.qq.com/s/156isdMlc276aU2LVhhgpQ" },
+            { id: '72', zh: "当世界已然是地球村，你需要聆听和了解全世界，一起来了解美国波士顿(Boston)", en: "Understanding Boston", date: "2017年10月22日", url: "https://mp.weixin.qq.com/s/JO-qYK9Mrb0PjU-Lmvy-xw" }
         ];
 
         // --- 创始人寄语 ---
@@ -415,27 +419,52 @@
         window.renderArticleList = function() {
             const listContainer = document.getElementById('article-list-view');
             if(!listContainer) return;
-            listContainer.innerHTML = articles.map(art => `
-                <div class="article-preview-item" onclick="window.loadArticleDetail('${art.id}', '${window.currentLang === 'zh' ? art.zh : art.en}')">
-                    <h4 style="font-size:1.8rem; margin-bottom:5px; font-weight:600; color:var(--text-main);">${window.currentLang === 'zh' ? art.zh : art.en}</h4>
-                    <p style="opacity:0.5; font-size:1.2rem; color:var(--text-main);">${art.date}</p>
-                </div>
-            `).join('');
+            
+            let htmlContent = "";
+            for(let i = 0; i < articles.length; i++) {
+                const art = articles[i];
+                const title = window.currentLang === 'zh' ? art.zh : art.en;
+                htmlContent += `
+                    <div class="article-preview-item" onclick="window.loadArticleDetail('${art.id}', '${title}')">
+                        <h4 style="font-size:1.8rem; margin-bottom:5px; font-weight:600; color:var(--text-main);">${title}</h4>
+                        <p style="opacity:0.5; font-size:1.2rem; color:var(--text-main);">${art.date}</p>
+                    </div>
+                `;
+            }
+            listContainer.innerHTML = htmlContent;
         };
 
+        // --- 处理微信防盗链，显示跳转按钮 ---
         window.loadArticleDetail = function(id, title) {
             document.getElementById('article-list-view').style.display = 'none';
             document.getElementById('article-detail-view').style.display = 'block';
             document.getElementById('article-back-btn').style.display = 'block';
             document.getElementById('stories-title').innerText = title;
-            // 此处为文章详情占位，后续可接入本地文件 fetch 逻辑
-            document.getElementById('article-detail-view').innerHTML = `
-                <div style="padding:50px; text-align:center; background:rgba(0,0,0,0.03); border-radius:20px;">
-                    <span style="font-size:3rem; margin-bottom:20px; display:block;">📄</span>
-                    <p style="font-size:1.6rem; font-weight:600; color:var(--text-main);">文章内容加载区 (文件编号: ${id}.html)</p>
-                    <p style="font-size:1.2rem; opacity:0.6; margin-top:10px;">请将导出的 PDF 或 HTML 文件连接至此处。</p>
-                </div>
-            `;
+            
+            const currentArticle = articles.find(art => art.id === id);
+
+            if (currentArticle && currentArticle.url) {
+                document.getElementById('article-detail-view').innerHTML = `
+                    <div style="padding:60px 20px; text-align:center; background:rgba(255,255,255,0.5); border-radius:24px; border:1px solid rgba(0,0,0,0.05);">
+                        <span style="font-size:4rem; margin-bottom:20px; display:block;">🔗</span>
+                        <p style="font-size:1.6rem; font-weight:600; color:var(--text-main); margin-bottom:30px;">
+                            ${window.currentLang === 'zh' ? '此文章发布在微信公众平台' : 'This article is published on WeChat'}
+                        </p>
+                        <a href="${currentArticle.url}" target="_blank" style="background:var(--apple-blue); color:white; padding:16px 40px; border-radius:40px; text-decoration:none; font-size:1.4rem; font-weight:600; display:inline-block; transition:all 0.3s ease; box-shadow:0 10px 20px rgba(0,113,227,0.2);">
+                            ${window.currentLang === 'zh' ? '点击前往阅读原文' : 'Click to Read Original'}
+                        </a>
+                    </div>
+                `;
+            } else {
+                document.getElementById('article-detail-view').innerHTML = `
+                    <div style="padding:60px 20px; text-align:center; background:rgba(255,255,255,0.5); border-radius:24px; border:1px solid rgba(0,0,0,0.05);">
+                        <span style="font-size:4rem; margin-bottom:20px; display:block;">📄</span>
+                        <p style="font-size:1.6rem; font-weight:600; color:var(--text-main);">
+                            ${window.currentLang === 'zh' ? '文章内容尚未上传' : 'Content Not Uploaded Yet'}
+                        </p>
+                    </div>
+                `;
+            }
         };
 
         window.backToStoriesList = function() {
