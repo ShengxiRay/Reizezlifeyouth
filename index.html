@@ -388,9 +388,9 @@
     <script>
         // --- 文章数据 (39篇) ---
         const articles = [
-            { id: '1', zh: "Kemy与Jason的阅读小课堂-How Spider save the sun", en: "Kemy & Jason's Reading Class - How Spider Saved the Sun", date: "2020年8月18日", url: "/file/article/1.html" },
-            { id: '2', zh: "英语成语：(Happy Part) ~~~", en: "English Idioms: (Happy Part)", date: "2020年7月24日", url: "/file/article/2.html" },
-            { id: '3', zh: "英你而语—for your English", en: "English for You", date: "2020年7月16日", url: "/file/article/3.html" },
+            { id: '1', zh: "Kemy与Jason的阅读小课堂-How Spider save the sun", en: "Kemy & Jason's Reading Class", date: "2020年8月18日", url: "https://mp.weixin.qq.com/s/P2xezLGmkkPfdXDmGULF0A" },
+            { id: '2', zh: "英语成语：(Happy Part) ~~~", en: "English Idioms: (Happy Part)", date: "2020年7月24日", url: "https://mp.weixin.qq.com/s/D9WZDFBXHlbgP3vJh-LHnQ" },
+            { id: '3', zh: "英你而语—for your English", en: "English for You", date: "2020年7月16日", url: "https://mp.weixin.qq.com/s/pZ-xmK6rg8dfDmY7mrnx_A" },
             { id: '4', zh: "难忘的美国夏令营", en: "Unforgettable Summer Camp", date: "2018年9月11日", url: "/file/article/4.html" },
             { id: '5', zh: "Fright dream day", en: "Fright Dream Day", date: "2018年5月5日", url: "/file/article/5.html" },
             { id: '6', zh: "我和最强大脑王峰&李威的近距离接触", en: "Meeting 'Super Brain' Champions", date: "2018年3月26日", url: "/file/article/6.html" },
@@ -398,7 +398,7 @@
             { id: '8', zh: "奥兰多之行", en: "Trip to Orlando", date: "2018年3月14日", url: "/file/article/8.html" },
             { id: '9', zh: "去医院", en: "Going to the Hospital", date: "2018年3月8日", url: "/file/article/9.html" },
             { id: '10', zh: "小提琴表演记", en: "Violin Performance", date: "2018年2月3日", url: "/file/article/10.html" },
-            { id: '11', zh: "补发Pierce School滑冰记滑雪视频", en: "Pierce School Skating Videos", date: "2018年1月15日", url: "" },
+            { id: '11', zh: "补发Pierce School滑冰记滑雪视频", en: "Pierce School Skating Videos", date: "2018年1月15日", url: "https://mp.weixin.qq.com/s/fz-JUVUMSclvViL8oQi4hw" },
             { id: '12', zh: "第一次亲密接触击剑", en: "First Experience with Fencing", date: "2018年1月15日", url: "/file/article/12.html" },
             { id: '13', zh: "Pierce School滑冰记", en: "Skating at Pierce School", date: "2018年1月9日", url: "/file/article/13.html" },
             { id: '14', zh: "写在圣诞节前", en: "Written Before Christmas", date: "2017年12月31日", url: "/file/article/14.html" },
@@ -656,17 +656,28 @@
             document.getElementById('stories-title').innerText = title;
             
             const currentArticle = articles.find(art => art.id === id);
-            if (currentArticle && currentArticle.url) {
+            // 判断是否为需要跳转的超大文章 (ID: 1, 2, 3, 11)
+            const largeArticleIds = ['1', '2', '3', '11'];
+
+            if (largeArticleIds.includes(id)) {
+                // 显示跳转提示界面
                 document.getElementById('article-detail-view').innerHTML = `
-                    <div style="width: 100%; height: 65vh; border-radius: 20px; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.05); background: white;">
-                        <iframe src="${currentArticle.url}" style="width: 100%; height: 100%; border: none;" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
-                    </div>`;
-            } else {
+                    <div style="padding:80px 40px; text-align:center; background:rgba(255,255,255,0.5); border-radius:24px; border:1px solid rgba(0,0,0,0.05); backdrop-filter:blur(10px);">
+                        <span style="font-size:5rem; margin-bottom:20px; display:block;">📦</span>
+                        <h3 style="font-size:1.8rem; margin-bottom:15px;" data-zh="内容较多，请前往官网阅读" data-en="Heavy content, please read on official site.">内容较多，请前往官网阅读</h3>
+                        <p style="font-size:1.3rem; opacity:0.6; margin-bottom:30px;" data-zh="为了给您提供更好的加载体验，建议您直接访问微信原文。" data-en="To ensure a smooth loading experience, please visit the original post on WeChat.">为了给您提供更好的加载体验，建议您直接访问微信原文。</p>
+                        <a href="${currentArticle.url}" target="_blank" style="display:inline-block; padding:15px 40px; background:var(--apple-blue); color:white; border-radius:30px; text-decoration:none; font-weight:600; font-size:1.4rem; transition:0.3s;">
+                            ${window.currentLang === 'zh' ? '点击访问官网' : 'Visit Official Link'}
+                        </a>
+                    </div>
+                `;
+            } else if (currentArticle && currentArticle.url) {
+                // 普通文章依然使用本地 iframe 加载
                 document.getElementById('article-detail-view').innerHTML = `
-                    <div style="padding:60px 20px; text-align:center; background:rgba(255,255,255,0.5); border-radius:24px; border:1px solid rgba(0,0,0,0.05);">
-                        <span style="font-size:4rem; margin-bottom:20px; display:block;">📄</span>
-                        <p style="font-size:1.6rem; font-weight:600; color:var(--text-main);">${window.currentLang === 'zh' ? '文章内容尚未上传' : 'Content Not Uploaded Yet'}</p>
-                    </div>`;
+                    <div style="width: 100%; height: 65vh; border-radius: 20px; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); background: white;">
+                        <iframe src="${currentArticle.url}" style="width: 100%; height: 100%; border: none;" referrerpolicy="no-referrer"></iframe>
+                    </div>
+                `;
             }
         };
 
