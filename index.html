@@ -4,257 +4,228 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Youth Home | Reiz EZ Life</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;800&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600&display=swap">
     <style>
         :root {
-            --primary: #8da9c4;
-            --secondary: #d4a373;
-            --apple-blue: #0071e3;
+            var(--primary): #0a2342;         
+            --primary: #0a2342;
+            --secondary: #a31f1f;       
+            --accent: #d4af37;          
             --text-main: #1d1d1f;
-            --glass-white: rgba(255, 255, 255, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --radius-xl: 40px;
-            --radius-md: 24px;
+            --text-light: #555555;
+            
+            /* 毛玻璃特效变量 */
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-card-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            
+            --radius-xl: 32px;
+            --radius-md: 20px;
             --bezier: cubic-bezier(0.16, 1, 0.3, 1);
+            
+            --font-serif: 'Playfair Display', 'Noto Serif SC', serif;
+            --font-sans: 'Outfit', 'Noto Sans SC', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+            font-family: var(--font-sans);
             background: radial-gradient(circle at 10% 10%, #f0f4f8 0%, #e2ebf0 50%, #fef9e7 100%);
             color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
+        /* 极光背景特效 */
         .aurora {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             filter: blur(100px);
             background: radial-gradient(circle at 20% 30%, #e9edc9 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, #faedcd 0%, transparent 40%);
+                        radial-gradient(circle at 80% 70%, #faedcd 0%, transparent 40%),
+                        radial-gradient(circle at 50% 90%, #d8e2dc 0%, transparent 50%);
+            animation: pulse 15s infinite alternate var(--bezier);
         }
 
-        /* --- 弹窗样式 --- */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* --- 弹窗基础样式 --- */
         .welcome-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(45px) saturate(180%);
-            -webkit-backdrop-filter: blur(45px) saturate(180%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.6s var(--bezier);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 35, 66, 0.4);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.5s var(--bezier);
+            padding: 20px;
         }
-
         .welcome-overlay.active { opacity: 1; visibility: visible; }
 
         .founder-card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 60px;
-            border-radius: var(--radius-xl);
-            width: 95%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px; border-radius: var(--radius-xl); width: 100%; max-width: 900px;
+            max-height: 85vh; overflow-y: auto; position: relative;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 1px solid var(--glass-border);
+            transform: translateY(30px) scale(0.98); transition: all 0.5s var(--bezier);
+        }
+        .welcome-overlay.active .founder-card { transform: translateY(0) scale(1); }
+        .founder-card::-webkit-scrollbar { width: 6px; }
+        .founder-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+        /* --- 导航栏 --- */
+        header {
+            position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.5);
+        }
+        .nav-container { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; }
+        .logo { font-family: var(--font-serif); font-weight: 800; font-size: 1.8rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .logo span { font-family: var(--font-sans); font-weight: 500; font-size: 0.9rem; color: var(--secondary); letter-spacing: 2px; text-transform: uppercase; }
+        .nav-links { display: flex; align-items: center; gap: 30px; }
+        .nav-links a { text-decoration: none; color: var(--text-main); font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .nav-links a:hover { color: var(--secondary); }
+        #lang-switch { background: rgba(255,255,255,0.5); padding: 8px 18px; border-radius: 30px; color: var(--primary); border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.03); cursor:pointer; font-weight:600; transition:0.3s;}
+        #lang-switch:hover { background: var(--primary); color: white; }
+
+        /* --- 主视觉区域 (Hero Section) --- */
+        .hero-section { max-width: 900px; margin: 80px auto 60px; text-align: center; padding: 0 20px; }
+        .hero-section h1 { font-family: var(--font-serif); font-size: 4rem; color: var(--primary); margin-bottom: 25px; line-height: 1.15; font-weight: 800; }
+        .hero-section p { font-size: 1.3rem; color: var(--text-light); margin-bottom: 40px; line-height: 1.8; max-width: 700px; margin-inline: auto; font-weight: 400; }
+        .primary-cta-btn {
+            background: var(--primary); color: white; border: none; padding: 18px 45px; border-radius: 40px;
+            font-weight: 600; font-size: 1.2rem; cursor: pointer; letter-spacing: 1px;
+            transition: all 0.4s var(--bezier); box-shadow: 0 15px 30px rgba(10, 35, 66, 0.2); display: inline-block;
+        }
+        .primary-cta-btn:hover { background: var(--secondary); transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 40px rgba(163, 31, 31, 0.3); }
+
+        /* =========================================
+           自动缓慢向左滚动 (Infinite Marquee) 核心代码
+           ========================================= */
+        .bento-scroll-wrapper {
+            width: 100%;
+            overflow: hidden; /* 隐藏屏幕外的内容，干掉原生滚动条 */
+            padding: 20px 0 100px; /* 留出上下阴影空间 */
             position: relative;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.5);
-            transform: translateY(30px);
-            transition: transform 0.6s var(--bezier);
         }
 
-        .welcome-overlay.active .founder-card { transform: translateY(0); }
-
-        /* --- 统一互动的可点击响应板块 --- */
-        .glass-card, .sub-card, .tag-item, .cta-btn, .enter-site-btn, .article-preview-item, .join-trigger {
-            cursor: pointer;
-            transition: all 0.4s var(--bezier) !important;
-        }
-
-        .glass-card:hover, .sub-card:hover, .tag-item:hover, .cta-btn:hover, .enter-site-btn:hover {
-            transform: scale(1.03) translateY(-5px);
-            background: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-        }
-
-        .join-trigger:hover {
-            transform: scale(1.03) translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .glass-card:active, .sub-card:active, .tag-item:active, .cta-btn:active, .enter-site-btn:active, .join-trigger:active {
-            transform: scale(0.97) translateY(0);
-            transition: all 0.1s ease !important;
-        }
-
-        /* --- 弹窗内部按钮样式 --- */
-        .welcome-lang-btn {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            background: rgba(0,0,0,0.05);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--apple-blue);
-            cursor: pointer;
-            border: 1px solid rgba(0,113,227,0.2);
-            transition: 0.3s;
-        }
-
-        .welcome-lang-btn:hover { background: rgba(0,113,227,0.1); }
-
-        .enter-site-btn {
-            background: var(--text-main);
-            color: white;
-            padding: 18px 45px;
-            border-radius: 40px;
-            font-size: 1.4rem;
-            font-weight: 600;
-            border: none;
-            float: right;
-            margin-top: 10px;
-        }
-
-        /* --- 拆分方框 --- */
-        .split-card-container { display: flex; flex-direction: column; gap: 20px; height: 100%; }
-        
-        .sub-card {
-            background: var(--glass-white);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md);
-            padding: 30px;
-            flex: 1;
+        .bento-scroll-track {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            width: max-content; /* 宽度自适应内部所有卡片总和 */
+            animation: marquee 35s linear infinite; /* 35秒匀速无限循环 */
         }
 
-        /* --- 文章与资源列表样式 --- */
+        /* 鼠标悬浮或手指长按时，自动暂停滚动 */
+        .bento-scroll-track:hover,
+        .bento-scroll-track:active {
+            animation-play-state: paused;
+        }
+
+        .bento-set {
+            display: flex;
+            gap: 30px;
+            padding-right: 30px; /* 补齐最后一项的右间距，确保拼接完美 */
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* 正好向左移动总宽度的一半（即一组卡片的精确宽度） */
+        }
+
+        /* --- 卡片基础样式 --- */
+        .glass-card {
+            background: var(--glass-card-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: var(--radius-xl);
+            padding: 40px; display: flex; flex-direction: column; justify-content: space-between;
+            transition: all 0.5s var(--bezier); box-shadow: var(--glass-shadow);
+            position: relative; overflow: hidden;
+            
+            /* 固定卡片宽度，确保滚动时不会被挤压 */
+            flex: 0 0 auto;
+            width: 380px; 
+            min-height: 400px;
+        }
+        
+        .interactive-card { cursor: pointer; }
+        .interactive-card:hover { transform: translateY(-8px) scale(1.01); background: rgba(255,255,255,0.95); box-shadow: 0 30px 60px rgba(0,0,0,0.08); border-color: rgba(255,255,255,1); }
+        .interactive-card::after { content: '→'; position: absolute; bottom: 35px; right: 40px; font-size: 1.8rem; color: var(--primary); opacity: 0; transform: translateX(-15px); transition: all 0.4s var(--bezier); font-family: var(--font-sans); }
+        .interactive-card:hover::after { opacity: 1; transform: translateX(0); }
+
+        .card-overline { font-size: 0.85rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: inline-block; background: rgba(163, 31, 31, 0.08); padding: 6px 14px; border-radius: 20px; }
+        .glass-card h3 { font-family: var(--font-serif); font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; line-height: 1.2; font-weight: 700; }
+        .glass-card p { font-size: 1.1rem; color: var(--text-light); }
+
+        .highlight-card { background: linear-gradient(135deg, var(--primary), #163861); color: white; border: none; }
+        .highlight-card h3 { color: white; font-size: 2.2rem;}
+        .highlight-card p { color: rgba(255,255,255,0.8); font-size: 1.1rem;}
+        .highlight-card .card-overline { background: rgba(255,255,255,0.15); color: white; }
+
+        .tag-area { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; }
+        .tag-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 16px; font-size: 0.9rem; font-weight: 500; color: white; border-radius: 20px; backdrop-filter: blur(5px); }
+
+        /* --- 弹窗内部组件 --- */
+        .welcome-lang-btn { position: absolute; top: 30px; right: 40px; background: rgba(0,0,0,0.04); padding: 8px 18px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: var(--primary); cursor: pointer; border: 1px solid rgba(0,0,0,0.05); transition: 0.3s; }
+        .welcome-lang-btn:hover { background: var(--primary); color: white; }
+        .modal-action-btn { background: var(--primary); color: white; padding: 16px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s var(--bezier); box-shadow: 0 10px 20px rgba(10,35,66,0.2); margin-top: 20px; }
+        .modal-action-btn:hover { background: var(--secondary); transform: translateY(-3px); box-shadow: 0 15px 25px rgba(163,31,31,0.3); }
+        .modal-close-btn { background: rgba(0,0,0,0.05); color: var(--text-main); box-shadow: none; border: 1px solid rgba(0,0,0,0.1); }
+        .modal-close-btn:hover { background: rgba(0,0,0,0.1); color: var(--text-main); transform: translateY(0); box-shadow: none; }
+
+        /* 文章与资源列表 */
         .article-list-scroll { max-height: 450px; overflow-y: auto; padding-right: 15px; margin-top: 20px; }
-        .article-list-scroll::-webkit-scrollbar { width: 6px; }
-        .article-list-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .article-preview-item { background: rgba(0,0,0,0.03); margin-bottom: 12px; padding: 20px 25px; border-radius: var(--radius-md); text-align: left; cursor: pointer; transition: all 0.3s var(--bezier); border: 1px solid transparent; }
+        .article-preview-item h4 { font-family: var(--font-serif); font-size: 1.4rem; color: var(--primary); margin-bottom: 5px; }
+        .article-preview-item p { font-size: 0.95rem; color: var(--text-light); }
+        .article-preview-item:hover { background: white; border-color: rgba(0,0,0,0.1); box-shadow: 0 10px 20px rgba(0,0,0,0.05); transform: translateX(8px); }
 
-        .article-preview-item {
-            background: rgba(0,0,0,0.03);
-            margin-bottom: 15px;
-            padding: 25px;
-            border-radius: 20px;
-            text-align: left;
-        }
-        .article-preview-item:hover {
-            background: rgba(0,113,227,0.08);
-            transform: translateX(10px);
-        }
+        .back-nav-btn { display: none; background: rgba(0,0,0,0.05); padding: 10px 20px; border-radius: 20px; border: none; cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--text-main); margin-bottom: 25px; transition: 0.3s; }
+        .back-nav-btn:hover { background: var(--primary); color: white; }
 
-        .back-nav-btn {
-            display: none;
-            background: rgba(0,0,0,0.08);
-            padding: 12px 24px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-bottom: 20px;
-            width: fit-content;
-            font-size: 1.2rem;
-            color: var(--text-main);
-            transition: all 0.3s ease;
-        }
-        .back-nav-btn:hover { background: rgba(0,0,0,0.15); transform: translateX(-5px); }
-
-        /* --- 新增：Readme 样式与联系人卡片样式 --- */
-        .readme-style {
-            font-size: 1.4rem; line-height: 1.7; color: #333; text-align: left;
-        }
-        .readme-style h3 { font-size: 1.8rem; margin: 15px 0 10px 0; color: var(--text-main); }
-        .readme-style ul { padding-left: 20px; margin-bottom: 15px; }
-        .readme-style li { margin-bottom: 8px; }
-        .readme-style p { margin-bottom: 15px; }
-
-        .pagination-btn {
-            background: rgba(0,0,0,0.05); border: none; padding: 10px 20px; border-radius: 20px;
-            font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: 0.3s;
-        }
-        .pagination-btn:hover:not(:disabled) { background: rgba(0,113,227,0.1); color: var(--apple-blue); }
+        .readme-style { font-size: 1.1rem; line-height: 1.8; color: var(--text-main); }
+        .readme-style h3 { font-family: var(--font-serif); font-size: 1.6rem; color: var(--primary); margin: 0 0 15px 0; }
+        .readme-style ul { padding-left: 20px; margin-bottom: 20px; color: var(--text-light); }
+        .readme-style li { margin-bottom: 10px; }
+        .pagination-btn { background: white; border: 1px solid rgba(0,0,0,0.1); padding: 10px 25px; border-radius: 25px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; color: var(--text-main); }
+        .pagination-btn:hover:not(:disabled) { background: var(--primary); color: white; border-color: var(--primary); }
         .pagination-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-        .contact-item {
-            display: flex; gap: 20px; background: rgba(255,255,255,0.6); padding: 20px;
-            border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05);
-        }
-        .contact-photo {
-            width: 100px; height: 100px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
-            background: #eee; border: 2px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .contact-info-box {
-            background: rgba(0,0,0,0.03); padding: 10px 15px; border-radius: 12px;
-            font-size: 1.1rem; color: #555; margin-top: 10px; display: inline-block;
-        }
-        .book-btn {
-            background: var(--text-main); color: white; border: none; padding: 8px 20px;
-            border-radius: 20px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.3s;
-        }
-        .book-btn:hover { background: var(--apple-blue); transform: translateY(-2px); }
+        /* 联系人表单 */
+        .contact-item { display: flex; gap: 20px; padding: 20px; background: rgba(0,0,0,0.02); border-radius: var(--radius-md); margin-bottom: 15px; align-items: center; border: 1px solid rgba(0,0,0,0.04); }
+        .contact-photo { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 3px solid white; box-shadow: 0 8px 15px rgba(0,0,0,0.08); }
+        .contact-info-box { font-size: 0.9rem; color: var(--text-light); margin-top: 5px; font-family: monospace; }
+        .book-btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: 600; font-size: 0.95rem; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .book-btn:hover { background: var(--secondary); }
 
-        /* 表单输入框样式 */
-        .form-input {
-            width: 100%; padding: 15px 20px; margin-bottom: 15px; border-radius: 15px;
-            border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.8);
-            font-size: 1.2rem; outline: none; transition: 0.3s; font-family: 'Outfit', 'Noto Sans SC', sans-serif;
-        }
-        .form-input:focus { border-color: var(--apple-blue); box-shadow: 0 0 0 3px rgba(0,113,227,0.1); }
-        .time-btn {
-            flex: 1; padding: 12px; border: 1px solid var(--glass-border); background: white;
-            border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s;
-        }
-        .time-btn:hover { background: var(--apple-blue); color: white; border-color: var(--apple-blue); transform: translateY(-2px); }
+        .form-input { width: 100%; padding: 16px 20px; margin-bottom: 15px; border-radius: var(--radius-md); border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.8); font-size: 1.05rem; outline: none; transition: 0.3s; font-family: var(--font-sans); }
+        .form-input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(10,35,66,0.1); }
+        .time-btn { flex: 1; padding: 14px; border: 1px solid rgba(0,0,0,0.1); background: white; border-radius: var(--radius-md); cursor: pointer; transition: 0.3s; color: var(--text-main); font-weight: 600; font-size: 1rem; }
+        .time-btn:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); }
 
-        /* --- 主容器布局 --- */
-        .container-glass {
-            width: 95%; max-width: 1400px; background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border: 1px solid var(--glass-border); border-radius: var(--radius-xl);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); padding: 50px;
-            display: grid; gap: 28px;
-            grid-template-areas: 
-                "nav nav nav"
-                "main card1 card2"
-                "tag card3 card4"
-                "footer footer footer";
-            grid-template-columns: 1.3fr 1fr 1fr;
-        }
+        footer { text-align: center; font-size: 1rem; color: var(--text-light); padding: 40px 0; border-top: 1px solid rgba(0,0,0,0.05); }
 
-        nav { grid-area: nav; display: flex; justify-content: space-between; align-items: center; padding-bottom: 30px; }
-        .logo { font-weight: 800; font-size: 1.9rem; letter-spacing: 1px; }
-        .nav-links { display: flex; align-items: center; gap: 25px; }
-        .nav-links a { text-decoration: none; color: var(--text-main); font-size: 1.45rem; cursor: pointer; transition: 0.3s; }
-        .nav-links a:hover { color: var(--apple-blue); transform: translateY(-2px); }
-        
-        .hero-section { grid-area: main; padding: 20px; }
-        .hero-section h1 { font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.1; font-weight: 600; }
-        .hero-section p { font-size: 1.7rem; opacity: 0.8; margin-bottom: 2.5rem; line-height: 1.4; }
-
-        .glass-card { background: var(--glass-white); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 35px; }
-        .tag-area { grid-area: tag; display: flex; flex-wrap: wrap; gap: 12px; align-content: flex-start; padding: 15px; }
-        .tag-item { background: rgba(255,255,255,0.5); border: 1px solid var(--glass-border); padding: 10px 20px; border-radius: 25px; font-size: 1.35rem; }
-        
-        footer { grid-area: footer; text-align: center; font-size: 1.4rem; opacity: 0.4; padding-top: 50px; }
-
-        @media (max-width: 1100px) {
-            .container-glass { grid-template-areas: "nav" "main" "card1" "card2" "tag" "card3" "card4" "footer"; grid-template-columns: 1fr; }
-            .contact-item { flex-direction: column; align-items: center; text-align: center; }
+        /* 移动端响应式调整 */
+        @media (max-width: 1024px) {
+            .hero-section h1 { font-size: 3rem; }
+            .nav-container { flex-direction: column; gap: 15px; padding: 15px 20px; }
+            .founder-card { padding: 30px; }
+            .interactive-card::after { display: none; }
+            .contact-item { flex-direction: column; text-align: center; }
+            
+            /* 移动端稍微加快滚动速度，并让卡片适应屏幕 */
+            .bento-scroll-track { animation-duration: 25s; }
+            .glass-card {
+                width: 85vw; /* 占据85%屏幕，留出缝隙暗示可滑动 */
+                max-width: 380px;
+                min-height: 380px;
+            }
         }
     </style>
 </head>
@@ -264,132 +235,175 @@
 
     <div id="welcome-modal" class="welcome-overlay">
         <div class="founder-card">
-            <div id="welcome-lang-switch" class="welcome-lang-btn">EN / 中</div>
-            <h1 style="font-size:2.8rem; margin-bottom:10px; font-weight:800;" data-zh="欢迎来到 Reiz EZ Life Youth Home" data-en="Welcome to Reiz EZ Life Youth Home">欢迎来到 Reiz EZ Life Youth Home</h1>
-            <div style="color:var(--secondary); font-size:1.4rem; font-weight:700; margin-bottom:25px; text-transform:uppercase; border-bottom:1px solid rgba(0,0,0,0.05); padding-bottom:15px;" data-zh="创始人视角 ｜ Founder's Perspective" data-en="Founder's Perspective">创始人视角 ｜ Founder's Perspective</div>
-            <div id="founder-content" style="font-size:1.4rem; line-height:1.7; color:#333; margin-bottom:40px; text-align:justify;"></div>
-            <button class="enter-site-btn" onclick="window.closeWelcome()" data-zh="进入网站 | Enter Website" data-en="Enter Website">进入网站 | Enter Website</button>
+            <button id="welcome-lang-switch" class="welcome-lang-btn">EN / 中</button>
+            <div style="text-align:center; margin-bottom: 15px;">
+                <span class="card-overline" data-zh="创始人视角 ｜ Founder's Perspective" data-en="Founder's Perspective">创始人视角 ｜ Founder's Perspective</span>
+            </div>
+            <h1 style="font-family:var(--font-serif); font-size:2.8rem; font-weight:800; color:var(--primary); text-align:center; margin-bottom:25px;" data-zh="欢迎来到 Reiz EZ Life" data-en="Welcome to Reiz EZ Life">欢迎来到 Reiz EZ Life</h1>
+            <div id="founder-content" style="font-size:1.15rem; line-height:1.8; color:var(--text-light); margin-bottom:40px; text-align:justify;"></div>
+            <div style="text-align: center;">
+                <button class="modal-action-btn" onclick="window.closeWelcome()" data-zh="进入主页 | Enter Site" data-en="Enter Site">进入主页 | Enter Site</button>
+            </div>
         </div>
     </div>
 
     <div id="stories-modal" class="welcome-overlay">
-        <div class="founder-card" style="max-width: 950px;">
-            <div id="article-back-btn" class="back-nav-btn" onclick="window.backToStoriesList()" data-zh="← 返回列表" data-en="← Back to List">← 返回列表</div>
-            <h1 id="stories-title" style="font-size: 2.8rem; margin-bottom: 20px; font-weight:800;" data-zh="创始人趣闻" data-en="My Stories">创始人趣闻</h1>
+        <div class="founder-card">
+            <button id="article-back-btn" class="back-nav-btn" onclick="window.backToStoriesList()" data-zh="← 返回列表" data-en="← Back to List">← 返回列表</button>
+            <h1 id="stories-title" style="font-family:var(--font-serif); font-size: 2.6rem; margin-bottom: 10px; color:var(--primary);" data-zh="创始人趣闻" data-en="My Stories">创始人趣闻</h1>
             <div id="article-list-view" class="article-list-scroll"></div>
-            <div id="article-detail-view" style="display: none; text-align: left; margin-top: 20px; font-size:1.4rem; line-height:1.7;"></div>
-            <button onclick="window.closeStories()" class="enter-site-btn" style="float:none; display:inline-block; margin-top:30px; background:rgba(0,0,0,0.1); color:var(--text-main);" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
+            <div id="article-detail-view" style="display: none; text-align: left; margin-top: 20px; font-size:1.1rem; line-height:1.8;"></div>
+            <button onclick="window.closeStories()" class="modal-action-btn modal-close-btn" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
         </div>
     </div>
 
     <div id="resources-modal" class="welcome-overlay">
-        <div class="founder-card" style="max-width: 950px; display: flex; flex-direction: column; gap: 40px; padding: 50px;">
-            
-            <div style="flex: 1; border-bottom: 2px dashed rgba(0,0,0,0.05); padding-bottom: 30px; position: relative;">
-                <h1 style="font-size: 2.6rem; margin-bottom: 20px; font-weight:800;" data-zh="美国生活融入指南" data-en="US Integration Guide">美国生活融入指南</h1>
-                <div id="readme-content-view" class="readme-style" style="min-height: 220px;">
+        <div class="founder-card" style="max-width: 1000px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 50px;">
+                <div>
+                    <h1 style="font-family:var(--font-serif); font-size: 2.2rem; margin-bottom: 20px; color:var(--primary);" data-zh="美国生活指南" data-en="US Guide">美国生活指南</h1>
+                    <div id="readme-content-view" class="readme-style" style="min-height: 250px;"></div>
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button id="res-prev-btn" class="pagination-btn" onclick="window.changeReadmePage(-1)">&#8592;</button>
+                        <button id="res-next-btn" class="pagination-btn" onclick="window.changeReadmePage(1)">&#8594;</button>
                     </div>
-                
-                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                    <button id="res-prev-btn" class="pagination-btn" onclick="window.changeReadmePage(-1)">&#8592; <span data-zh="上一页" data-en="Prev">上一页</span></button>
-                    <button id="res-next-btn" class="pagination-btn" onclick="window.changeReadmePage(1)"><span data-zh="下一页" data-en="Next">下一页</span> &#8594;</button>
+                </div>
+                <div>
+                    <h2 style="font-family:var(--font-serif); font-size: 1.6rem; margin-bottom: 15px; color:var(--primary);" data-zh="需要帮助？可以预约" data-en="Need help? Book us">需要帮助？可以预约</h2>
+                    <div id="contacts-list-view" class="article-list-scroll" style="margin-top: 0;"></div>
                 </div>
             </div>
-
-            <div style="flex: 1;">
-                <h2 style="font-size: 2rem; margin-bottom: 20px; font-weight:700;" data-zh="需要更多帮助？可以预约" data-en="Need more help? Book a session">需要更多帮助？可以预约</h2>
-                <div id="contacts-list-view" class="article-list-scroll" style="max-height: 350px; margin-top: 0;">
-                    </div>
-            </div>
-            
-            <button onclick="window.closeResources()" class="enter-site-btn" style="float:none; align-self: center; margin-top: 10px; background:rgba(0,0,0,0.1); color:var(--text-main);" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
+            <button onclick="window.closeResources()" class="modal-action-btn modal-close-btn" style="margin-top:40px; width: 200px;" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
         </div>
     </div>
 
     <div id="booking-modal" class="welcome-overlay" style="z-index: 10005;">
-        <div class="founder-card" style="max-width: 500px; padding: 40px; text-align: center;">
-            <h2 style="font-size: 2.2rem; margin-bottom: 10px; font-weight:800;" data-zh="预约联系人" data-en="Book Appointment">预约联系人</h2>
-            <p style="font-size:1.3rem; opacity:0.6; margin-bottom: 25px;" data-zh="填写信息后将自动为您生成预约邮件" data-en="Fill info to generate booking email">填写信息后将自动为您生成预约邮件</p>
+        <div class="founder-card" style="max-width: 450px; padding: 40px;">
+            <h2 style="font-family:var(--font-serif); font-size: 2rem; margin-bottom: 10px; color:var(--primary); text-align:center;" data-zh="预约联系人" data-en="Book Appointment">预约联系人</h2>
+            <p style="font-size:1rem; color:var(--text-light); margin-bottom: 30px; text-align:center;" data-zh="填写信息后将自动生成预约邮件" data-en="Fill info to generate booking email">填写信息后将自动生成预约邮件</p>
             
-            <form id="booking-form" onsubmit="return false;" style="text-align: left;">
+            <form id="booking-form" onsubmit="return false;">
                 <input type="text" id="b-name" class="form-input" placeholder="您的姓名 / Your Name" required>
                 <input type="email" id="b-email" class="form-input" placeholder="您的邮箱 / Your Email" required>
                 <input type="tel" id="b-phone" class="form-input" placeholder="您的电话 / Your Phone" required>
                 
-                <h4 style="font-size:1.4rem; margin: 20px 0 15px 0; color:var(--text-main);" data-zh="请选择联系人的空闲时间：" data-en="Select available time:">请选择联系人的空闲时间：</h4>
+                <h4 style="font-size:1.05rem; margin: 25px 0 15px 0; color:var(--text-main);" data-zh="请选择联系人的空闲时间：" data-en="Select available time:">请选择联系人的空闲时间：</h4>
                 <div style="display: flex; gap: 10px;">
                     <button class="time-btn" onclick="window.submitBooking('A')">时间 A</button>
                     <button class="time-btn" onclick="window.submitBooking('B')">时间 B</button>
                     <button class="time-btn" onclick="window.submitBooking('C')">时间 C</button>
                 </div>
             </form>
-            
-            <div style="margin-top: 30px; font-weight: 600; cursor: pointer; color: #888;" onclick="window.closeBooking()" data-zh="取消预约" data-en="Cancel">取消预约</div>
+            <div style="margin-top: 25px; text-align:center; font-size:1rem; cursor: pointer; color: var(--text-light); font-weight:500; transition:0.3s;" onmouseover="this.style.color='var(--secondary)'" onmouseout="this.style.color='var(--text-light)'" onclick="window.closeBooking()" data-zh="取消预约" data-en="Cancel">取消预约</div>
         </div>
     </div>
 
-    <div class="container-glass">
-        <nav>
-            <div class="logo">REIZ EZ LIFE <span style="font-weight:300; opacity:0.6">YOUTH HOME</span></div>
-            <div class="nav-links">
-                <a href="#" data-zh="进入空间" data-en="Zone Entrance">进入空间</a>
-                <a class="join-trigger" style="color:var(--secondary); border:2px solid var(--secondary); padding:8px 25px; border-radius:60px; font-weight:600;" data-zh="加入我们" data-en="Join Us">加入我们</a>
-                <a id="lang-switch" style="color: var(--apple-blue); font-weight: 600;">EN / 中</a>
-            </div>
-        </nav>
+    <header>
+        <div class="nav-container">
+            <div class="logo">REIZ EZ LIFE <span>Youth Home</span></div>
+            <nav class="nav-links">
+                <a href="#" data-zh="首页" data-en="Home">首页</a>
+                <a id="lang-switch">EN / 中</a>
+            </nav>
+        </div>
+    </header>
 
-        <main class="hero-section">
+    <main>
+        <section class="hero-section">
             <h1 data-zh="一个可以成长、归属，并成为自己的地方" data-en="A Place to Grow, Belong, & Become">一个可以成长、归属，并成为自己的地方</h1>
-            <p data-zh="Youth Home 是为新移民子女与留学生打造的支持性空间。" data-en="Supportive space for children of immigrants and international students.">Youth Home 是为新移民子女与留学生打造的支持性空间。</p>
-            <button class="join-trigger" style="background:var(--text-main); color:white; border:none; padding:16px 35px; border-radius:45px; font-weight:600; font-size:1.4rem;" data-zh="保持联系" data-en="Stay Connected">保持联系</button>
-        </main>
+            <p data-zh="Youth Home 是为新移民子女与留学生打造的支持性学术与生活空间，致力于帮助学生实现平稳过渡与自我成长。" data-en="A supportive academic and lifestyle space for children of immigrants and international students, dedicated to smooth transitions and personal growth.">Youth Home 是为新移民子女与留学生打造的支持性学术与生活空间，致力于帮助学生实现平稳过渡与自我成长。</p>
+            <button class="primary-cta-btn join-trigger" data-zh="联系我们获取支持" data-en="Contact Us for Support">联系我们获取支持</button>
+        </section>
 
-        <div class="glass-card">
-            <span style="font-size:1.3rem; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
-            <h3 style="font-size:2rem; margin-bottom:15px;" data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
-            <p style="font-size:1.55rem; opacity:0.7;" data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
-        </div>
+        <section class="bento-scroll-wrapper">
+            <div class="bento-scroll-track">
+                
+                <div class="bento-set">
+                    <div class="glass-card">
+                        <div>
+                            <span class="card-overline" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
+                            <h3 data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
+                            <p data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
+                        </div>
+                    </div>
 
-        <div class="split-card-container">
-            <div class="sub-card" onclick="window.openResources()">
-                <span style="font-size:1.3rem; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
-                <h3 style="font-size:1.8rem;" data-zh="资源 ｜ Resources" data-en="Resources">资源 ｜ Resources</h3>
+                    <div class="glass-card interactive-card" onclick="window.openResources()">
+                        <div>
+                            <span class="card-overline" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
+                            <h3 data-zh="资源指南 ｜ Resources" data-en="Resources Guide">资源指南 ｜ Resources</h3>
+                            <p data-zh="从生活App推荐到专业导师预约，帮助您快速融入北美生活。" data-en="From app recommendations to booking mentors, we help you integrate quickly.">从生活App推荐到专业导师预约，帮助您快速融入北美生活。</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card interactive-card" onclick="window.openStories()">
+                        <div>
+                            <span class="card-overline" style="color:var(--accent); background:rgba(212, 175, 55, 0.1);" data-zh="个人故事" data-en="Stories">个人故事</span>
+                            <h3 data-zh="创始人趣闻 ｜ Stories" data-en="Founder Stories">创始人趣闻 ｜ Stories</h3>
+                            <p data-zh="阅读那些关于挑战、坚持与融入的真实经历。" data-en="Read real experiences about challenges, persistence, and integration.">阅读那些关于挑战、坚持与融入的真实经历。</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card highlight-card interactive-card" onclick="document.querySelector('.join-trigger').click()">
+                        <div>
+                            <div class="tag-area">
+                                <div class="tag-item" data-zh="新移民" data-en="Immigrant">新移民</div>
+                                <div class="tag-item" data-zh="留学生" data-en="Students">留学生</div>
+                            </div>
+                            <span class="card-overline" data-zh="学业规划" data-en="Academics">学业规划</span>
+                            <h3 data-zh="升学 ｜ Application" data-en="Application">升学 ｜ Application</h3>
+                            <p data-zh="千里之行，始于足下。我们在每一步陪伴你，从选校策略到文书打磨。" data-en="Dream big, work hard. We are with you every step of the way, from school selection to essays.">千里之行，始于足下。我们在每一步陪伴你，从选校策略到文书打磨。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-set" aria-hidden="true">
+                    <div class="glass-card">
+                        <div>
+                            <span class="card-overline" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
+                            <h3 data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
+                            <p data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card interactive-card" onclick="window.openResources()">
+                        <div>
+                            <span class="card-overline" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
+                            <h3 data-zh="资源指南 ｜ Resources" data-en="Resources Guide">资源指南 ｜ Resources</h3>
+                            <p data-zh="从生活App推荐到专业导师预约，帮助您快速融入北美生活。" data-en="From app recommendations to booking mentors, we help you integrate quickly.">从生活App推荐到专业导师预约，帮助您快速融入北美生活。</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card interactive-card" onclick="window.openStories()">
+                        <div>
+                            <span class="card-overline" style="color:var(--accent); background:rgba(212, 175, 55, 0.1);" data-zh="个人故事" data-en="Stories">个人故事</span>
+                            <h3 data-zh="创始人趣闻 ｜ Stories" data-en="Founder Stories">创始人趣闻 ｜ Stories</h3>
+                            <p data-zh="阅读那些关于挑战、坚持与融入的真实经历。" data-en="Read real experiences about challenges, persistence, and integration.">阅读那些关于挑战、坚持与融入的真实经历。</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card highlight-card interactive-card" onclick="document.querySelector('.join-trigger').click()">
+                        <div>
+                            <div class="tag-area">
+                                <div class="tag-item" data-zh="新移民" data-en="Immigrant">新移民</div>
+                                <div class="tag-item" data-zh="留学生" data-en="Students">留学生</div>
+                            </div>
+                            <span class="card-overline" data-zh="学业规划" data-en="Academics">学业规划</span>
+                            <h3 data-zh="升学 ｜ Application" data-en="Application">升学 ｜ Application</h3>
+                            <p data-zh="千里之行，始于足下。我们在每一步陪伴你，从选校策略到文书打磨。" data-en="Dream big, work hard. We are with you every step of the way, from school selection to essays.">千里之行，始于足下。我们在每一步陪伴你，从选校策略到文书打磨。</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="sub-card" onclick="window.openStories()">
-                <span style="font-size:1.3rem; font-weight:800; color:var(--secondary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="个人故事" data-en="Stories">个人故事</span>
-                <h3 style="font-size:1.8rem;" data-zh="创始人趣闻 ｜ MyStories" data-en="MyStories">创始人趣闻 ｜ MyStories</h3>
-            </div>
-        </div>
+        </section>
+    </main>
 
-        <div class="tag-area">
-            <div class="tag-item" data-zh="新移民家庭" data-en="Immigrant Youth">新移民家庭</div>
-            <div class="tag-item" data-zh="北美留学生" data-en="Students">北美留学生</div>
-            <div class="tag-item" data-zh="身份认同" data-en="Identity">身份认同</div>
-            <div class="tag-item" data-zh="允许慢下来" data-en="Slow Down">允许慢下来</div>
-        </div>
-
-        <div class="glass-card">
-            <span style="font-size:1.3rem; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="主体性" data-en="Agency">主体性</span>
-            <h3 style="font-size:2rem; margin-bottom:15px;" data-zh="升学 ｜ Application" data-en="Application">升学 ｜ Application</h3>
-            <p style="font-size:1.55rem; opacity:0.7;" data-zh="千里之行，始于足下。" data-en="Dream big, work hard.">千里之行，始于足下。</p>
-        </div>
-
-        <div class="glass-card" style="background: rgba(255,255,255,0.6); display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-                <h3 style="font-size: 2.5rem; margin-bottom:10px;">Ready?</h3>
-                <p style="font-size:1.6rem; opacity:0.8;">Whether you want to join our community or just say hi ...</p>
-            </div>
-            <button class="join-trigger" style="width:100%; background:var(--text-main); color:white; border:none; padding:15px; border-radius:30px; font-weight:600; font-size:1.4rem; margin-top:20px;" data-zh="加入我们" data-en="Join Us">加入我们</button>
-        </div>
-
-        <footer>© 2026 REIZ EZ LIFE YOUTH HOME</footer>
-    </div>
+    <footer>© 2026 REIZ EZ LIFE YOUTH HOME. All Rights Reserved.</footer>
 
     <script>
-        // --- 文章数据 (39篇) ---
         const articles = [
             { id: '1', zh: "Kemy与Jason的阅读小课堂-How Spider save the sun", en: "Kemy & Jason's Reading Class", date: "2020年8月18日", url: "https://mp.weixin.qq.com/s/P2xezLGmkkPfdXDmGULF0A" },
-            { id: '2', zh: "英语成语：(Happy Part) ~~~", en: "English Idioms: (Happy Part)", date: "2020年7月24日", url: "https://mp.weixin.qq.com/s/D9WZDFBXHlbgP3vJh-LHnQ" },
+            { id: '2', zh: "英语成语：(Happy Part)", en: "English Idioms: (Happy Part)", date: "2020年7月24日", url: "https://mp.weixin.qq.com/s/D9WZDFBXHlbgP3vJh-LHnQ" },
             { id: '3', zh: "英你而语—for your English", en: "English for You", date: "2020年7月16日", url: "https://mp.weixin.qq.com/s/pZ-xmK6rg8dfDmY7mrnx_A" },
             { id: '4', zh: "难忘的美国夏令营", en: "Unforgettable Summer Camp", date: "2018年9月11日", url: "/file/article/4.html" },
             { id: '5', zh: "Fright dream day", en: "Fright Dream Day", date: "2018年5月5日", url: "/file/article/5.html" },
@@ -408,8 +422,8 @@
             { id: '18', zh: "奇妙的乐高城", en: "Wonderful Lego Land", date: "2017年11月12日", url: "/file/article/18.html" },
             { id: '19', zh: "爸爸与Kemi的聊天记录", en: "Dad & Kemi Chat Logs", date: "2017年11月12日", url: "/file/article/19.html" },
             { id: '20', zh: "波士顿科学博物馆游览记", en: "Museum of Science Visit", date: "2017年11月11日", url: "/file/article/20.html" },
-            { id: '21', zh: "11月5日爸爸写给Kemi的信", en: "Letter to Kemi (Nov 5， 2017)", date: "2017年11月5日", url: "/file/article/21.html" },
-            { id: '22', zh: "11月2日爸爸写给Kemi的信", en: "Letter to Kemi (Nov 2， 2017)", date: "2017年11月3日", url: "/file/article/22.html" },
+            { id: '21', zh: "11月5日爸爸写给Kemi的信", en: "Letter to Kemi (Nov 5, 2017)", date: "2017年11月5日", url: "/file/article/21.html" },
+            { id: '22', zh: "11月2日爸爸写给Kemi的信", en: "Letter to Kemi (Nov 2, 2017)", date: "2017年11月3日", url: "/file/article/22.html" },
             { id: '23', zh: "快乐分享百分百", en: "100% Happiness Sharing", date: "2017年11月3日", url: "/file/article/23.html" },
             { id: '24', zh: "奇妙的美国万圣节", en: "Halloween in America", date: "2017年11月2日", url: "/file/article/24.html" },
             { id: '25', zh: "10月31日爸爸写给Kemi的信", en: "Letter to Kemi (Oct 31)", date: "2017年11月2日", url: "/file/article/25.html" },
@@ -429,7 +443,6 @@
             { id: '39', zh: "了解美国波士顿--当世界已然是地球村，你需要聆听和了解全世界", en: "Get to know Boston", date: "2017年10月22日", url: "/file/article/39.html" }
         ];
 
-        // --- 资源 Readme 数据库 (分3页) ---
         const readmePages = [
             {
                 zh: `<h3>社交与通讯软件 (Social Apps)</h3>
@@ -486,35 +499,18 @@
         ];
         let currentReadmePage = 0;
 
-        // --- 联系人数据库 ---
         const contactsData = [
             {
-                id: 1,
-                name: "Kemi (Yuannan Huang)",
-                pic: "/file/pics/kemy.jpg", 
-                email: "kemy0906@gmail.com",
-                phone: "617-659-5400",
-                intro: {
-                    zh: "Reiz EZ Life 创始人。熟悉美国校园文化与新移民适应过程，乐意解答关于学业规划、生活融入的各种问题。",
-                    en: "Founder of Reiz EZ Life. Experienced in US campus culture and immigrant adaptation. Happy to help with academic and lifestyle queries."
-                }
+                id: 1, name: "Kemi (Yuannan Huang)", pic: "/file/pics/kemy.jpg", email: "kemy0906@gmail.com", phone: "617-659-5400",
+                intro: { zh: "Reiz EZ Life 创始人。熟悉美国校园文化与新移民适应过程，乐意解答关于学业规划、生活融入的各种问题。", en: "Founder of Reiz EZ Life. Experienced in US campus culture and immigrant adaptation. Happy to help with academic and lifestyle queries." }
             },
-            // 你可以在这里继续复制粘贴添加联系人 2, 3...
             {
-                id: 2,
-                name: "Bobby (Shengxi Lei)",
-                pic: "/file/pics/bobby.jpg", 
-                email: "shengxilei@gmail.com",
-                phone: "617-593-4866",
-                intro: {
-                    zh: "Reiz EZ Life 首席工程师。本科就读于埃默里大学，熟悉美国本科升学过程，乐意解答关于升学规划、职业规划的各种问题。",
-                    en: "Chief Engineer of Reiz EZ Life. Undergraduate at Emory University, experienced in US undergraduate admission process. Happy to help with college and career planning."
-                }
+                id: 2, name: "Bobby (Shengxi Lei)", pic: "/file/pics/bobby.jpg", email: "shengxilei@gmail.com", phone: "617-593-4866",
+                intro: { zh: "Reiz EZ Life 首席工程师。本科就读于埃默里大学，熟悉美国本科升学过程，乐意解答关于升学规划、职业规划的各种问题。", en: "Chief Engineer of Reiz EZ Life. Undergraduate at Emory University, experienced in US undergraduate admission process. Happy to help with college and career planning." }
             }
         ];
         let currentBookingEmail = "";
 
-        // --- 全局语言管理与创始人寄语 ---
         window.currentLang = 'zh';
         const founderStory = {
             en: `I came to the United States as an immigrant with little understanding of the language, culture, or school system. I remember how isolating it felt, not knowing how to make friends, how to fit in, or even how to ask for help. Over time, through persistence and openness, I learned to adapt, build friendships, and grow confident in a new environment.<br><br>As I adjusted, I felt a responsibility to support others facing the same transition. I created a WeChat public account at a young age to share my experiences and stories about real life in America, helping people who want to learn about America or just want to hear some interesting stories. Not long later, I volunteered to teach younger students English and reading skills for free, believing that language is the first bridge to belonging. Where I also fell in love with helping others with my own ability, trying my best.<br><br>Today, after all those years of challenges and experience, my integration into American life is complete, even though I still have a lot to learn. One thing that I never forget is my dedication to helping others, where now I serve as the Founder and President of Reiz EZ Life, a nonprofit organization dedicated to helping newly arrived Chinese students transition smoothly into life in the U.S. Through mentorship, cultural guidance, and shared resources, I strive to ensure that no student feels as lost as I once did. My mission is simple: to turn uncertainty into confidence and help young immigrants build a strong, supported start in their new home.`,
@@ -527,7 +523,6 @@
                 const text = el.getAttribute(`data-${lang}`);
                 if (text) el.innerHTML = text;
             });
-            // 如果存在 founder-content 则更新
             const fContent = document.getElementById('founder-content');
             if(fContent) fContent.innerHTML = founderStory[lang];
             
@@ -536,42 +531,26 @@
                 const b = document.getElementById(id);
                 if(b) b.textContent = lang === 'zh' ? 'EN / 中' : '中 / EN';
             });
-            
             window.renderArticleList();
             window.renderReadmePage();
             window.renderContacts();
         };
 
-        // --- 弹窗开关逻辑 ---
         window.closeWelcome = () => { document.getElementById('welcome-modal').classList.remove('active'); };
-        
         window.openStories = () => { document.getElementById('stories-modal').classList.add('active'); window.renderArticleList(); };
         window.closeStories = () => { document.getElementById('stories-modal').classList.remove('active'); window.backToStoriesList(); };
-        
-        // --- 资源弹窗与 Readme 翻页逻辑 ---
-        window.openResources = () => { 
-            document.getElementById('resources-modal').classList.add('active'); 
-            currentReadmePage = 0;
-            window.renderReadmePage();
-            window.renderContacts();
-        };
+        window.openResources = () => { document.getElementById('resources-modal').classList.add('active'); currentReadmePage = 0; window.renderReadmePage(); window.renderContacts(); };
         window.closeResources = () => { document.getElementById('resources-modal').classList.remove('active'); };
 
         window.renderReadmePage = () => {
             const container = document.getElementById('readme-content-view');
             if(!container) return;
             container.innerHTML = readmePages[currentReadmePage][window.currentLang];
-            
             document.getElementById('res-prev-btn').disabled = (currentReadmePage === 0);
             document.getElementById('res-next-btn').disabled = (currentReadmePage === readmePages.length - 1);
         };
+        window.changeReadmePage = (direction) => { currentReadmePage += direction; window.renderReadmePage(); };
 
-        window.changeReadmePage = (direction) => {
-            currentReadmePage += direction;
-            window.renderReadmePage();
-        };
-
-        // --- 渲染联系人列表 ---
         window.renderContacts = () => {
             const container = document.getElementById('contacts-list-view');
             if(!container) return;
@@ -581,13 +560,11 @@
                 const bookText = window.currentLang === 'zh' ? '预约沟通' : 'Book a Session';
                 html += `
                     <div class="contact-item">
-                        <img src="${c.pic}" alt="${c.name}" class="contact-photo" onerror="this.src='https://via.placeholder.com/100?text=Photo'">
+                        <img src="${c.pic}" alt="${c.name}" class="contact-photo" onerror="this.src='https://via.placeholder.com/85?text=Photo'">
                         <div style="flex:1; text-align: left;">
-                            <h3 style="font-size:1.6rem; color:var(--text-main); margin-bottom:5px;">${c.name}</h3>
-                            <p style="font-size:1.2rem; opacity:0.8; margin-bottom:10px; line-height:1.5;">${introText}</p>
-                            <div class="contact-info-box">
-                                📧 ${c.email} &nbsp;|&nbsp; 📞 ${c.phone}
-                            </div><br>
+                            <h3 style="font-family:var(--font-serif); font-size:1.2rem; color:var(--primary); margin-bottom:5px;">${c.name}</h3>
+                            <p style="font-size:0.95rem; color:var(--text-light); margin-bottom:10px; line-height:1.5;">${introText}</p>
+                            <div class="contact-info-box">📧 ${c.email} <br> 📞 ${c.phone}</div>
                             <button class="book-btn" onclick="window.openBooking('${c.email}')">${bookText}</button>
                         </div>
                     </div>
@@ -596,42 +573,26 @@
             container.innerHTML = html;
         };
 
-        // --- 预约表单小弹窗逻辑 ---
         window.openBooking = (email) => {
             currentBookingEmail = email;
             document.getElementById('booking-modal').classList.add('active');
-            // 清空表单
             document.getElementById('b-name').value = '';
             document.getElementById('b-email').value = '';
             document.getElementById('b-phone').value = '';
         };
-
-        window.closeBooking = () => {
-            document.getElementById('booking-modal').classList.remove('active');
-        };
+        window.closeBooking = () => { document.getElementById('booking-modal').classList.remove('active'); };
 
         window.submitBooking = (timeSlot) => {
             const name = document.getElementById('b-name').value.trim();
             const email = document.getElementById('b-email').value.trim();
             const phone = document.getElementById('b-phone').value.trim();
-            
-            if(!name || !email || !phone) {
-                alert(window.currentLang === 'zh' ? "请填写完整您的姓名、邮箱和电话。" : "Please fill out all fields.");
-                return;
-            }
-
-            // 构造邮件内容
+            if(!name || !email || !phone) { alert(window.currentLang === 'zh' ? "请填写完整您的姓名、邮箱和电话。" : "Please fill out all fields."); return; }
             const subject = encodeURIComponent(`Reiz EZ Life 预约请求: ${name}`);
-            const body = encodeURIComponent(`${name} 这个人想在 ${timeSlot} 这个时间预约你。\n\n以下是此人的联系方式：\n邮箱: ${email}\n电话: ${phone}\n\n请尽快回复确认。`);
-            
-            // 调起本地邮件客户端
+            const body = encodeURIComponent(`${name} 这个人想在 ${timeSlot} 这个时间预约你。\n\n联系方式：\n邮箱: ${email}\n电话: ${phone}\n\n请尽快回复确认。`);
             window.location.href = `mailto:${currentBookingEmail}?subject=${subject}&body=${body}`;
-            
-            // 关闭小弹窗
             window.closeBooking();
         };
 
-        // --- 文章列表生成与加载逻辑 ---
         window.renderArticleList = function() {
             const listContainer = document.getElementById('article-list-view');
             if(!listContainer) return;
@@ -641,8 +602,7 @@
                 const title = window.currentLang === 'zh' ? art.zh : art.en;
                 htmlContent += `
                     <div class="article-preview-item" onclick="window.loadArticleDetail('${art.id}', '${title}')">
-                        <h4 style="font-size:1.8rem; margin-bottom:5px; font-weight:600; color:var(--text-main);">${title}</h4>
-                        <p style="opacity:0.5; font-size:1.2rem; color:var(--text-main);">${art.date}</p>
+                        <h4>${title}</h4><p>${art.date}</p>
                     </div>
                 `;
             }
@@ -654,27 +614,22 @@
             document.getElementById('article-detail-view').style.display = 'block';
             document.getElementById('article-back-btn').style.display = 'block';
             document.getElementById('stories-title').innerText = title;
-            
             const currentArticle = articles.find(art => art.id === id);
-            // 判断是否为需要跳转的超大文章 (ID: 1, 2, 3, 11)
             const largeArticleIds = ['1', '2', '3', '11'];
-
             if (largeArticleIds.includes(id)) {
-                // 显示跳转提示界面
                 document.getElementById('article-detail-view').innerHTML = `
-                    <div style="padding:80px 40px; text-align:center; background:rgba(255,255,255,0.5); border-radius:24px; border:1px solid rgba(0,0,0,0.05); backdrop-filter:blur(10px);">
-                        <span style="font-size:5rem; margin-bottom:20px; display:block;">📦</span>
-                        <h3 style="font-size:1.8rem; margin-bottom:15px;" data-zh="内容较多，请前往官网阅读" data-en="Heavy content, please read on official site.">内容较多，请前往官网阅读</h3>
-                        <p style="font-size:1.3rem; opacity:0.6; margin-bottom:30px;" data-zh="为了给您提供更好的加载体验，建议您直接访问微信原文。" data-en="To ensure a smooth loading experience, please visit the original post on WeChat.">为了给您提供更好的加载体验，建议您直接访问微信原文。</p>
-                        <a href="${currentArticle.url}" target="_blank" style="display:inline-block; padding:15px 40px; background:var(--apple-blue); color:white; border-radius:30px; text-decoration:none; font-weight:600; font-size:1.4rem; transition:0.3s;">
-                            ${window.currentLang === 'zh' ? '点击访问官网' : 'Visit Official Link'}
+                    <div style="padding:60px 40px; text-align:center; background:rgba(0,0,0,0.02); border-radius:var(--radius-md); border:1px solid rgba(0,0,0,0.05);">
+                        <span style="font-size:3rem; margin-bottom:15px; display:block;">📄</span>
+                        <h3 style="font-family:var(--font-serif); font-size:1.6rem; margin-bottom:15px; color:var(--primary);" data-zh="内容较多，请前往官网阅读" data-en="Heavy content, please read on official site.">内容较多，请前往官网阅读</h3>
+                        <p style="font-size:1.05rem; color:var(--text-light); margin-bottom:30px;" data-zh="为了给您提供更好的加载体验，建议您直接访问微信原文。" data-en="To ensure a smooth loading experience, please visit the original post on WeChat.">为了给您提供更好的加载体验，建议您直接访问微信原文。</p>
+                        <a href="${currentArticle.url}" target="_blank" style="display:inline-block; padding:12px 30px; background:var(--primary); color:white; border-radius:30px; text-decoration:none; font-weight:600; transition:0.3s;">
+                            ${window.currentLang === 'zh' ? '点击访问原文' : 'Visit Original Link'}
                         </a>
                     </div>
                 `;
             } else if (currentArticle && currentArticle.url) {
-                // 普通文章依然使用本地 iframe 加载
                 document.getElementById('article-detail-view').innerHTML = `
-                    <div style="width: 100%; height: 65vh; border-radius: 20px; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); background: white;">
+                    <div style="width: 100%; height: 65vh; border-radius: var(--radius-md); overflow: hidden; border: 1px solid rgba(0,0,0,0.1); background: white;">
                         <iframe src="${currentArticle.url}" style="width: 100%; height: 100%; border: none;" referrerpolicy="no-referrer"></iframe>
                     </div>
                 `;
@@ -688,23 +643,21 @@
             document.getElementById('stories-title').innerText = window.currentLang === 'zh' ? "创始人趣闻" : "My Stories";
         };
 
-        // --- DOM 加载完毕后执行初始化 ---
         document.addEventListener('DOMContentLoaded', () => {
             window.updateLanguage('zh');
             setTimeout(() => { document.getElementById('welcome-modal').classList.add('active'); }, 500);
-
             document.getElementById('lang-switch').onclick = () => window.updateLanguage(window.currentLang === 'zh' ? 'en' : 'zh');
             document.getElementById('welcome-lang-switch').onclick = () => window.updateLanguage(window.currentLang === 'zh' ? 'en' : 'zh');
 
-            // 右下角全局 "加入我们" 联系弹窗
+            // 全局 "联系我们" 弹窗
             document.body.addEventListener('click', (e) => {
                 if (e.target.closest('.join-trigger')) {
                     const modal = document.createElement('div');
                     Object.assign(modal.style, { 
                         position:'fixed', top:'0', left:'0', width:'100%', height:'100%', 
-                        backgroundColor:'rgba(29, 29, 31, 0.4)', backdropFilter:'blur(20px)', 
+                        backgroundColor:'rgba(10, 35, 66, 0.4)', backdropFilter:'blur(20px)', WebkitBackdropFilter:'blur(20px)',
                         display:'flex', justifyContent:'center', alignItems:'center', zIndex:'10000',
-                        opacity: '0', transition: 'opacity 0.3s ease'
+                        opacity: '0', transition: 'opacity 0.4s ease'
                     });
                     const texts = {
                         title: window.currentLang === 'zh' ? '您想如何联系我们？' : 'How would you like to reach us?',
@@ -715,20 +668,20 @@
                     const gmailUrl = "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzDsPjJjRflqbGJssRVMvqdgXbMGmPHCjzpBMFrnmZZZbBkwhxqcnWCrPNqMmwJqlbKmXWP";
 
                     modal.innerHTML = `
-                        <div style="background:rgba(255,255,255,0.95); padding:50px; border-radius:40px; text-align:center; width:90%; max-width:500px; box-shadow:0 30px 60px rgba(0,0,0,0.15); transform:translateY(20px); transition:all 0.3s ease;" id="contact-modal-card">
-                            <h2 style="font-size:2.2rem; margin-bottom:30px; font-weight:700; color:var(--text-main);">${texts.title}</h2>
+                        <div style="background:rgba(255,255,255,0.95); padding:40px; border-radius:24px; text-align:center; width:90%; max-width:400px; box-shadow:0 30px 60px rgba(0,0,0,0.15); transform:translateY(30px) scale(0.98); transition:all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);" id="contact-modal-card">
+                            <h2 style="font-family:var(--font-serif); font-size:1.8rem; margin-bottom:25px; color:var(--primary); font-weight:700;">${texts.title}</h2>
                             <div style="display:flex; flex-direction:column; gap:15px;">
-                                <a href="${gmailUrl}" target="_blank" style="display:block; padding:20px; background:var(--primary); color:white; border-radius:25px; text-decoration:none; font-weight:600; font-size:1.5rem; transition:0.3s;">📧 ${texts.email}</a>
-                                <a href="tel:6176595400" style="display:block; padding:20px; background:var(--secondary); color:white; border-radius:25px; text-decoration:none; font-weight:600; font-size:1.5rem; transition:0.3s;">📞 ${texts.call}</a>
-                                <div id="close-contact" style="padding:20px; background:rgba(0,0,0,0.05); color:var(--text-main); border-radius:25px; cursor:pointer; font-weight:600; font-size:1.3rem; margin-top:10px; transition:0.3s;">${texts.cancel}</div>
+                                <a href="${gmailUrl}" target="_blank" style="display:block; padding:16px; background:var(--primary); color:white; border-radius:30px; text-decoration:none; font-weight:600; font-size:1.1rem; transition:0.3s; box-shadow:0 10px 20px rgba(10,35,66,0.2);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">📧 ${texts.email}</a>
+                                <a href="tel:6176595400" style="display:block; padding:16px; background:white; color:var(--primary); border:1px solid rgba(0,0,0,0.1); border-radius:30px; text-decoration:none; font-weight:600; font-size:1.1rem; transition:0.3s;" onmouseover="this.style.background='rgba(0,0,0,0.02)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='white'; this.style.transform='translateY(0)'">📞 ${texts.call}</a>
+                                <div id="close-contact" style="padding:15px; color:var(--text-light); cursor:pointer; font-size:1rem; font-weight:500; margin-top:5px; transition:0.3s;" onmouseover="this.style.color='var(--secondary)'" onmouseout="this.style.color='var(--text-light)'">${texts.cancel}</div>
                             </div>
                         </div>`;
                     document.body.appendChild(modal);
-                    setTimeout(() => { modal.style.opacity = '1'; document.getElementById('contact-modal-card').style.transform = 'translateY(0)'; }, 10);
+                    setTimeout(() => { modal.style.opacity = '1'; document.getElementById('contact-modal-card').style.transform = 'translateY(0) scale(1)'; }, 10);
                     document.getElementById('close-contact').onclick = () => {
                         modal.style.opacity = '0';
-                        document.getElementById('contact-modal-card').style.transform = 'translateY(20px)';
-                        setTimeout(() => document.body.removeChild(modal), 300);
+                        document.getElementById('contact-modal-card').style.transform = 'translateY(30px) scale(0.98)';
+                        setTimeout(() => document.body.removeChild(modal), 400);
                     };
                 }
             });
