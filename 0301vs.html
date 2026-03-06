@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;800&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600&display=swap">
     <style>
         :root {
-            var(--primary): #0a2342;         
             --primary: #0a2342;
-            --secondary: #a31f1f;       
-            --accent: #d4af37;          
+            --secondary: #a31f1f;
+            --accent: #d4af37;
             --text-main: #1d1d1f;
             --text-light: #555555;
             
@@ -31,7 +30,7 @@
 
         body {
             font-family: var(--font-sans);
-            background: radial-gradient(circle at 10% 10%, #f0f4f8 0%, #e2ebf0 50%, #fef9e7 100%);
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8f1f5 50%, #fef9e7 100%);
             color: var(--text-main);
             min-height: 100vh;
             line-height: 1.6;
@@ -39,201 +38,340 @@
             overflow-x: hidden;
         }
 
-        /* 极光背景特效 */
+        /* 动态极光背景特效 */
         .aurora {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(100px);
-            background: radial-gradient(circle at 20% 30%, #e9edc9 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, #faedcd 0%, transparent 40%),
-                        radial-gradient(circle at 50% 90%, #d8e2dc 0%, transparent 50%);
-            animation: pulse 15s infinite alternate var(--bezier);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(120px);
+            background: 
+                radial-gradient(circle at 15% 25%, rgba(212, 175, 55, 0.15) 0%, transparent 35%),
+                radial-gradient(circle at 85% 75%, rgba(163, 31, 31, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 95%, rgba(10, 35, 66, 0.08) 0%, transparent 50%);
+            animation: auroraFlow 20s infinite ease-in-out;
         }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
+        @keyframes auroraFlow {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+            50% { transform: translate(30px, -20px) scale(1.05); opacity: 1; }
+        }
 
         /* --- 弹窗基础样式 --- */
         .welcome-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 35, 66, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            background: rgba(10, 35, 66, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             display: flex; justify-content: center; align-items: center;
-            z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.4s var(--bezier); padding: 15px;
+            z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.5s var(--bezier); padding: 15px;
         }
         .welcome-overlay.active { opacity: 1; visibility: visible; }
 
         .founder-card {
-            background: rgba(255, 255, 255, 0.96); padding: 40px; border-radius: var(--radius-xl);
+            background: rgba(255, 255, 255, 0.98); padding: 40px; border-radius: var(--radius-xl);
             width: 100%; max-width: 850px; max-height: 90vh; overflow-y: auto; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 1px solid var(--glass-border);
-            transform: translateY(20px) scale(0.98); transition: all 0.4s var(--bezier);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.95);
+            transform: translateY(30px) scale(0.95); transition: all 0.5s var(--bezier);
         }
         .welcome-overlay.active .founder-card { transform: translateY(0) scale(1); }
-        .founder-card::-webkit-scrollbar { width: 5px; }
-        .founder-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .founder-card::-webkit-scrollbar { width: 6px; }
+        .founder-card::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+        .founder-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 10px; }
+        .founder-card::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
 
         /* --- 导航栏 --- */
         header {
-            position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.4);
+            position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
+            border-bottom: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
         }
-        .nav-container { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; }
-        .logo { font-family: var(--font-serif); font-weight: 800; font-size: 1.6rem; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        .logo span { font-family: var(--font-sans); font-weight: 500; font-size: 0.85rem; color: var(--secondary); letter-spacing: 1px; text-transform: uppercase; }
-        .nav-links { display: flex; align-items: center; gap: 20px; }
-        .nav-links a { text-decoration: none; color: var(--text-main); font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .nav-container { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 14px 25px; }
+        .logo { font-family: var(--font-serif); font-weight: 800; font-size: 1.7rem; color: var(--primary); display: flex; align-items: center; gap: 8px; letter-spacing: -0.5px; }
+        .logo span { font-family: var(--font-sans); font-weight: 600; font-size: 0.8rem; color: var(--secondary); letter-spacing: 1.5px; text-transform: uppercase; }
+        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links a { text-decoration: none; color: var(--text-main); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; position: relative; }
         .nav-links a:hover { color: var(--secondary); }
-        #lang-switch { background: rgba(255,255,255,0.6); padding: 6px 14px; border-radius: 20px; color: var(--primary); border: 1px solid var(--glass-border); cursor:pointer; font-weight:600; transition:0.3s; font-size: 0.9rem;}
-        #lang-switch:hover { background: var(--primary); color: white; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--secondary); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+        #lang-switch { background: rgba(255,255,255,0.7); padding: 8px 16px; border-radius: 25px; color: var(--primary); border: 1.5px solid rgba(0,0,0,0.08); cursor:pointer; font-weight:600; transition:all 0.3s; font-size: 0.9rem; }
+        #lang-switch:hover { background: var(--primary); color: white; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(10, 35, 66, 0.15); }
 
         /* --- 主视觉区域 (Hero Section) --- */
-        .hero-section { max-width: 800px; margin: 50px auto 30px; text-align: center; padding: 0 20px; }
-        .hero-section h1 { font-family: var(--font-serif); font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; line-height: 1.15; font-weight: 800; }
-        .hero-section p { font-size: 1.15rem; color: var(--text-light); margin-bottom: 25px; line-height: 1.7; font-weight: 400; }
-        .primary-cta-btn {
-            background: var(--primary); color: white; border: none; padding: 15px 35px; border-radius: 30px;
-            font-weight: 600; font-size: 1.1rem; cursor: pointer; letter-spacing: 1px;
-            transition: all 0.3s var(--bezier); box-shadow: 0 10px 25px rgba(10, 35, 66, 0.2); display: inline-block;
+        .hero-section { 
+            max-width: 900px; margin: 60px auto 40px; text-align: center; padding: 0 20px;
+            animation: fadeInDown 0.8s var(--bezier);
         }
-        .primary-cta-btn:hover { background: var(--secondary); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(163, 31, 31, 0.3); }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .hero-section h1 { 
+            font-family: var(--font-serif); font-size: 3.8rem; color: var(--primary); margin-bottom: 20px; 
+            line-height: 1.1; font-weight: 800; letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--primary) 0%, #163861 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-section p { 
+            font-size: 1.25rem; color: var(--text-light); margin-bottom: 35px; line-height: 1.8; 
+            font-weight: 400; letter-spacing: 0.3px;
+        }
+        .primary-cta-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, #163861 100%); 
+            color: white; border: none; padding: 16px 40px; border-radius: 35px;
+            font-weight: 700; font-size: 1.1rem; cursor: pointer; letter-spacing: 0.5px;
+            transition: all 0.4s var(--bezier); 
+            box-shadow: 0 12px 30px rgba(10, 35, 66, 0.25);
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        .primary-cta-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        .primary-cta-btn:hover::before { left: 100%; }
+        .primary-cta-btn:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 18px 45px rgba(10, 35, 66, 0.35);
+        }
+        .primary-cta-btn:active { transform: translateY(-1px); }
 
         /* =========================================
            手动+自动滚动融合区域
            ========================================= */
-        .bento-scroll-wrapper { width: 100%; padding: 10px 0 50px; }
+        .bento-scroll-wrapper { width: 100%; padding: 20px 0 60px; }
         
         .bento-scroll-container {
             display: flex;
             overflow-x: auto;
-            scroll-behavior: auto; /* 取消平滑滚动以防干扰JS逻辑 */
-            -webkit-overflow-scrolling: touch; /* 丝滑原生触摸滚动 */
+            scroll-behavior: auto;
+            -webkit-overflow-scrolling: touch;
             padding-left: 20px; 
             padding-right: 20px;
         }
-        /* 隐藏滚动条 */
         .bento-scroll-container::-webkit-scrollbar { display: none; }
         .bento-scroll-container { -ms-overflow-style: none; scrollbar-width: none; }
 
         .bento-set {
             display: flex;
-            gap: 20px; /* 卡片之间的间距 */
-            padding-right: 20px; /* 集合之间的间距，必须和 gap 一致 */
+            gap: 24px;
+            padding-right: 24px;
             flex-shrink: 0;
         }
 
         /* --- 卡片基础样式 --- */
         .glass-card {
-            background: var(--glass-card-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: var(--radius-xl); padding: 30px;
-            display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s var(--bezier); 
-            box-shadow: var(--glass-shadow); position: relative; overflow: hidden;
-            flex: 0 0 auto; width: 340px; min-height: 360px; /* 统一尺寸，减小高度留白 */
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.95); border-radius: var(--radius-xl); padding: 32px;
+            display: flex; flex-direction: column; justify-content: space-between; 
+            transition: all 0.4s var(--bezier); 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+            position: relative; overflow: hidden;
+            flex: 0 0 auto; width: 360px; min-height: 380px;
+        }
+        
+        .glass-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 100%);
+            opacity: 0; transition: opacity 0.4s;
+            pointer-events: none;
         }
         
         .interactive-card { cursor: pointer; }
-        .interactive-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.95); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-        .interactive-card::after { content: '→'; position: absolute; bottom: 25px; right: 30px; font-size: 1.5rem; color: var(--primary); opacity: 0; transform: translateX(-10px); transition: all 0.3s; font-family: var(--font-sans); }
+        .interactive-card:hover { 
+            transform: translateY(-8px); 
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+        .interactive-card:hover::before { opacity: 1; }
+        
+        .interactive-card::after { 
+            content: '→'; position: absolute; bottom: 28px; right: 32px; font-size: 1.8rem; 
+            color: var(--primary); opacity: 0; transform: translateX(-12px); 
+            transition: all 0.4s var(--bezier); font-family: var(--font-sans); font-weight: 700;
+        }
         .interactive-card:hover::after { opacity: 1; transform: translateX(0); }
 
-        .card-overline { font-size: 0.8rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: inline-block; background: rgba(163, 31, 31, 0.08); padding: 4px 12px; border-radius: 15px; }
-        .glass-card h3 { font-family: var(--font-serif); font-size: 1.8rem; color: var(--primary); margin-bottom: 12px; line-height: 1.2; font-weight: 700; }
-        .glass-card p { font-size: 1.05rem; color: var(--text-light); }
+        .card-overline { 
+            font-size: 0.75rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; 
+            letter-spacing: 1.5px; margin-bottom: 14px; display: inline-block; 
+            background: rgba(163, 31, 31, 0.1); padding: 6px 14px; border-radius: 20px;
+        }
+        .glass-card h3 { 
+            font-family: var(--font-serif); font-size: 1.95rem; color: var(--primary); 
+            margin-bottom: 14px; line-height: 1.15; font-weight: 800; letter-spacing: -0.5px;
+        }
+        .glass-card p { font-size: 1.08rem; color: var(--text-light); line-height: 1.7; }
 
-        .highlight-card { background: linear-gradient(135deg, var(--primary), #163861); color: white; border: none; }
-        .highlight-card h3 { color: white; font-size: 1.8rem;}
-        .highlight-card p { color: rgba(255,255,255,0.8); }
-        .highlight-card .card-overline { background: rgba(255,255,255,0.15); color: white; }
+        .highlight-card { 
+            background: linear-gradient(135deg, var(--primary) 0%, #163861 100%); 
+            color: white; border: none; 
+            box-shadow: 0 12px 40px rgba(10, 35, 66, 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+        }
+        .highlight-card h3 { color: white; font-size: 1.95rem;}
+        .highlight-card p { color: rgba(255,255,255,0.85); }
+        .highlight-card .card-overline { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.95); }
 
-        .tag-area { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
-        .tag-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 5px 12px; font-size: 0.85rem; font-weight: 500; color: white; border-radius: 15px; }
+        .tag-area { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+        .tag-item { 
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); 
+            padding: 6px 14px; font-size: 0.85rem; font-weight: 600; color: white; 
+            border-radius: 18px; transition: all 0.3s;
+        }
+        .tag-item:hover { background: rgba(255,255,255,0.25); }
 
         /* --- 弹窗内部组件 --- */
-        .welcome-lang-btn { position: absolute; top: 25px; right: 25px; background: rgba(0,0,0,0.04); padding: 6px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; color: var(--primary); cursor: pointer; border: 1px solid rgba(0,0,0,0.05); transition: 0.3s; z-index: 10; }
-        .welcome-lang-btn:hover { background: var(--primary); color: white; }
-        .modal-action-btn { background: var(--primary); color: white; padding: 14px 35px; border-radius: 30px; font-size: 1.05rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 15px rgba(10,35,66,0.2); margin-top: 15px; }
-        .modal-action-btn:hover { background: var(--secondary); transform: translateY(-2px); box-shadow: 0 12px 20px rgba(163,31,31,0.3); }
-        .modal-close-btn { background: rgba(0,0,0,0.05); color: var(--text-main); box-shadow: none; width: 100%; border: 1px solid rgba(0,0,0,0.1); }
-        .modal-close-btn:hover { background: rgba(0,0,0,0.1); }
+        .welcome-lang-btn { 
+            position: absolute; top: 25px; right: 25px; background: rgba(0,0,0,0.05); 
+            padding: 8px 16px; border-radius: 25px; font-size: 0.9rem; font-weight: 700; 
+            color: var(--primary); cursor: pointer; border: 1.5px solid rgba(0,0,0,0.08); 
+            transition: all 0.3s; z-index: 10;
+        }
+        .welcome-lang-btn:hover { background: var(--primary); color: white; transform: translateY(-2px); }
+        
+        .modal-action-btn { 
+            background: linear-gradient(135deg, var(--primary) 0%, #163861 100%); 
+            color: white; padding: 14px 35px; border-radius: 30px; font-size: 1.05rem; 
+            font-weight: 700; border: none; cursor: pointer; transition: all 0.4s; 
+            box-shadow: 0 10px 25px rgba(10,35,66,0.2); margin-top: 15px;
+        }
+        .modal-action-btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 35px rgba(10,35,66,0.3);
+        }
+        .modal-close-btn { 
+            background: rgba(0,0,0,0.05); color: var(--text-main); box-shadow: none; 
+            width: 100%; border: 1.5px solid rgba(0,0,0,0.08);
+        }
+        .modal-close-btn:hover { background: rgba(0,0,0,0.08); }
 
         /* 文章与资源列表 */
         .article-list-scroll { max-height: 400px; overflow-y: auto; padding-right: 10px; margin-top: 15px; }
-        .article-preview-item { background: rgba(0,0,0,0.03); margin-bottom: 10px; padding: 15px 20px; border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
-        .article-preview-item h4 { font-family: var(--font-serif); font-size: 1.2rem; color: var(--primary); margin-bottom: 3px; }
+        .article-preview-item { 
+            background: rgba(0,0,0,0.03); margin-bottom: 12px; padding: 16px 20px; 
+            border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s; 
+            border: 1.5px solid transparent;
+        }
+        .article-preview-item h4 { 
+            font-family: var(--font-serif); font-size: 1.15rem; color: var(--primary); 
+            margin-bottom: 4px; font-weight: 700;
+        }
         .article-preview-item p { font-size: 0.9rem; color: var(--text-light); }
-        .article-preview-item:hover { background: white; border-color: rgba(0,0,0,0.05); transform: translateX(5px); }
+        .article-preview-item:hover { 
+            background: rgba(0,0,0,0.06); 
+            border-color: var(--primary); 
+            transform: translateX(6px);
+        }
 
-        .back-nav-btn { display: none; background: rgba(0,0,0,0.05); padding: 8px 16px; border-radius: 15px; border: none; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: var(--text-main); margin-bottom: 15px; }
-        .back-nav-btn:hover { background: var(--primary); color: white; }
+        .back-nav-btn { 
+            display: none; background: rgba(0,0,0,0.05); padding: 10px 18px; 
+            border-radius: 20px; border: 1.5px solid rgba(0,0,0,0.08); 
+            cursor: pointer; font-weight: 700; font-size: 0.95rem; 
+            color: var(--text-main); margin-bottom: 15px; transition: all 0.3s;
+        }
+        .back-nav-btn:hover { 
+            background: var(--primary); color: white; 
+            transform: translateX(-4px);
+        }
 
-        .readme-style { font-size: 1.05rem; line-height: 1.7; color: var(--text-main); }
-        .readme-style h3 { font-family: var(--font-serif); font-size: 1.4rem; color: var(--primary); margin: 0 0 10px 0; }
-        .readme-style ul { padding-left: 20px; margin-bottom: 15px; color: var(--text-light); }
-        .pagination-btn { background: white; border: 1px solid rgba(0,0,0,0.1); padding: 8px 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+        .readme-style { font-size: 1.05rem; line-height: 1.8; color: var(--text-main); }
+        .readme-style h3 { 
+            font-family: var(--font-serif); font-size: 1.4rem; 
+            color: var(--primary); margin: 0 0 12px 0; font-weight: 800;
+        }
+        .readme-style ul { padding-left: 24px; margin-bottom: 18px; color: var(--text-light); }
+        .readme-style li { margin-bottom: 8px; }
+        
+        .pagination-btn { 
+            background: white; border: 1.5px solid rgba(0,0,0,0.1); 
+            padding: 10px 22px; border-radius: 25px; font-size: 0.95rem; 
+            font-weight: 700; cursor: pointer; transition: all 0.3s;
+        }
+        .pagination-btn:hover:not(:disabled) { 
+            background: var(--primary); color: white; 
+            transform: translateY(-2px);
+        }
         .pagination-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         /* 联系人表单 */
-        .contact-item { display: flex; gap: 15px; padding: 15px; background: rgba(0,0,0,0.02); border-radius: var(--radius-md); margin-bottom: 15px; align-items: flex-start; border: 1px solid rgba(0,0,0,0.04); }
-        .contact-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.08); flex-shrink: 0; }
-        .contact-info-box { font-size: 0.85rem; color: var(--text-light); margin-top: 5px; font-family: monospace; }
-        .book-btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; cursor: pointer; margin-right: 8px; margin-top: 8px; transition: all 0.3s; }
-        .book-btn:hover { background: var(--secondary); transform: translateY(-2px); }
-        .story-btn { background: rgba(212, 175, 55, 0.2); color: var(--primary); border: 1px solid rgba(212, 175, 55, 0.5); padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; cursor: pointer; margin-top: 8px; transition: all 0.3s; }
-        .story-btn:hover { background: rgba(212, 175, 55, 0.4); border-color: var(--accent); }
+        .contact-item { 
+            display: flex; gap: 18px; padding: 18px; background: rgba(0,0,0,0.03); 
+            border-radius: var(--radius-md); margin-bottom: 16px; align-items: center; 
+            border: 1.5px solid rgba(0,0,0,0.05); transition: all 0.3s;
+        }
+        .contact-item:hover { background: rgba(0,0,0,0.06); transform: translateX(4px); }
+        
+        .contact-photo { 
+            width: 75px; height: 75px; border-radius: 50%; object-fit: cover; 
+            border: 3px solid white; box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+        }
+        .contact-info-box { font-size: 0.85rem; color: var(--text-light); margin-top: 6px; font-family: monospace; }
+        .book-btn { 
+            background: var(--primary); color: white; border: none; 
+            padding: 9px 18px; border-radius: 22px; font-weight: 700; 
+            font-size: 0.9rem; cursor: pointer; margin-top: 10px; transition: all 0.3s;
+        }
+        .book-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 15px rgba(10, 35, 66, 0.2);
+        }
 
-        /* 防止 iOS 缩放，设定字体必须为 16px */
-        .form-input { width: 100%; padding: 14px 18px; margin-bottom: 12px; border-radius: var(--radius-md); border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.8); font-size: 16px; outline: none; font-family: var(--font-sans); }
-        .form-input:focus { border-color: var(--primary); background: white; }
-        .time-btn { flex: 1; padding: 12px; border: 1px solid rgba(0,0,0,0.1); background: white; border-radius: var(--radius-md); cursor: pointer; color: var(--text-main); font-weight: 600; font-size: 0.95rem; }
-        .time-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .form-input { 
+            width: 100%; padding: 14px 18px; margin-bottom: 14px; 
+            border-radius: var(--radius-md); border: 1.5px solid rgba(0,0,0,0.1); 
+            background: rgba(255,255,255,0.9); font-size: 16px; outline: none; 
+            font-family: var(--font-sans); transition: all 0.3s;
+        }
+        .form-input:focus { 
+            border-color: var(--primary); background: white; 
+            box-shadow: 0 0 0 3px rgba(10, 35, 66, 0.1);
+        }
+        
+        .time-btn { 
+            flex: 1; padding: 12px; border: 1.5px solid rgba(0,0,0,0.1); 
+            background: white; border-radius: var(--radius-md); cursor: pointer; 
+            color: var(--text-main); font-weight: 700; font-size: 0.95rem; 
+            transition: all 0.3s;
+        }
+        .time-btn:hover { 
+            background: var(--primary); color: white; border-color: var(--primary); 
+            transform: translateY(-2px);
+        }
 
-        /* Story modal styles */
-        .story-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 35, 66, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            display: flex; justify-content: center; align-items: center; z-index: 10001; opacity: 0; visibility: hidden; 
-            transition: all 0.4s var(--bezier); padding: 15px; }
-        .story-modal.active { opacity: 1; visibility: visible; }
-        .story-card { background: rgba(255, 255, 255, 0.96); padding: 40px; border-radius: var(--radius-xl);
-            width: 100%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 1px solid var(--glass-border);
-            transform: translateY(20px) scale(0.98); transition: all 0.4s var(--bezier); }
-        .story-modal.active .story-card { transform: translateY(0) scale(1); }
-        .story-card::-webkit-scrollbar { width: 5px; }
-        .story-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
-        .story-close-btn { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.05); border: none; 
-            width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.3rem; color: var(--primary); 
-            display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
-        .story-close-btn:hover { background: var(--primary); color: white; }
-
-        footer { text-align: center; font-size: 0.9rem; color: var(--text-light); padding: 30px 0; border-top: 1px solid rgba(0,0,0,0.05); }
+        footer { 
+            text-align: center; font-size: 0.9rem; color: var(--text-light); 
+            padding: 40px 0; border-top: 1px solid rgba(0,0,0,0.05);
+            font-weight: 600; letter-spacing: 0.5px;
+        }
 
         /* =========================================
            移动端终极响应式优化
            ========================================= */
         @media (max-width: 768px) {
-            .nav-container { padding: 10px 15px; }
-            .logo { font-size: 1.3rem; }
-            .nav-links { gap: 10px; }
+            .nav-container { padding: 12px 15px; }
+            .logo { font-size: 1.4rem; }
+            .nav-links { gap: 15px; }
             .nav-links a { font-size: 0.95rem; }
             
-            .hero-section { margin: 30px auto 20px; padding: 0 15px; }
-            .hero-section h1 { font-size: 2.3rem; margin-bottom: 10px; }
-            .hero-section p { font-size: 1rem; margin-bottom: 20px; }
-            .primary-cta-btn { padding: 12px 25px; font-size: 1rem; }
+            .hero-section { margin: 40px auto 30px; padding: 0 15px; }
+            .hero-section h1 { font-size: 2.5rem; margin-bottom: 15px; }
+            .hero-section p { font-size: 1.1rem; margin-bottom: 25px; }
+            .primary-cta-btn { padding: 13px 30px; font-size: 1rem; }
             
-            .bento-scroll-wrapper { padding: 5px 0 30px; }
+            .bento-scroll-wrapper { padding: 10px 0 40px; }
             .bento-scroll-container { padding-left: 15px; padding-right: 15px; }
+            .bento-set { gap: 18px; padding-right: 18px; }
             .glass-card { 
-                width: 82vw; /* 适应屏幕，留一点边距暗示滑动 */
-                min-height: 320px; 
-                padding: 25px; 
+                width: 85vw;
+                min-height: 340px; 
+                padding: 24px;
             }
             .interactive-card::after { display: none; }
             
-            /* 弹窗防重叠优化 */
             .founder-card { padding: 25px 20px; }
-            .welcome-lang-btn { top: 15px; right: 15px; padding: 5px 12px; font-size: 0.85rem; }
-            .founder-card h1 { font-size: 1.8rem; margin-top: 30px; margin-bottom: 15px !important; } /* 给语言按钮留出顶部空间 */
+            .welcome-lang-btn { top: 15px; right: 15px; padding: 6px 12px; font-size: 0.85rem; }
+            .founder-card h1 { font-size: 1.8rem; margin-top: 30px; margin-bottom: 15px !important; }
             
-            .contact-item { flex-direction: column; text-align: center; padding: 15px 10px; align-items: center; }
-            .contact-photo { width: 60px; height: 60px; margin-bottom: 5px; }
+            .contact-item { flex-direction: column; text-align: center; padding: 15px 12px; }
+            .contact-photo { width: 65px; height: 65px; margin-bottom: 8px; }
             
-            /* 两列布局改单列 */
             #resources-modal .founder-card > div { grid-template-columns: 1fr; gap: 30px; }
         }
     </style>
@@ -245,11 +383,11 @@
     <div id="welcome-modal" class="welcome-overlay">
         <div class="founder-card">
             <button id="welcome-lang-switch" class="welcome-lang-btn">EN / 中</button>
-            <div style="text-align:center; margin-bottom: 10px;">
+            <div style="text-align:center; margin-bottom: 12px;">
                 <span class="card-overline" data-zh="创始人视角" data-en="Founder's Perspective">创始人视角</span>
             </div>
-            <h1 style="font-family:var(--font-serif); font-weight:800; color:var(--primary); text-align:center; margin-bottom:20px;" data-zh="欢迎来到 Reiz EZ Life" data-en="Welcome to Reiz EZ Life">欢迎来到 Reiz EZ Life</h1>
-            <div id="founder-content" style="font-size:1.05rem; line-height:1.7; color:var(--text-light); margin-bottom:30px; text-align:justify;"></div>
+            <h1 style="font-family:var(--font-serif); font-weight:800; color:var(--primary); text-align:center; margin-bottom:24px; font-size:2.2rem;" data-zh="欢迎来到 Reiz EZ Life" data-en="Welcome to Reiz EZ Life">欢迎来到 Reiz EZ Life</h1>
+            <div id="founder-content" style="font-size:1.08rem; line-height:1.8; color:var(--text-light); margin-bottom:32px; text-align:justify;"></div>
             <div style="text-align: center;">
                 <button class="modal-action-btn" onclick="window.closeWelcome()" data-zh="进入主页 | Enter Site" data-en="Enter Site">进入主页 | Enter Site</button>
             </div>
@@ -259,9 +397,9 @@
     <div id="stories-modal" class="welcome-overlay">
         <div class="founder-card">
             <button id="article-back-btn" class="back-nav-btn" onclick="window.backToStoriesList()" data-zh="← 返回列表" data-en="← Back to List">← 返回列表</button>
-            <h1 id="stories-title" style="font-family:var(--font-serif); font-size: 2.2rem; margin-bottom: 10px; color:var(--primary);" data-zh="创始人趣闻" data-en="My Stories">创始人趣闻</h1>
+            <h1 id="stories-title" style="font-family:var(--font-serif); font-size: 2.2rem; margin-bottom: 12px; color:var(--primary);" data-zh="创始人趣闻" data-en="My Stories">创始人趣闻</h1>
             <div id="article-list-view" class="article-list-scroll"></div>
-            <div id="article-detail-view" style="display: none; text-align: left; margin-top: 15px; font-size:1.05rem; line-height:1.7;"></div>
+            <div id="article-detail-view" style="display: none; text-align: left; margin-top: 15px; font-size:1.08rem; line-height:1.8;"></div>
             <button onclick="window.closeStories()" class="modal-action-btn modal-close-btn" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
         </div>
     </div>
@@ -270,49 +408,40 @@
         <div class="founder-card" style="max-width: 900px;">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
                 <div>
-                    <h1 style="font-family:var(--font-serif); font-size: 2rem; margin-bottom: 15px; color:var(--primary);" data-zh="美国生活指南" data-en="US Guide">美国生活指南</h1>
+                    <h1 style="font-family:var(--font-serif); font-size: 2rem; margin-bottom: 18px; color:var(--primary);" data-zh="美国生活指南" data-en="US Guide">美国生活指南</h1>
                     <div id="readme-content-view" class="readme-style" style="min-height: 220px;"></div>
-                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
                         <button id="res-prev-btn" class="pagination-btn" onclick="window.changeReadmePage(-1)">&#8592;</button>
                         <button id="res-next-btn" class="pagination-btn" onclick="window.changeReadmePage(1)">&#8594;</button>
                     </div>
                 </div>
                 <div>
-                    <h2 style="font-family:var(--font-serif); font-size: 1.5rem; margin-bottom: 15px; color:var(--primary);" data-zh="需要帮助？可以预约" data-en="Need help? Book us">需要帮助？可以预约</h2>
+                    <h2 style="font-family:var(--font-serif); font-size: 1.5rem; margin-bottom: 18px; color:var(--primary);" data-zh="需要帮助？可以预约" data-en="Need help? Book us">需要帮助？可以预约</h2>
                     <div id="contacts-list-view" class="article-list-scroll" style="margin-top: 0;"></div>
                 </div>
             </div>
-            <button onclick="window.closeResources()" class="modal-action-btn modal-close-btn" style="margin-top:30px;" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
+            <button onclick="window.closeResources()" class="modal-action-btn modal-close-btn" style="margin-top:32px;" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
         </div>
     </div>
 
     <div id="booking-modal" class="welcome-overlay" style="z-index: 10005;">
-        <div class="founder-card" style="max-width: 400px; padding: 35px 25px;">
-            <h2 style="font-family:var(--font-serif); font-size: 1.8rem; margin-bottom: 8px; color:var(--primary); text-align:center;" data-zh="预约联系人" data-en="Book Appointment">预约联系人</h2>
-            <p style="font-size:0.95rem; color:var(--text-light); margin-bottom: 25px; text-align:center;" data-zh="填写信息后将自动生成邮件" data-en="Fill info to generate email">填写信息后将自动生成邮件</p>
+        <div class="founder-card" style="max-width: 420px; padding: 35px 28px;">
+            <h2 style="font-family:var(--font-serif); font-size: 1.9rem; margin-bottom: 10px; color:var(--primary); text-align:center;" data-zh="预约联系人" data-en="Book Appointment">预约联系人</h2>
+            <p style="font-size:0.98rem; color:var(--text-light); margin-bottom: 28px; text-align:center;" data-zh="填写信息后将自动生成邮件" data-en="Fill info to generate email">填写信息后将自动生成邮件</p>
             
             <form id="booking-form" onsubmit="return false;">
                 <input type="text" id="b-name" class="form-input" placeholder="姓名 / Your Name" required>
                 <input type="email" id="b-email" class="form-input" placeholder="邮箱 / Your Email" required>
                 <input type="tel" id="b-phone" class="form-input" placeholder="电话 / Your Phone" required>
                 
-                <h4 style="font-size:1rem; margin: 20px 0 10px 0; color:var(--text-main);" data-zh="空闲时间：" data-en="Available time:">空闲时间：</h4>
-                <div style="display: flex; gap: 8px;">
+                <h4 style="font-size:1.05rem; margin: 22px 0 12px 0; color:var(--text-main); font-weight:700;" data-zh="空闲时间：" data-en="Available time:">空闲时间：</h4>
+                <div style="display: flex; gap: 10px;">
                     <button class="time-btn" onclick="window.submitBooking('A')">时段 A</button>
                     <button class="time-btn" onclick="window.submitBooking('B')">时段 B</button>
                     <button class="time-btn" onclick="window.submitBooking('C')">时段 C</button>
                 </div>
             </form>
-            <div style="margin-top: 20px; text-align:center; font-size:0.95rem; cursor: pointer; color: var(--text-light); transition:0.3s;" onclick="window.closeBooking()" data-zh="取消预约" data-en="Cancel">取消预约</div>
-        </div>
-    </div>
-
-    <!-- Story Modal -->
-    <div id="story-modal" class="story-modal">
-        <div class="story-card">
-            <button class="story-close-btn" onclick="window.closeStoryModal()">✕</button>
-            <h1 id="story-member-name" style="font-family:var(--font-serif); font-size: 1.8rem; margin-bottom: 20px; color:var(--primary);"></h1>
-            <div id="story-content-view" style="font-size:1.05rem; line-height:1.8; color:var(--text-light); text-align:justify;"></div>
+            <div style="margin-top: 24px; text-align:center; font-size:0.98rem; cursor: pointer; color: var(--text-light); transition:all 0.3s; font-weight:600;" onclick="window.closeBooking()" data-zh="取消预约" data-en="Cancel">取消预约</div>
         </div>
     </div>
 
@@ -355,7 +484,7 @@
 
                     <div class="glass-card interactive-card" onclick="window.openStories()">
                         <div>
-                            <span class="card-overline" style="color:var(--accent); background:rgba(212, 175, 55, 0.1);" data-zh="个人故事" data-en="Stories">个人故事</span>
+                            <span class="card-overline" style="color:var(--accent); background:rgba(212, 175, 55, 0.15);" data-zh="个人故事" data-en="Stories">个人故事</span>
                             <h3 data-zh="创始人趣闻 ｜ Stories" data-en="Founder Stories">创始人趣闻 ｜ Stories</h3>
                             <p data-zh="阅读那些关于挑战、坚持与融入的真实经历。" data-en="Read real experiences about challenges, persistence, and integration.">阅读那些关于挑战、坚持与融入的真实经历。</p>
                         </div>
@@ -391,7 +520,7 @@
                     </div>
                     <div class="glass-card interactive-card" onclick="window.openStories()">
                         <div>
-                            <span class="card-overline" style="color:var(--accent); background:rgba(212, 175, 55, 0.1);" data-zh="个人故事" data-en="Stories">个人故事</span>
+                            <span class="card-overline" style="color:var(--accent); background:rgba(212, 175, 55, 0.15);" data-zh="个人故事" data-en="Stories">个人故事</span>
                             <h3 data-zh="创始人趣闻 ｜ Stories" data-en="Founder Stories">创始人趣闻 ｜ Stories</h3>
                             <p data-zh="阅读那些关于挑战、坚持与融入的真实经历。" data-en="Read real experiences about challenges, persistence, and integration.">阅读那些关于挑战、坚持与融入的真实经历。</p>
                         </div>
@@ -420,14 +549,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             const track = document.getElementById('scroll-track');
             let isScrolling = true;
-            let scrollSpeed = 0.8; // 调整自动滚动速度 (像素/帧)
+            let scrollSpeed = 0.8;
             
-            // 使用 requestAnimationFrame 提供最丝滑的滚动
             function autoScroll() {
                 if (isScrolling && track) {
                     track.scrollLeft += scrollSpeed;
                     
-                    // 当滚动条到达中间点（第一组已完全滚出视图）时，瞬间将进度切回0
                     if (track.scrollLeft >= track.scrollWidth / 2) {
                         track.scrollLeft = 0;
                     }
@@ -436,16 +563,13 @@
             }
             
             if (track) {
-                // 启动循环
                 requestAnimationFrame(autoScroll);
                 
-                // 悬停/触摸控制：用户接管时暂停自动滚动
                 track.addEventListener('mouseenter', () => isScrolling = false);
                 track.addEventListener('mouseleave', () => isScrolling = true);
                 
                 track.addEventListener('touchstart', () => isScrolling = false, {passive: true});
                 track.addEventListener('touchend', () => {
-                    // 触摸结束后延迟一点恢复，体验更好
                     setTimeout(() => isScrolling = true, 500); 
                 });
             }
@@ -507,26 +631,28 @@
                 en: `<h3>Social & Communication Apps</h3>
                      <p>Socializing in the US relies on a different set of tools. Here are the essentials:</p>
                      <ul>
-                         <li><b>Instagram / Snapchat:</b> The go-to apps for young people to connect and share daily life.</li>
-                         <li><b>iMessage / SMS:</b> Texting is still the primary method for direct communication in the US.</li>
-                         <li><b>LinkedIn:</b> Your professional profile. Crucial for networking and internships.</li>
-                         <li><b>WhatsApp / Venmo:</b> Great for group chats and splitting bills with friends.</li>
+                         <li><b>Instagram / Snapchat:</b> The go-to apps for daily sharing and making friends.</li>
+                         <li><b>iMessage / SMS:</b> Americans rely heavily on texting for daily communication.</li>
+                         <li><b>LinkedIn:</b> Essential for career networking and finding internships.</li>
+                         <li><b>WhatsApp:</b> Popular for splitting bills and money transfers among friends.</li>
                      </ul>`
             },
             {
-                zh: `<h3>出行与交通 (Transportation)</h3>
-                     <p>美国的公共交通系统因城市而异，但出行软件是全美通用的：</p>
+                zh: `<h3>学业与工作软件 (Academic & Work Apps)</h3>
+                     <p>这些工具在学校和工作中不可或缺：</p>
                      <ul>
-                         <li><b>Google Maps：</b> 出门必备！不仅能导航开车，看公交地铁班次也非常精准。</li>
-                         <li><b>Uber / Lyft：</b> 美国两大打车软件，建议两个都下载，每次打车前比对一下价格。</li>
-                         <li><b>学校专属大巴 App：</b> 大部分美国高校都有自己的 Shuttle 系统，入学后记得第一时间下载。</li>
+                         <li><b>Canvas / Blackboard：</b> 大多数美国大学的学习管理系统，查看作业、提交文件全靠它。</li>
+                         <li><b>Zoom：</b> 虚拟课堂和远程会议的标准工具。</li>
+                         <li><b>Microsoft Office 365：</b> 学生通常免费获得，包括Word、Excel、PowerPoint。</li>
+                         <li><b>Google Workspace：</b> 许多学校和公司使用Gmail、Google Drive、Google Meet。</li>
                      </ul>`,
-                en: `<h3>Transportation Apps</h3>
-                     <p>Navigating US cities is made easy with these standard apps:</p>
+                en: `<h3>Academic & Work Apps</h3>
+                     <p>These tools are essential for school and work:</p>
                      <ul>
-                         <li><b>Google Maps:</b> The absolute essential for driving, walking, or public transit schedules.</li>
-                         <li><b>Uber / Lyft:</b> The two main rideshare apps. Compare prices before booking!</li>
-                         <li><b>University Shuttle Apps:</b> Most colleges have an app to track campus buses.</li>
+                         <li><b>Canvas / Blackboard:</b> Learning management systems used by most US universities.</li>
+                         <li><b>Zoom:</b> Standard tool for virtual classes and remote meetings.</li>
+                         <li><b>Microsoft Office 365:</b> Usually free for students, includes Word, Excel, PowerPoint.</li>
+                         <li><b>Google Workspace:</b> Many schools use Gmail, Google Drive, and Google Meet.</li>
                      </ul>`
             },
             {
@@ -550,38 +676,14 @@
         ];
         let currentReadmePage = 0;
 
-        const memberStories = {
-            kemi: {
-                name: { zh: "Kemi (Yuannan Huang)", en: "Kemi (Yuannan Huang)" },
-                story: {
-                    zh: "我在四年级时移民到美国，深刻理解适应新语言和文化的挑战。随着时间推移，我找到了自信，建立了牢固的友谊，这激励我帮助他人走上相同的道路。<br><br>作为 Reiz EZ Life 的创始人兼主席，我为新移民学生提供指导和支持，确保他们在新环境中感到被支持、有准备和充满信心。我喜欢和朋友们一起出去玩、打无板曲棍球和到处旅游。请随时与我联系，一起聊天。我期待与你交流！",
-                    en: "I immigrated to the U.S. in fourth grade and understand how challenging it can be to adjust to a new language and culture. Over time, I found confidence and built strong connections, which inspired me to help others navigate the same journey. As the Founder and President of Reiz EZ Life, I provide mentorship and guidance to ensure new immigrant students feel supported, prepared, and confident in their new environment. I love hanging out with my friends, playing lacrosse, and traveling to different places. Please feel free to reach out and have a chat with me. I am looking forward to it!"
-                }
-            },
-            kiki: {
-                name: { zh: "Kiki (Name)", en: "Kiki (Name)" },
-                story: {
-                    zh: "我8岁时移民到美国，记得当时适应新的学校系统、不同的社交期望和陌生环境是多么令人感到压倒性的。我经常希望有一个真正理解我正在经历的人。正因为这段经历，我希望帮助新移民学生在学业和社交生活中顺利适应，让他们感到不那么孤独，更加有自信。<br><br>我可以就适应学校、建立友谊和参与活动提供指导。参与足球、冰球和无板曲棍球等运动多年，以及长年学习芭蕾舞帮助我在这里找到了属于自己的位置，我希望鼓励其他学生也去探索他们的兴趣。最重要的是，我总是愿意倾听，希望学生们感到舒适，知道他们有一个理解他们并准备支持他们的人。",
-                    en: "When I immigrated to the United States at 8 years old, I remember how overwhelming it felt to adjust to a new school system, different social expectations, and an unfamiliar environment. I often wished I had someone who truly understood what I was going through. Because of that experience, I want to help new immigrant students navigate both their academic and social lives so they feel less alone and more confident. I can offer guidance on adjusting to school, building friendships, and getting involved in activities. Being active in sports like soccer, ice hockey, and lacrosse, dancing ballet for many years helped me find my place here, and I hope to encourage others to explore their interests as well. Most importantly, I am always willing to listen and want students to feel comfortable reaching out, knowing they have someone who understands and is ready to support them."
-                }
-            }
-        };
-
         const contactsData = [
             {
                 id: 1, name: "Kemi (Yuannan Huang)", pic: "/file/pics/kemy.jpg", email: "kemy0906@gmail.com", phone: "617-659-5400",
-                intro: { zh: "Reiz EZ Life 创始人。乐意解答关于学业规划、生活融入的各种问题。", en: "Founder of Reiz EZ Life. Happy to help with academic and lifestyle queries." },
-                storyKey: "kemi"
+                intro: { zh: "Reiz EZ Life 创始人。乐意解答关于学业规划、生活融入的各种问题。", en: "Founder of Reiz EZ Life. Happy to help with academic and lifestyle queries." }
             },
             {
                 id: 2, name: "Bobby (Shengxi Lei)", pic: "/file/pics/bobby.jpg", email: "shengxilei@gmail.com", phone: "617-593-4866",
-                intro: { zh: "Reiz EZ Life 首席工程师。乐意解答关于升学规划、职业规划的各种问题。", en: "Chief Engineer of Reiz EZ Life. Happy to help with college and career planning." },
-                storyKey: null
-            },
-            {
-                id: 3, name: "Kiki", pic: "/file/pics/kiki.jpg", email: "kiki@reizezlife.com", phone: "617-XXX-XXXX",
-                intro: { zh: "Reiz EZ Life 学生导师。乐意帮助新移民学生适应学校和社交生活。", en: "Student Mentor at Reiz EZ Life. Happy to help new immigrant students with school and social adjustment." },
-                storyKey: "kiki"
+                intro: { zh: "Reiz EZ Life 首席工程师。乐意解答关于升学规划、职业规划的各种问题。", en: "Chief Engineer of Reiz EZ Life. Happy to help with college and career planning." }
             }
         ];
         let currentBookingEmail = "";
@@ -617,17 +719,6 @@
         window.openResources = () => { document.getElementById('resources-modal').classList.add('active'); currentReadmePage = 0; window.renderReadmePage(); window.renderContacts(); };
         window.closeResources = () => { document.getElementById('resources-modal').classList.remove('active'); };
 
-        window.openStoryModal = function(storyKey) {
-            const story = memberStories[storyKey];
-            if(!story) return;
-            document.getElementById('story-member-name').textContent = story.name[window.currentLang];
-            document.getElementById('story-content-view').innerHTML = story.story[window.currentLang];
-            document.getElementById('story-modal').classList.add('active');
-        };
-        window.closeStoryModal = function() {
-            document.getElementById('story-modal').classList.remove('active');
-        };
-
         window.renderReadmePage = () => {
             const container = document.getElementById('readme-content-view');
             if(!container) return;
@@ -644,19 +735,14 @@
             contactsData.forEach(c => {
                 const introText = window.currentLang === 'zh' ? c.intro.zh : c.intro.en;
                 const bookText = window.currentLang === 'zh' ? '预约沟通' : 'Book a Session';
-                const storyText = window.currentLang === 'zh' ? '我的故事' : 'My Story';
-                let actionButtons = `<button class="book-btn" onclick="window.openBooking('${c.email}')">${bookText}</button>`;
-                if(c.storyKey) {
-                    actionButtons += `<button class="story-btn" onclick="window.openStoryModal('${c.storyKey}')">${storyText}</button>`;
-                }
                 html += `
                     <div class="contact-item">
                         <img src="${c.pic}" alt="${c.name}" class="contact-photo" onerror="this.src='https://via.placeholder.com/70?text=Photo'">
                         <div style="flex:1; text-align: left;">
-                            <h3 style="font-family:var(--font-serif); font-size:1.1rem; color:var(--primary); margin-bottom:3px;">${c.name}</h3>
-                            <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:8px; line-height:1.4;">${introText}</p>
+                            <h3 style="font-family:var(--font-serif); font-size:1.1rem; color:var(--primary); margin-bottom:3px; font-weight:700;">${c.name}</h3>
+                            <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:8px; line-height:1.5;">${introText}</p>
                             <div class="contact-info-box">📧 ${c.email} <br> 📞 ${c.phone}</div>
-                            <div>${actionButtons}</div>
+                            <button class="book-btn" onclick="window.openBooking('${c.email}')">${bookText}</button>
                         </div>
                     </div>
                 `;
@@ -691,21 +777,30 @@
             for(let i = 0; i < articles.length; i++) {
                 const art = articles[i];
                 const title = window.currentLang === 'zh' ? art.zh : art.en;
+                const escapedTitle = title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
                 htmlContent += `
-                    <div class="article-preview-item" onclick="window.loadArticleDetail('${art.id}', '${title}')">
+                    <div class="article-preview-item" data-article-id="${art.id}">
                         <h4>${title}</h4><p>${art.date}</p>
                     </div>
                 `;
             }
             listContainer.innerHTML = htmlContent;
+            // Add event listeners to all article items
+            document.querySelectorAll('.article-preview-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const id = this.getAttribute('data-article-id');
+                    window.loadArticleDetail(id);
+                });
+            });
         };
 
-        window.loadArticleDetail = function(id, title) {
+        window.loadArticleDetail = function(id) {
             document.getElementById('article-list-view').style.display = 'none';
             document.getElementById('article-detail-view').style.display = 'block';
             document.getElementById('article-back-btn').style.display = 'block';
-            document.getElementById('stories-title').innerText = title;
             const currentArticle = articles.find(art => art.id === id);
+            const title = window.currentLang === 'zh' ? currentArticle.zh : currentArticle.en;
+            document.getElementById('stories-title').innerText = title;
             const largeArticleIds = ['1', '2', '3', '11'];
             if (largeArticleIds.includes(id)) {
                 document.getElementById('article-detail-view').innerHTML = `
@@ -745,7 +840,7 @@
                     const modal = document.createElement('div');
                     Object.assign(modal.style, { 
                         position:'fixed', top:'0', left:'0', width:'100%', height:'100%', 
-                        backgroundColor:'rgba(10, 35, 66, 0.4)', backdropFilter:'blur(20px)', WebkitBackdropFilter:'blur(20px)',
+                        backgroundColor:'rgba(10, 35, 66, 0.6)', backdropFilter:'blur(25px)', WebkitBackdropFilter:'blur(25px)',
                         display:'flex', justifyContent:'center', alignItems:'center', zIndex:'10000',
                         opacity: '0', transition: 'opacity 0.4s ease'
                     });
@@ -758,19 +853,19 @@
                     const gmailUrl = "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzDsPjJjRflqbGJssRVMvqdgXbMGmPHCjzpBMFrnmZZZbBkwhxqcnWCrPNqMmwJqlbKmXWP";
 
                     modal.innerHTML = `
-                        <div style="background:rgba(255,255,255,0.95); padding:35px 25px; border-radius:24px; text-align:center; width:90%; max-width:350px; box-shadow:0 20px 40px rgba(0,0,0,0.15); transform:translateY(30px) scale(0.98); transition:all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);" id="contact-modal-card">
-                            <h2 style="font-family:var(--font-serif); font-size:1.6rem; margin-bottom:20px; color:var(--primary); font-weight:700;">${texts.title}</h2>
-                            <div style="display:flex; flex-direction:column; gap:12px;">
-                                <a href="${gmailUrl}" target="_blank" style="display:block; padding:14px; background:var(--primary); color:white; border-radius:30px; text-decoration:none; font-weight:600; font-size:1rem;">📧 ${texts.email}</a>
-                                <a href="tel:6176595400" style="display:block; padding:14px; background:white; color:var(--primary); border:1px solid rgba(0,0,0,0.1); border-radius:30px; text-decoration:none; font-weight:600; font-size:1rem;">📞 ${texts.call}</a>
-                                <div id="close-contact" style="padding:12px; color:var(--text-light); cursor:pointer; font-size:0.95rem; font-weight:500; margin-top:5px;">${texts.cancel}</div>
+                        <div style="background:rgba(255,255,255,0.98); padding:40px 28px; border-radius:24px; text-align:center; width:90%; max-width:380px; box-shadow:0 30px 60px rgba(0,0,0,0.2); transform:translateY(30px) scale(0.95); transition:all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);" id="contact-modal-card">
+                            <h2 style="font-family:var(--font-serif); font-size:1.8rem; margin-bottom:22px; color:var(--primary); font-weight:800;">${texts.title}</h2>
+                            <div style="display:flex; flex-direction:column; gap:14px;">
+                                <a href="${gmailUrl}" target="_blank" style="display:block; padding:15px; background:linear-gradient(135deg, var(--primary) 0%, #163861 100%); color:white; border-radius:30px; text-decoration:none; font-weight:700; font-size:1.05rem; transition:all 0.3s;">📧 ${texts.email}</a>
+                                <a href="tel:6176595400" style="display:block; padding:15px; background:white; color:var(--primary); border:2px solid rgba(10, 35, 66, 0.15); border-radius:30px; text-decoration:none; font-weight:700; font-size:1.05rem; transition:all 0.3s;">📞 ${texts.call}</a>
+                                <div id="close-contact" style="padding:12px; color:var(--text-light); cursor:pointer; font-size:0.98rem; font-weight:600; margin-top:8px; transition:all 0.3s;">${texts.cancel}</div>
                             </div>
                         </div>`;
                     document.body.appendChild(modal);
                     setTimeout(() => { modal.style.opacity = '1'; document.getElementById('contact-modal-card').style.transform = 'translateY(0) scale(1)'; }, 10);
                     document.getElementById('close-contact').onclick = () => {
                         modal.style.opacity = '0';
-                        document.getElementById('contact-modal-card').style.transform = 'translateY(30px) scale(0.98)';
+                        document.getElementById('contact-modal-card').style.transform = 'translateY(30px) scale(0.95)';
                         setTimeout(() => document.body.removeChild(modal), 400);
                     };
                 }

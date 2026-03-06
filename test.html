@@ -168,16 +168,37 @@
         .pagination-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         /* 联系人表单 */
-        .contact-item { display: flex; gap: 15px; padding: 15px; background: rgba(0,0,0,0.02); border-radius: var(--radius-md); margin-bottom: 15px; align-items: center; border: 1px solid rgba(0,0,0,0.04); }
-        .contact-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.08); }
+        .contact-item { display: flex; gap: 15px; padding: 15px; background: rgba(0,0,0,0.02); border-radius: var(--radius-md); margin-bottom: 15px; align-items: flex-start; border: 1px solid rgba(0,0,0,0.04); }
+        .contact-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.08); flex-shrink: 0; }
         .contact-info-box { font-size: 0.85rem; color: var(--text-light); margin-top: 5px; font-family: monospace; }
-        .book-btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; cursor: pointer; margin-top: 8px; }
+        .book-btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; cursor: pointer; margin-right: 8px; margin-top: 8px; transition: all 0.3s; }
+        .book-btn:hover { background: var(--secondary); transform: translateY(-2px); }
+        .story-btn { background: rgba(212, 175, 55, 0.2); color: var(--primary); border: 1px solid rgba(212, 175, 55, 0.5); padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; cursor: pointer; margin-top: 8px; transition: all 0.3s; }
+        .story-btn:hover { background: rgba(212, 175, 55, 0.4); border-color: var(--accent); }
 
         /* 防止 iOS 缩放，设定字体必须为 16px */
         .form-input { width: 100%; padding: 14px 18px; margin-bottom: 12px; border-radius: var(--radius-md); border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.8); font-size: 16px; outline: none; font-family: var(--font-sans); }
         .form-input:focus { border-color: var(--primary); background: white; }
         .time-btn { flex: 1; padding: 12px; border: 1px solid rgba(0,0,0,0.1); background: white; border-radius: var(--radius-md); cursor: pointer; color: var(--text-main); font-weight: 600; font-size: 0.95rem; }
         .time-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Story modal styles */
+        .story-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 35, 66, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            display: flex; justify-content: center; align-items: center; z-index: 10001; opacity: 0; visibility: hidden; 
+            transition: all 0.4s var(--bezier); padding: 15px; }
+        .story-modal.active { opacity: 1; visibility: visible; }
+        .story-card { background: rgba(255, 255, 255, 0.96); padding: 40px; border-radius: var(--radius-xl);
+            width: 100%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 1px solid var(--glass-border);
+            transform: translateY(20px) scale(0.98); transition: all 0.4s var(--bezier); }
+        .story-modal.active .story-card { transform: translateY(0) scale(1); }
+        .story-card::-webkit-scrollbar { width: 5px; }
+        .story-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .story-close-btn { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.05); border: none; 
+            width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.3rem; color: var(--primary); 
+            display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .story-close-btn:hover { background: var(--primary); color: white; }
 
         footer { text-align: center; font-size: 0.9rem; color: var(--text-light); padding: 30px 0; border-top: 1px solid rgba(0,0,0,0.05); }
 
@@ -209,7 +230,7 @@
             .welcome-lang-btn { top: 15px; right: 15px; padding: 5px 12px; font-size: 0.85rem; }
             .founder-card h1 { font-size: 1.8rem; margin-top: 30px; margin-bottom: 15px !important; } /* 给语言按钮留出顶部空间 */
             
-            .contact-item { flex-direction: column; text-align: center; padding: 15px 10px; }
+            .contact-item { flex-direction: column; text-align: center; padding: 15px 10px; align-items: center; }
             .contact-photo { width: 60px; height: 60px; margin-bottom: 5px; }
             
             /* 两列布局改单列 */
@@ -283,6 +304,15 @@
                 </div>
             </form>
             <div style="margin-top: 20px; text-align:center; font-size:0.95rem; cursor: pointer; color: var(--text-light); transition:0.3s;" onclick="window.closeBooking()" data-zh="取消预约" data-en="Cancel">取消预约</div>
+        </div>
+    </div>
+
+    <!-- Story Modal -->
+    <div id="story-modal" class="story-modal">
+        <div class="story-card">
+            <button class="story-close-btn" onclick="window.closeStoryModal()">✕</button>
+            <h1 id="story-member-name" style="font-family:var(--font-serif); font-size: 1.8rem; margin-bottom: 20px; color:var(--primary);"></h1>
+            <div id="story-content-view" style="font-size:1.05rem; line-height:1.8; color:var(--text-light); text-align:justify;"></div>
         </div>
     </div>
 
@@ -503,7 +533,7 @@
                 zh: `<h3>生活与实用工具 (Lifestyle & Utilities)</h3>
                      <p>为了让生活更便利，这些也是装机必备：</p>
                      <ul>
-                         <li><b>Yelp：</b> 美国的“大众点评”，找餐厅、看真实评价非常好用。</li>
+                         <li><b>Yelp：</b> 美国的"大众点评"，找餐厅、看真实评价非常好用。</li>
                          <li><b>Amazon：</b> 解决你90%的网购需求，学生注册 Prime 会员有免费两日达和超大折扣。</li>
                          <li><b>UberEats / DoorDash：</b> 外卖软件，虽然有服务费和小费，但赶赶赶赶due时是救星。</li>
                          <li><b>Zelle：</b> 绑定美国银行卡后的免费即时转账系统。</li>
@@ -520,14 +550,38 @@
         ];
         let currentReadmePage = 0;
 
+        const memberStories = {
+            kemi: {
+                name: { zh: "Kemi (Yuannan Huang)", en: "Kemi (Yuannan Huang)" },
+                story: {
+                    zh: "我在四年级时移民到美国，深刻理解适应新语言和文化的挑战。随着时间推移，我找到了自信，建立了牢固的友谊，这激励我帮助他人走上相同的道路。<br><br>作为 Reiz EZ Life 的创始人兼主席，我为新移民学生提供指导和支持，确保他们在新环境中感到被支持、有准备和充满信心。我喜欢和朋友们一起出去玩、打无板曲棍球和到处旅游。请随时与我联系，一起聊天。我期待与你交流！",
+                    en: "I immigrated to the U.S. in fourth grade and understand how challenging it can be to adjust to a new language and culture. Over time, I found confidence and built strong connections, which inspired me to help others navigate the same journey. As the Founder and President of Reiz EZ Life, I provide mentorship and guidance to ensure new immigrant students feel supported, prepared, and confident in their new environment. I love hanging out with my friends, playing lacrosse, and traveling to different places. Please feel free to reach out and have a chat with me. I am looking forward to it!"
+                }
+            },
+            kiki: {
+                name: { zh: "Kiki (Name)", en: "Kiki (Name)" },
+                story: {
+                    zh: "我8岁时移民到美国，记得当时适应新的学校系统、不同的社交期望和陌生环境是多么令人感到压倒性的。我经常希望有一个真正理解我正在经历的人。正因为这段经历，我希望帮助新移民学生在学业和社交生活中顺利适应，让他们感到不那么孤独，更加有自信。<br><br>我可以就适应学校、建立友谊和参与活动提供指导。参与足球、冰球和无板曲棍球等运动多年，以及长年学习芭蕾舞帮助我在这里找到了属于自己的位置，我希望鼓励其他学生也去探索他们的兴趣。最重要的是，我总是愿意倾听，希望学生们感到舒适，知道他们有一个理解他们并准备支持他们的人。",
+                    en: "When I immigrated to the United States at 8 years old, I remember how overwhelming it felt to adjust to a new school system, different social expectations, and an unfamiliar environment. I often wished I had someone who truly understood what I was going through. Because of that experience, I want to help new immigrant students navigate both their academic and social lives so they feel less alone and more confident. I can offer guidance on adjusting to school, building friendships, and getting involved in activities. Being active in sports like soccer, ice hockey, and lacrosse, dancing ballet for many years helped me find my place here, and I hope to encourage others to explore their interests as well. Most importantly, I am always willing to listen and want students to feel comfortable reaching out, knowing they have someone who understands and is ready to support them."
+                }
+            }
+        };
+
         const contactsData = [
             {
                 id: 1, name: "Kemi (Yuannan Huang)", pic: "/file/pics/kemy.jpg", email: "kemy0906@gmail.com", phone: "617-659-5400",
-                intro: { zh: "Reiz EZ Life 创始人。乐意解答关于学业规划、生活融入的各种问题。", en: "Founder of Reiz EZ Life. Happy to help with academic and lifestyle queries." }
+                intro: { zh: "Reiz EZ Life 创始人。乐意解答关于学业规划、生活融入的各种问题。", en: "Founder of Reiz EZ Life. Happy to help with academic and lifestyle queries." },
+                storyKey: "kemi"
             },
             {
                 id: 2, name: "Bobby (Shengxi Lei)", pic: "/file/pics/bobby.jpg", email: "shengxilei@gmail.com", phone: "617-593-4866",
-                intro: { zh: "Reiz EZ Life 首席工程师。乐意解答关于升学规划、职业规划的各种问题。", en: "Chief Engineer of Reiz EZ Life. Happy to help with college and career planning." }
+                intro: { zh: "Reiz EZ Life 首席工程师。乐意解答关于升学规划、职业规划的各种问题。", en: "Chief Engineer of Reiz EZ Life. Happy to help with college and career planning." },
+                storyKey: null
+            },
+            {
+                id: 3, name: "Kiki", pic: "/file/pics/kiki.jpg", email: "kiki@reizezlife.com", phone: "617-XXX-XXXX",
+                intro: { zh: "Reiz EZ Life 学生导师。乐意帮助新移民学生适应学校和社交生活。", en: "Student Mentor at Reiz EZ Life. Happy to help new immigrant students with school and social adjustment." },
+                storyKey: "kiki"
             }
         ];
         let currentBookingEmail = "";
@@ -563,6 +617,17 @@
         window.openResources = () => { document.getElementById('resources-modal').classList.add('active'); currentReadmePage = 0; window.renderReadmePage(); window.renderContacts(); };
         window.closeResources = () => { document.getElementById('resources-modal').classList.remove('active'); };
 
+        window.openStoryModal = function(storyKey) {
+            const story = memberStories[storyKey];
+            if(!story) return;
+            document.getElementById('story-member-name').textContent = story.name[window.currentLang];
+            document.getElementById('story-content-view').innerHTML = story.story[window.currentLang];
+            document.getElementById('story-modal').classList.add('active');
+        };
+        window.closeStoryModal = function() {
+            document.getElementById('story-modal').classList.remove('active');
+        };
+
         window.renderReadmePage = () => {
             const container = document.getElementById('readme-content-view');
             if(!container) return;
@@ -579,6 +644,11 @@
             contactsData.forEach(c => {
                 const introText = window.currentLang === 'zh' ? c.intro.zh : c.intro.en;
                 const bookText = window.currentLang === 'zh' ? '预约沟通' : 'Book a Session';
+                const storyText = window.currentLang === 'zh' ? '我的故事' : 'My Story';
+                let actionButtons = `<button class="book-btn" onclick="window.openBooking('${c.email}')">${bookText}</button>`;
+                if(c.storyKey) {
+                    actionButtons += `<button class="story-btn" onclick="window.openStoryModal('${c.storyKey}')">${storyText}</button>`;
+                }
                 html += `
                     <div class="contact-item">
                         <img src="${c.pic}" alt="${c.name}" class="contact-photo" onerror="this.src='https://via.placeholder.com/70?text=Photo'">
@@ -586,7 +656,7 @@
                             <h3 style="font-family:var(--font-serif); font-size:1.1rem; color:var(--primary); margin-bottom:3px;">${c.name}</h3>
                             <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:8px; line-height:1.4;">${introText}</p>
                             <div class="contact-info-box">📧 ${c.email} <br> 📞 ${c.phone}</div>
-                            <button class="book-btn" onclick="window.openBooking('${c.email}')">${bookText}</button>
+                            <div>${actionButtons}</div>
                         </div>
                     </div>
                 `;
