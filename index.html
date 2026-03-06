@@ -521,6 +521,15 @@
             top: 120px;
         }
 
+        /* Member Details Modal - for mobile */
+        .member-details-modal {
+            display: none;
+        }
+
+        .member-details-modal.active {
+            display: block;
+        }
+
         /* Default Panel Content - Fancy */
         .default-panel {
             height: 100%;
@@ -1093,6 +1102,10 @@
                 font-size: 1rem;
                 padding: 14px 14px 14px 44px;
             }
+
+            .right-panel {
+                display: none;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1131,6 +1144,10 @@
             .sidebar-nav a {
                 padding: 12px 12px;
                 font-size: 0.95rem;
+            }
+
+            .right-panel {
+                display: none;
             }
         }
 
@@ -1171,7 +1188,6 @@
                     <ul class="sidebar-nav">
                         <li><a href="#home" onclick="scrollToSection('home')" class="nav-home" data-zh="🏠 首页" data-en="🏠 Home">🏠 首页</a></li>
                         <li><a href="#team" onclick="scrollToSection('team')" class="nav-team" data-zh="👥 团队" data-en="👥 Team">👥 团队</a></li>
-                        <li><a href="#resources" onclick="scrollToSection('resources')" class="nav-resources" data-zh="📚 资源" data-en="📚 Resources">📚 资源</a></li>
                         <li><a href="#stories" onclick="window.openStories()" class="nav-stories" data-zh="📖 故事" data-en="📖 Stories">📖 故事</a></li>
                     </ul>
                 </div>
@@ -1179,8 +1195,7 @@
                 <div class="sidebar-section">
                     <span class="sidebar-label" data-zh="快速访问" data-en="Quick Access">快速访问</span>
                     <ul class="sidebar-nav">
-                        <li><a href="#" onclick="window.openContent('life')" data-zh="🌱 成长之路" data-en="🌱 Growth">🌱 成长之路</a></li>
-                        <li><a href="#" onclick="window.openResources()" data-zh="🛠️ 生活工具" data-en="🛠️ Tools">🛠️ 生活工具</a></li>
+                        <li><a href="#" onclick="window.openLife()" data-zh="🌱 成长之路" data-en="🌱 Growth">🌱 成长之路</a></li>
                         <li><a href="#" onclick="document.querySelector('.join-trigger').click()" data-zh="📧 联系我们" data-en="📧 Contact">📧 联系我们</a></li>
                     </ul>
                 </div>
@@ -1192,15 +1207,7 @@
 
             <!-- MAIN CONTENT -->
             <main class="main-content">
-                <!-- Search Section -->
-                <div class="search-section" id="home">
-                    <div class="search-container">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" class="search-input" id="search-input" placeholder="Search stories, resources, team..." data-zh="搜索故事、资源或团队成员..." data-en="Search stories, resources, team...">
-                    </div>
-                </div>
 
-                <!-- Hero Section -->
                 <div class="hero">
                     <h1 data-zh="一个可以成长、归属，并成为自己的地方" data-en="A Place to Grow, Belong, & Become">一个可以成长、归属，并成为自己的地方</h1>
                     <p data-zh="为新移民子女与留学生打造的支持性空间，致力于平稳过渡与自我成长。" data-en="A supportive space for children of immigrants and international students, dedicated to smooth transitions and personal growth.">为新移民子女与留学生打造的支持性空间，致力于平稳过渡与自我成长。</p>
@@ -1226,34 +1233,14 @@
                     </button>
                 </div>
 
-                <!-- Featured Section -->
-                <div class="featured-section" id="resources">
-                    <h2 data-zh="升学 | Application" data-en="Application | Apply Now">升学 | Application</h2>
-                    <p data-zh="千里之行，始于足下。我们在每一步陪伴你。" data-en="Dream big, work hard. We are with you every step.">千里之行，始于足下。我们在每一步陪伴你。</p>
-                    <div class="tag-list">
-                        <span class="tag" data-zh="新移民" data-en="Immigrant">新移民</span>
-                        <span class="tag" data-zh="留学生" data-en="Students">留学生</span>
-                        <span class="tag" data-zh="学业规划" data-en="Planning">学业规划</span>
-                    </div>
-                    <button class="cta-button" onclick="document.querySelector('.join-trigger').click()" data-zh="现在开始" data-en="Get Started">现在开始</button>
-                </div>
-
                 <!-- Content Grid -->
                 <div class="content-grid">
-                    <div class="content-card" onclick="window.openContent('life')">
+                    <div class="content-card" onclick="window.openLife()">
                         <div class="card-icon">🌱</div>
                         <span class="card-label" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
                         <h3 data-zh="生活 | Life" data-en="Life">生活 | Life</h3>
-                        <p data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
-                        <a class="card-action" href="#" data-zh="了解更多 →" data-en="Learn more →">了解更多 →</a>
-                    </div>
-
-                    <div class="content-card" onclick="window.openResources()">
-                        <div class="card-icon">📚</div>
-                        <span class="card-label" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
-                        <h3 data-zh="资源指南 | Resources" data-en="Resources">资源指南 | Resources</h3>
-                        <p data-zh="从生活App推荐到专业导师预约，帮助您快速融入北美生活。" data-en="From app recommendations to booking mentors, we help you integrate quickly.">从生活App推荐到专业导师预约，帮助您快速融入北美生活。</p>
-                        <a class="card-action" href="#" data-zh="浏览资源 →" data-en="Browse →">浏览资源 →</a>
+                        <p data-zh="美国生活指南与实用工具，帮助您快速融入北美生活。" data-en="US life guides and practical tools to help you integrate quickly.">美国生活指南与实用工具，帮助您快速融入北美生活。</p>
+                        <a class="card-action" href="#" data-zh="查看指南 →" data-en="View Guide →">查看指南 →</a>
                     </div>
 
                     <div class="content-card" onclick="window.openStories()">
@@ -1322,7 +1309,10 @@
             <button class="modal-close" onclick="window.closeStories()">✕</button>
             <h2 id="stories-title" data-zh="创始人趣闻" data-en="Stories">创始人趣闻</h2>
             <div id="article-list-view"></div>
-            <div id="article-detail-view" style="display: none;"></div>
+            <div id="article-detail-view" style="display: none;">
+                <button class="cta-button" onclick="window.backToArticleList()" style="margin-bottom: 20px; width: 100%; background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color);" data-zh="← 返回列表" data-en="← Back to List">← 返回列表</button>
+                <div id="article-content"></div>
+            </div>
             <button class="cta-button" onclick="window.closeStories()" style="width: 100%; margin-top: 20px; background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color);" data-zh="关闭" data-en="Close">关闭</button>
         </div>
     </div>
@@ -1372,6 +1362,14 @@
         </div>
     </div>
 
+    <!-- Member Details Modal (Mobile) -->
+    <div id="member-details-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="document.getElementById('member-details-modal').classList.remove('active')">✕</button>
+            <div id="member-details-content"></div>
+        </div>
+    </div>
+
     <script>
         // Data - All content preserved
         const articles = [
@@ -1394,21 +1392,60 @@
             { id: '17', zh: "遇见好心人", en: "Meeting a Kind Person", date: "2017年11月22日", url: "/file/article/17.html" },
             { id: '18', zh: "奇妙的乐高城", en: "Wonderful Lego Land", date: "2017年11月12日", url: "/file/article/18.html" },
             { id: '19', zh: "爸爸与Kemi的聊天记录", en: "Dad & Kemi Chat Logs", date: "2017年11月12日", url: "/file/article/19.html" },
-            { id: '20', zh: "波士顿科学博物馆游览记", en: "Museum of Science Visit", date: "2017年11月11日", url: "/file/article/20.html" }
+            { id: '20', zh: "波士顿科学博物馆游览记", en: "Museum of Science Visit", date: "2017年11月11日", url: "/file/article/20.html" },
+            { id: '21', zh: "感恩节的回忆", en: "Thanksgiving Memories", date: "2017年11月9日", url: "/file/article/21.html" },
+            { id: '22', zh: "美国学校开学第一天", en: "First Day of School in US", date: "2017年9月8日", url: "/file/article/22.html" },
+            { id: '23', zh: "新英格兰水族馆之旅", en: "New England Aquarium Visit", date: "2017年8月20日", url: "/file/article/23.html" },
+            { id: '24', zh: "波士顿公园探险", en: "Boston Common Adventure", date: "2017年8月15日", url: "/file/article/24.html" },
+            { id: '25', zh: "美国超市购物初体验", en: "First Time Grocery Shopping", date: "2017年8月10日", url: "/file/article/25.html" },
+            { id: '26', zh: "独自去图书馆的故事", en: "My Library Adventure", date: "2017年8月5日", url: "/file/article/26.html" },
+            { id: '27', zh: "美国朋友家做客", en: "Visiting a Friend's House", date: "2017年7月28日", url: "/file/article/27.html" },
+            { id: '28', zh: "学骑自行车的经历", en: "Learning to Ride a Bike", date: "2017年7月22日", url: "/file/article/28.html" },
+            { id: '29', zh: "参加学校夏令营", en: "Summer Camp Experience", date: "2017年7月15日", url: "/file/article/29.html" },
+            { id: '30', zh: "波士顿海滩日记", en: "Beach Day in Boston", date: "2017年7月10日", url: "/file/article/30.html" },
+            { id: '31', zh: "第一次美国烧烤聚会", en: "First BBQ Party", date: "2017年7月4日", url: "/file/article/31.html" },
+            { id: '32', zh: "独立日游行观看记", en: "Independence Day Parade", date: "2017年7月3日", url: "/file/article/32.html" },
+            { id: '33', zh: "美国小学课堂观察", en: "American Classroom Experience", date: "2017年6月28日", url: "/file/article/33.html" },
+            { id: '34', zh: "初次尝试美国食物", en: "Trying American Food", date: "2017年6月20日", url: "/file/article/34.html" },
+            { id: '35', zh: "邻居们的热情欢迎", en: "Neighborhood Welcome", date: "2017年6月15日", url: "/file/article/35.html" },
+            { id: '36', zh: "美国住宅的惊喜发现", en: "Discoveries in American Homes", date: "2017年6月10日", url: "/file/article/36.html" },
+            { id: '37', zh: "抵达波士顿的第一天", en: "Arriving in Boston", date: "2017年6月1日", url: "/file/article/37.html" },
+            { id: '38', zh: "行李打包与告别", en: "Packing and Goodbyes", date: "2017年5月28日", url: "/file/article/38.html" },
+            { id: '39', zh: "移民美国的梦想与现实", en: "Dreams and Reality of Immigration", date: "2017年5月20日", url: "/file/article/39.html" }
         ];
 
         const readmePages = [
             {
-                zh: `<h3>社交与通讯软件 (Social Apps)</h3><p>在美国，主流的社交和通讯方式与国内有很大不同，掌握这些能帮你快速破冰：</p><ul><li><b>Instagram / Snapchat：</b> 年轻人最常用的日常分享与交友软件，加好友的首选。</li><li><b>iMessage / SMS：</b> 美国人非常依赖手机自带的短信功能进行日常沟通。</li><li><b>LinkedIn：</b> 必备的职场与校园社交名片，找实习、找导师全靠它。</li><li><b>WhatsApp：</b> 朋友之间AA制吃饭、转账最常用的软件。</li></ul>`,
-                en: `<h3>Social & Communication Apps</h3><p>Socializing in the US relies on a different set of tools. Here are the essentials:</p><ul><li><b>Instagram / Snapchat:</b> The go-to apps for young people to connect and share daily life.</li><li><b>iMessage / SMS:</b> Texting is still the primary method for direct communication in the US.</li><li><b>LinkedIn:</b> Your professional profile. Crucial for networking and internships.</li><li><b>WhatsApp / Venmo:</b> Great for group chats and splitting bills with friends.</li></ul>`
+                zh: `<h3>社交与通讯软件 (Social Apps)</h3><p>在美国，主流的社交和通讯方式与国内有很大不同，掌握这些能帮你快速破冰：</p><ul><li><b>Instagram / Snapchat：</b> 年轻人最常用的日常分享与交友软件，加好友的首选。</li><li><b>iMessage / SMS：</b> 美国人非常依赖手机自带的短信功能进行日常沟通。</li><li><b>LinkedIn：</b> 必备的职场与校园社交名片，找实习、找导师全靠它。</li><li><b>WhatsApp / Telegram：</b> 朋友之间AA制吃饭、转账最常用的软件。</li><li><b>Discord：</b> 大学生和年轻人的社群平台，很多学校和学习小组都用它。</li></ul>`,
+                en: `<h3>Social & Communication Apps</h3><p>Socializing in the US relies on a different set of tools. Here are the essentials:</p><ul><li><b>Instagram / Snapchat:</b> The go-to apps for young people to connect and share daily life.</li><li><b>iMessage / SMS:</b> Texting is still the primary method for direct communication in the US.</li><li><b>LinkedIn:</b> Your professional profile. Crucial for networking and internships.</li><li><b>WhatsApp / Telegram:</b> Great for group chats and splitting bills with friends.</li><li><b>Discord:</b> Popular among college students for community and study groups.</li></ul>`
             },
             {
-                zh: `<h3>出行与交通 (Transportation)</h3><p>美国的公共交通系统因城市而异，但出行软件是全美通用的：</p><ul><li><b>Google Maps：</b> 出门必备！不仅能导航开车，看公交地铁班次也非常精准。</li><li><b>Uber / Lyft：</b> 美国两大打车软件，建议两个都下载，每次打车前比对一下价格。</li><li><b>学校专属大巴 App：</b> 大部分美国高校都有自己的 Shuttle 系统，入学后记得第一时间下载。</li></ul>`,
-                en: `<h3>Transportation Apps</h3><p>Navigating US cities is made easy with these standard apps:</p><ul><li><b>Google Maps:</b> The absolute essential for driving, walking, or public transit schedules.</li><li><b>Uber / Lyft:</b> The two main rideshare apps. Compare prices before booking!</li><li><b>University Shuttle Apps:</b> Most colleges have an app to track campus buses.</li></ul>`
+                zh: `<h3>出行与交通 (Transportation)</h3><p>美国的公共交通系统因城市而异，但出行软件是全美通用的：</p><ul><li><b>Google Maps：</b> 出门必备！不仅能导航开车，看公交地铁班次也非常精准。</li><li><b>Uber / Lyft：</b> 美国两大打车软件，建议两个都下载，每次打车前比对一下价格。</li><li><b>学校专属大巴 App：</b> 大部分美国高校都有自己的 Shuttle 系统，入学后记得第一时间下载。</li><li><b>MTA/MBTA：</b> 不同城市的公共交通App，波士顿是MBTA，纽约是MTA。</li><li><b>Parking Apps：</b> 停车App如ParkWhiz或SpotHero，帮你找停车位。</li></ul>`,
+                en: `<h3>Transportation Apps</h3><p>Navigating US cities is made easy with these standard apps:</p><ul><li><b>Google Maps:</b> The absolute essential for driving, walking, or public transit schedules.</li><li><b>Uber / Lyft:</b> The two main rideshare apps. Compare prices before booking!</li><li><b>University Shuttle Apps:</b> Most colleges have an app to track campus buses.</li><li><b>MTA/MBTA:</b> City-specific transit apps. Boston uses MBTA, NYC uses MTA.</li><li><b>Parking Apps:</b> Apps like ParkWhiz and SpotHero help you find parking spots.</li></ul>`
             },
             {
-                zh: `<h3>生活与实用工具 (Lifestyle & Utilities)</h3><p>为了让生活更便利，这些也是装机必备：</p><ul><li><b>Yelp：</b> 美国的"大众点评"，找餐厅、看真实评价非常好用。</li><li><b>Amazon：</b> 解决你90%的网购需求，学生注册 Prime 会员有免费两日达和超大折扣。</li><li><b>UberEats / DoorDash：</b> 外卖软件，虽然有服务费和小费，但赶赶赶赶due时是救星。</li><li><b>Zelle：</b> 绑定美国银行卡后的免费即时转账系统。</li></ul>`,
-                en: `<h3>Lifestyle & Utilities</h3><p>Make your daily life more convenient with these tools:</p><ul><li><b>Yelp:</b> The best app for finding restaurants and reading local reviews.</li><li><b>Amazon:</b> Get a Student Prime account for free 2-day shipping.</li><li><b>UberEats / DoorDash:</b> Food delivery apps (remember to tip the driver!).</li><li><b>Zelle:</b> Built into most bank apps for instant, free money transfers.</li></ul>`
+                zh: `<h3>生活与实用工具 (Lifestyle & Utilities)</h3><p>为了让生活更便利，这些也是装机必备：</p><ul><li><b>Yelp：</b> 美国的"大众点评"，找餐厅、看真实评价非常好用。</li><li><b>Amazon：</b> 解决你90%的网购需求，学生注册 Prime 会员有免费两日达和超大折扣。</li><li><b>UberEats / DoorDash：</b> 外卖软件，虽然有服务费和小费，但赶赶due时是救星。</li><li><b>Zelle / Venmo：</b> 绑定美国银行卡后的免费即时转账系统。</li><li><b>Costco / Trader Joe's App：</b> 超市会员卡App，可以查看优惠和优先购物。</li></ul>`,
+                en: `<h3>Lifestyle & Utilities</h3><p>Make your daily life more convenient with these tools:</p><ul><li><b>Yelp:</b> The best app for finding restaurants and reading local reviews.</li><li><b>Amazon:</b> Get a Student Prime account for free 2-day shipping and discounts.</li><li><b>UberEats / DoorDash:</b> Food delivery apps (remember to tip the driver!).</li><li><b>Zelle / Venmo:</b> Built into most bank apps for instant, free money transfers.</li><li><b>Costco / Trader Joe's App:</b> Grocery store apps with member discounts and digital coupons.</li></ul>`
+            },
+            {
+                zh: `<h3>学习与工作 (Education & Work)</h3><p>为了在学术和职业生涯中成功，这些工具很重要：</p><ul><li><b>Canvas / Blackboard：</b> 大多数美国大学使用这些学习管理系统提交作业和查看成绩。</li><li><b>Zoom / Microsoft Teams：</b> 虚拟课堂和办公会议标准工具，疫情后仍然广泛使用。</li><li><b>Google Workspace：</b> Gmail, Docs, Sheets - 学校通常提供免费的整个Google套件。</li><li><b>Indeed / LinkedIn Jobs：</b> 找工作和实习的主要平台。</li><li><b>Glassdoor：</b> 查看公司评价和薪资信息。</li></ul>`,
+                en: `<h3>Education & Work</h3><p>Essential tools for academic and professional success:</p><ul><li><b>Canvas / Blackboard:</b> Learning management systems used by most US universities for assignments and grades.</li><li><b>Zoom / Microsoft Teams:</b> Virtual classroom and meeting tools, standard before and after the pandemic.</li><li><b>Google Workspace:</b> Gmail, Docs, Sheets - usually provided free to students by schools.</li><li><b>Indeed / LinkedIn Jobs:</b> Main platforms for finding jobs and internships.</li><li><b>Glassdoor:</b> Read company reviews and salary information.</li></ul>`
+            },
+            {
+                zh: `<h3>健康与健身 (Health & Fitness)</h3><p>保持身心健康在美国生活中很重要：</p><ul><li><b>MyFitnessPal / Strava：</b> 追踪运动和饮食的App，很多人用来保持健康。</li><li><b>Calm / Headspace：</b> 冥想和放松App，对缓解压力和改善睡眠很有帮助。</li><li><b>Google Fit / Apple Health：</b> 手机自带的健康追踪，与其他App联动。</li><li><b>ClassPass / Peloton：</b> 健身课程订阅，可以上瑜伽、跳舞等各种课程。</li><li><b>Teladoc / CVS MinuteClinic：</b> 远程医疗和诊所预约，如果没有美国医生很有用。</li></ul>`,
+                en: `<h3>Health & Fitness</h3><p>Maintaining physical and mental health is important in the US:</p><ul><li><b>MyFitnessPal / Strava:</b> Apps to track exercise and diet for staying healthy.</li><li><b>Calm / Headspace:</b> Meditation and relaxation apps to reduce stress and improve sleep.</li><li><b>Google Fit / Apple Health:</b> Built-in health tracking that syncs with other apps.</li><li><b>ClassPass / Peloton:</b> Fitness class subscriptions for yoga, dancing, and more.</li><li><b>Teladoc / CVS MinuteClinic:</b> Telehealth and clinic appointments useful if you don't have a regular doctor.</li></ul>`
+            },
+            {
+                zh: `<h3>文娱与休闲 (Entertainment & Leisure)</h3><p>美国有丰富的娱乐选项：</p><ul><li><b>Netflix / Hulu / Disney+：</b> 流媒体平台，提供电影、电视剧和纪录片。</li><li><b>Spotify / Apple Music：</b> 音乐流媒体，学生通常有折扣。</li><li><b>Movie Tickets App：</b> Fandango或AMC App，可以提前购买电影票。</li><li><b>Meetup：</b> 找当地活动和兴趣小组，扩展社交圈。</li><li><b>Eventbrite：</b> 查看和购买各种活动、音乐会和讲座门票。</li></ul>`,
+                en: `<h3>Entertainment & Leisure</h3><p>The US has abundant entertainment options:</p><ul><li><b>Netflix / Hulu / Disney+:</b> Streaming platforms with movies, TV shows, and documentaries.</li><li><b>Spotify / Apple Music:</b> Music streaming with student discounts available.</li><li><b>Movie Tickets App:</b> Fandango or AMC app to buy movie tickets in advance.</li><li><b>Meetup:</b> Find local events and interest groups to expand your social circle.</li><li><b>Eventbrite:</b> Browse and purchase tickets for concerts, lectures, and events.</li></ul>`
+            },
+            {
+                zh: `<h3>银行与财务 (Banking & Finance)</h3><p>在美国建立良好的财务基础很重要：</p><ul><li><b>Chase / Bank of America / Wells Fargo：</b> 主流银行，大多数有学生账户。</li><li><b>Wise (TransferWise)：</b> 国际转账费用低，对给家里汇钱很有用。</li><li><b>Mint / YNAB：</b> 个人财务管理App，帮你追踪支出和预算。</li><li><b>Robinhood / Fidelity：</b> 投资App，可以开始学习美国股市。</li><li><b>Credit Karma：</b> 免费查看信用分数，对贷款和租房很重要。</li></ul>`,
+                en: `<h3>Banking & Finance</h3><p>Building a strong financial foundation in the US is important:</p><ul><li><b>Chase / Bank of America / Wells Fargo:</b> Major banks with student accounts.</li><li><b>Wise (TransferWise):</b> Low-cost international transfers, great for sending money home.</li><li><b>Mint / YNAB:</b> Personal finance apps to track spending and budgets.</li><li><b>Robinhood / Fidelity:</b> Investment apps to start learning the US stock market.</li><li><b>Credit Karma:</b> Free credit score monitoring, important for loans and renting.</li></ul>`
+            },
+            {
+                zh: `<h3>租房与生活 (Housing & Living)</h3><p>找到合适的住处是生活的关键：</p><ul><li><b>Zillow / Apartments.com：</b> 找房子、公寓、室友的主要平台。</li><li><b>Airbnb：</b> 短期租住或找临时住处。</li><li><b>Nextdoor：</b> 邻近社区App，了解当地信息和安全。</li><li><b>Maintenance/Repair Apps：</b> TaskRabbit或Angi可以找到维修人员。</li><li><b>Utility Apps：</b> 电力、水、网络公司的App用来支付账单。</li></ul>`,
+                en: `<h3>Housing & Living</h3><p>Finding the right place to live is key to settling in:</p><ul><li><b>Zillow / Apartments.com:</b> Main platforms for finding apartments, houses, and roommates.</li><li><b>Airbnb:</b> Short-term rentals and temporary housing options.</li><li><b>Nextdoor:</b> Neighborhood app for local information and safety updates.</li><li><b>Maintenance/Repair Apps:</b> TaskRabbit or Angi for finding repair services.</li><li><b>Utility Apps:</b> Apps from electricity, water, and internet providers for paying bills.</li></ul>`
             }
         ];
 
@@ -1511,7 +1548,15 @@
                 ${story ? `<div class="member-story">${story.story[currentLang]}</div>` : ''}
             `;
             
-            document.getElementById('member-panel').innerHTML = html;
+            // Check screen size - if mobile (max-width 1024px), show modal
+            if (window.innerWidth < 1024) {
+                document.getElementById('member-details-content').innerHTML = html;
+                document.getElementById('member-details-modal').classList.add('active');
+            } else {
+                // Desktop - show in right panel
+                document.getElementById('member-panel').innerHTML = html;
+            }
+            
             window.updateLanguage(currentLang);
         };
 
@@ -1575,30 +1620,41 @@
             listContainer.innerHTML = htmlContent;
         };
 
+        window.backToArticleList = function() {
+            document.getElementById('article-list-view').style.display = 'block';
+            document.getElementById('article-detail-view').style.display = 'none';
+            document.getElementById('stories-title').textContent = currentLang === 'zh' ? '创始人趣闻' : 'Stories';
+            window.updateLanguage(currentLang);
+        };
+
         window.loadArticleDetail = function(id, title) {
             document.getElementById('article-list-view').style.display = 'none';
             document.getElementById('article-detail-view').style.display = 'block';
             document.getElementById('stories-title').textContent = title;
             const currentArticle = articles.find(art => art.id === id);
             const largeArticleIds = ['1', '2', '3', '11'];
+            const contentContainer = document.getElementById('article-content');
+            
             if (largeArticleIds.includes(id)) {
-                document.getElementById('article-detail-view').innerHTML = `<p style="padding: 16px; background: rgba(212, 175, 55, 0.15); border-radius: var(--radius-md); color: var(--text-light); font-size: 1rem;">${currentLang === 'zh' ? '内容较多，请前往阅读原文。' : 'Please visit the original post.'}<br><a href="${currentArticle.url}" target="_blank" style="color: var(--primary); font-weight: 700; display: inline-block; margin-top: 10px;">→ ${currentLang === 'zh' ? '访问原文' : 'Visit Original'}</a></p>`;
+                contentContainer.innerHTML = `<p style="padding: 16px; background: rgba(212, 175, 55, 0.15); border-radius: var(--radius-md); color: var(--text-light); font-size: 1rem;">${currentLang === 'zh' ? '内容较多，请前往阅读原文。' : 'Please visit the original post.'}<br><a href="${currentArticle.url}" target="_blank" style="color: var(--primary); font-weight: 700; display: inline-block; margin-top: 10px;">→ ${currentLang === 'zh' ? '访问原文' : 'Visit Original'}</a></p>`;
             } else if (currentArticle && currentArticle.url) {
-                document.getElementById('article-detail-view').innerHTML = `<iframe src="${currentArticle.url}" style="width: 100%; height: 400px; border: 2px solid var(--border-color); border-radius: var(--radius-md);" referrerpolicy="no-referrer"></iframe>`;
+                contentContainer.innerHTML = `<iframe src="${currentArticle.url}" style="width: 100%; height: 400px; border: 2px solid var(--border-color); border-radius: var(--radius-md);" referrerpolicy="no-referrer"></iframe>`;
             }
         };
 
         window.openContent = (type) => { if(type === 'life') alert(currentLang === 'zh' ? '成长是一个持续的过程。点击"资源"了解更多支持。' : 'Growth is continuous. Click Resources to learn more.'); };
 
+        window.openLife = function() {
+            document.getElementById('resources-modal').classList.add('active');
+            currentReadmePage = 0;
+            window.renderReadmePage();
+            window.renderContacts();
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             window.updateLanguage('zh');
             setTimeout(() => { document.getElementById('welcome-modal').classList.add('active'); }, 500);
             document.querySelector('.join-trigger').onclick = () => document.getElementById('contact-modal').classList.add('active');
-        });
-
-        document.getElementById('search-input').addEventListener('input', function(e) {
-            const query = e.target.value.toLowerCase();
-            console.log('Search:', query);
         });
     </script>
 </body>
