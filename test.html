@@ -4,454 +4,1376 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Youth Home | Reiz EZ Life</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;800&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Playfair+Display:wght@400;600;700;800&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap">
     <style>
         :root {
-            var(--primary): #0a2342;         
             --primary: #0a2342;
-            --secondary: #a31f1f;       
-            --accent: #d4af37;          
+            --secondary: #a31f1f;
+            --accent: #d4af37;
+            --accent-light: #e6c86c;
             --text-main: #1d1d1f;
             --text-light: #555555;
+            --text-muted: #888888;
+            --bg-light: #f8f6f1;
+            --bg-white: #fdfcfa;
+            --border-color: #d4af3766;
+            --hover-bg: #f3f0e8;
             
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-card-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.9);
-            --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 2px 8px rgba(10, 35, 66, 0.08);
+            --shadow-md: 0 8px 24px rgba(10, 35, 66, 0.15);
+            --shadow-lg: 0 16px 48px rgba(10, 35, 66, 0.2);
             
-            --radius-xl: 24px;
-            --radius-md: 16px;
-            --bezier: cubic-bezier(0.16, 1, 0.3, 1);
-            
-            --font-serif: 'Playfair Display', 'Noto Serif SC', serif;
-            --font-sans: 'Outfit', 'Noto Sans SC', sans-serif;
+            --font-serif: 'Cinzel', 'Playfair Display', 'Noto Serif SC', serif;
+            --font-serif-alt: 'Cormorant Garamond', serif;
+            --font-sans: 'Noto Sans SC', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
+        html, body {
+            height: 100%;
             font-family: var(--font-sans);
-            background: radial-gradient(circle at 10% 10%, #f0f4f8 0%, #e2ebf0 50%, #fef9e7 100%);
             color: var(--text-main);
-            min-height: 100vh;
+            background: linear-gradient(135deg, #f0e8dc 0%, #f8f6f1 50%, #faf8f3 100%);
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* 极光背景特效 */
-        .aurora {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(100px);
-            background: radial-gradient(circle at 20% 30%, #e9edc9 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, #faedcd 0%, transparent 40%),
-                        radial-gradient(circle at 50% 90%, #d8e2dc 0%, transparent 50%);
-            animation: pulse 15s infinite alternate var(--bezier);
+        /* Page Container - Centered */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 0;
         }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
 
-        /* --- 弹窗基础样式 --- */
-        .welcome-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 35, 66, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.4s var(--bezier); padding: 15px;
+        .page-wrapper {
+            width: 100%;
+            max-width: 1600px;
+            min-height: 100vh;
+            background: var(--bg-light);
+            position: relative;
         }
-        .welcome-overlay.active { opacity: 1; visibility: visible; }
 
-        .founder-card {
-            background: rgba(255, 255, 255, 0.96); padding: 40px; border-radius: var(--radius-xl);
-            width: 100%; max-width: 850px; max-height: 90vh; overflow-y: auto; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 1px solid var(--glass-border);
-            transform: translateY(20px) scale(0.98); transition: all 0.4s var(--bezier);
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(163, 31, 31, 0.03) 0%, transparent 50%);
+            z-index: -1;
+            animation: gradientShift 15s ease-in-out infinite;
+            pointer-events: none;
         }
-        .welcome-overlay.active .founder-card { transform: translateY(0) scale(1); }
-        .founder-card::-webkit-scrollbar { width: 5px; }
-        .founder-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
 
-        /* --- 导航栏 --- */
+        @keyframes gradientShift {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Decorative Elements */
+        .corner-accent {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .corner-accent {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 3px solid var(--accent);
+            opacity: 0.1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .corner-accent.top-left {
+            top: -50px;
+            left: -50px;
+        }
+
+        .corner-accent.bottom-right {
+            bottom: -50px;
+            right: -50px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(20px, 20px) rotate(10deg); }
+        }
+
+        /* Layout */
+        .layout-wrapper {
+            display: grid;
+            grid-template-columns: 280px 1fr 350px;
+            min-height: 100vh;
+            gap: 24px;
+            padding: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Header --- */
         header {
-            position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.4);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, var(--bg-white), var(--bg-light));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--accent);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            grid-column: 1 / -1;
         }
-        .nav-container { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; }
-        .logo { font-family: var(--font-serif); font-weight: 800; font-size: 1.6rem; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        .logo span { font-family: var(--font-sans); font-weight: 500; font-size: 0.85rem; color: var(--secondary); letter-spacing: 1px; text-transform: uppercase; }
-        .nav-links { display: flex; align-items: center; gap: 20px; }
-        .nav-links a { text-decoration: none; color: var(--text-main); font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .nav-links a:hover { color: var(--secondary); }
-        #lang-switch { background: rgba(255,255,255,0.6); padding: 6px 14px; border-radius: 20px; color: var(--primary); border: 1px solid var(--glass-border); cursor:pointer; font-weight:600; transition:0.3s; font-size: 0.9rem;}
-        #lang-switch:hover { background: var(--primary); color: white; }
 
-        /* --- 主视觉区域 (Hero Section) --- */
-        .hero-section { max-width: 800px; margin: 50px auto 30px; text-align: center; padding: 0 20px; }
-        .hero-section h1 { font-family: var(--font-serif); font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; line-height: 1.15; font-weight: 800; }
-        .hero-section p { font-size: 1.15rem; color: var(--text-light); margin-bottom: 25px; line-height: 1.7; font-weight: 400; }
-        .primary-cta-btn {
-            background: var(--primary); color: white; border: none; padding: 15px 35px; border-radius: 30px;
-            font-weight: 600; font-size: 1.1rem; cursor: pointer; letter-spacing: 1px;
-            transition: all 0.3s var(--bezier); box-shadow: 0 10px 25px rgba(10, 35, 66, 0.2); display: inline-block;
-        }
-        .primary-cta-btn:hover { background: var(--secondary); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(163, 31, 31, 0.3); }
-
-        /* =========================================
-           手动+自动滚动融合区域
-           ========================================= */
-        .bento-scroll-wrapper { width: 100%; padding: 10px 0 50px; }
-        
-        .bento-scroll-container {
+        .logo {
+            font-family: var(--font-serif);
+            font-weight: 900;
+            font-size: 1.8rem;
+            color: var(--primary);
             display: flex;
-            overflow-x: auto;
-            scroll-behavior: auto; /* 取消平滑滚动以防干扰JS逻辑 */
-            -webkit-overflow-scrolling: touch; /* 丝滑原生触摸滚动 */
-            padding-left: 20px; 
-            padding-right: 20px;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            letter-spacing: 2px;
         }
-        /* 隐藏滚动条 */
-        .bento-scroll-container::-webkit-scrollbar { display: none; }
-        .bento-scroll-container { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .bento-set {
+        .logo span {
+            font-family: var(--font-serif-alt);
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: var(--secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        /* --- Sidebar Navigation --- */
+        .sidebar {
+            padding: 20px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            position: sticky;
+            top: 120px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .sidebar-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 12px 16px 12px 0;
+            display: block;
+            font-family: var(--font-serif);
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin: 8px 0;
+        }
+
+        .sidebar-nav a {
             display: flex;
-            gap: 20px; /* 卡片之间的间距 */
-            padding-right: 20px; /* 集合之间的间距，必须和 gap 一致 */
-            flex-shrink: 0;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            background: rgba(212, 175, 55, 0);
         }
 
-        /* --- 卡片基础样式 --- */
-        .glass-card {
-            background: var(--glass-card-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: var(--radius-xl); padding: 30px;
-            display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s var(--bezier); 
-            box-shadow: var(--glass-shadow); position: relative; overflow: hidden;
-            flex: 0 0 auto; width: 340px; min-height: 360px; /* 统一尺寸，减小高度留白 */
+        .sidebar-nav a:hover {
+            background: rgba(212, 175, 55, 0.15);
+            border-left-color: var(--accent);
+            transform: translateX(8px);
+            box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.1);
         }
-        
-        .interactive-card { cursor: pointer; }
-        .interactive-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.95); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-        .interactive-card::after { content: '→'; position: absolute; bottom: 25px; right: 30px; font-size: 1.5rem; color: var(--primary); opacity: 0; transform: translateX(-10px); transition: all 0.3s; font-family: var(--font-sans); }
-        .interactive-card:hover::after { opacity: 1; transform: translateX(0); }
 
-        .card-overline { font-size: 0.8rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: inline-block; background: rgba(163, 31, 31, 0.08); padding: 4px 12px; border-radius: 15px; }
-        .glass-card h3 { font-family: var(--font-serif); font-size: 1.8rem; color: var(--primary); margin-bottom: 12px; line-height: 1.2; font-weight: 700; }
-        .glass-card p { font-size: 1.05rem; color: var(--text-light); }
+        .sidebar-nav a.active {
+            background: rgba(212, 175, 55, 0.25);
+            border-left-color: var(--secondary);
+            color: var(--primary);
+            font-weight: 700;
+        }
 
-        .highlight-card { background: linear-gradient(135deg, var(--primary), #163861); color: white; border: none; }
-        .highlight-card h3 { color: white; font-size: 1.8rem;}
-        .highlight-card p { color: rgba(255,255,255,0.8); }
-        .highlight-card .card-overline { background: rgba(255,255,255,0.15); color: white; }
+        .icon {
+            font-size: 1.3rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        .tag-area { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
-        .tag-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 5px 12px; font-size: 0.85rem; font-weight: 500; color: white; border-radius: 15px; }
+        /* --- Main Content --- */
+        .main-content {
+            padding: 0;
+        }
 
-        /* --- 弹窗内部组件 --- */
-        .welcome-lang-btn { position: absolute; top: 25px; right: 25px; background: rgba(0,0,0,0.04); padding: 6px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; color: var(--primary); cursor: pointer; border: 1px solid rgba(0,0,0,0.05); transition: 0.3s; z-index: 10; }
-        .welcome-lang-btn:hover { background: var(--primary); color: white; }
-        .modal-action-btn { background: var(--primary); color: white; padding: 14px 35px; border-radius: 30px; font-size: 1.05rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 15px rgba(10,35,66,0.2); margin-top: 15px; }
-        .modal-action-btn:hover { background: var(--secondary); transform: translateY(-2px); box-shadow: 0 12px 20px rgba(163,31,31,0.3); }
-        .modal-close-btn { background: rgba(0,0,0,0.05); color: var(--text-main); box-shadow: none; width: 100%; border: 1px solid rgba(0,0,0,0.1); }
-        .modal-close-btn:hover { background: rgba(0,0,0,0.1); }
+        /* Search Section */
+        .search-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 246, 241, 0.8));
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+        }
 
-        /* 文章与资源列表 */
-        .article-list-scroll { max-height: 400px; overflow-y: auto; padding-right: 10px; margin-top: 15px; }
-        .article-preview-item { background: rgba(0,0,0,0.03); margin-bottom: 10px; padding: 15px 20px; border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
-        .article-preview-item h4 { font-family: var(--font-serif); font-size: 1.2rem; color: var(--primary); margin-bottom: 3px; }
-        .article-preview-item p { font-size: 0.9rem; color: var(--text-light); }
-        .article-preview-item:hover { background: white; border-color: rgba(0,0,0,0.05); transform: translateX(5px); }
+        .search-container {
+            position: relative;
+        }
 
-        .back-nav-btn { display: none; background: rgba(0,0,0,0.05); padding: 8px 16px; border-radius: 15px; border: none; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: var(--text-main); margin-bottom: 15px; }
-        .back-nav-btn:hover { background: var(--primary); color: white; }
+        .search-input {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            font-size: 1.1rem;
+            border: 2px solid var(--accent);
+            border-radius: var(--radius-md);
+            background: var(--bg-white);
+            font-family: var(--font-sans);
+            transition: all 0.3s;
+            font-weight: 500;
+        }
 
-        .readme-style { font-size: 1.05rem; line-height: 1.7; color: var(--text-main); }
-        .readme-style h3 { font-family: var(--font-serif); font-size: 1.4rem; color: var(--primary); margin: 0 0 10px 0; }
-        .readme-style ul { padding-left: 20px; margin-bottom: 15px; color: var(--text-light); }
-        .pagination-btn { background: white; border: 1px solid rgba(0,0,0,0.1); padding: 8px 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
-        .pagination-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .search-input::placeholder {
+            color: var(--text-muted);
+            font-style: italic;
+        }
 
-        /* 联系人表单 */
-        .contact-item { display: flex; gap: 15px; padding: 15px; background: rgba(0,0,0,0.02); border-radius: var(--radius-md); margin-bottom: 15px; align-items: flex-start; border: 1px solid rgba(0,0,0,0.04); }
-        .contact-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.08); flex-shrink: 0; }
-        .contact-info-box { font-size: 0.85rem; color: var(--text-light); margin-top: 5px; font-family: monospace; }
-        .book-btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; cursor: pointer; margin-right: 8px; margin-top: 8px; transition: all 0.3s; }
-        .book-btn:hover { background: var(--secondary); transform: translateY(-2px); }
-        .story-btn { background: rgba(212, 175, 55, 0.2); color: var(--primary); border: 1px solid rgba(212, 175, 55, 0.5); padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; cursor: pointer; margin-top: 8px; transition: all 0.3s; }
-        .story-btn:hover { background: rgba(212, 175, 55, 0.4); border-color: var(--accent); }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            background: var(--bg-white);
+            box-shadow: 0 0 0 4px rgba(163, 31, 31, 0.1), var(--shadow-md);
+            transform: translateY(-2px);
+        }
 
-        /* 防止 iOS 缩放，设定字体必须为 16px */
-        .form-input { width: 100%; padding: 14px 18px; margin-bottom: 12px; border-radius: var(--radius-md); border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.8); font-size: 16px; outline: none; font-family: var(--font-sans); }
-        .form-input:focus { border-color: var(--primary); background: white; }
-        .time-btn { flex: 1; padding: 12px; border: 1px solid rgba(0,0,0,0.1); background: white; border-radius: var(--radius-md); cursor: pointer; color: var(--text-main); font-weight: 600; font-size: 0.95rem; }
-        .time-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
 
-        /* Story modal styles */
-        .story-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 35, 66, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            display: flex; justify-content: center; align-items: center; z-index: 10001; opacity: 0; visibility: hidden; 
-            transition: all 0.4s var(--bezier); padding: 15px; }
-        .story-modal.active { opacity: 1; visibility: visible; }
-        .story-card { background: rgba(255, 255, 255, 0.96); padding: 40px; border-radius: var(--radius-xl);
-            width: 100%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 1px solid var(--glass-border);
-            transform: translateY(20px) scale(0.98); transition: all 0.4s var(--bezier); }
-        .story-modal.active .story-card { transform: translateY(0) scale(1); }
-        .story-card::-webkit-scrollbar { width: 5px; }
-        .story-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
-        .story-close-btn { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.05); border: none; 
-            width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.3rem; color: var(--primary); 
-            display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
-        .story-close-btn:hover { background: var(--primary); color: white; }
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 246, 241, 0.9));
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-        footer { text-align: center; font-size: 0.9rem; color: var(--text-light); padding: 30px 0; border-top: 1px solid rgba(0,0,0,0.05); }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+            pointer-events: none;
+        }
 
-        /* =========================================
-           移动端终极响应式优化
-           ========================================= */
-        @media (max-width: 768px) {
-            .nav-container { padding: 10px 15px; }
-            .logo { font-size: 1.3rem; }
-            .nav-links { gap: 10px; }
-            .nav-links a { font-size: 0.95rem; }
-            
-            .hero-section { margin: 30px auto 20px; padding: 0 15px; }
-            .hero-section h1 { font-size: 2.3rem; margin-bottom: 10px; }
-            .hero-section p { font-size: 1rem; margin-bottom: 20px; }
-            .primary-cta-btn { padding: 12px 25px; font-size: 1rem; }
-            
-            .bento-scroll-wrapper { padding: 5px 0 30px; }
-            .bento-scroll-container { padding-left: 15px; padding-right: 15px; }
-            .glass-card { 
-                width: 82vw; /* 适应屏幕，留一点边距暗示滑动 */
-                min-height: 320px; 
-                padding: 25px; 
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: 3.2rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-weight: 900;
+            line-height: 1.2;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 28px;
+            line-height: 1.8;
+            font-family: var(--font-serif-alt);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary), #163861);
+            color: white;
+            border: 2px solid var(--accent);
+            padding: 16px 40px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1.15rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: var(--shadow-md);
+            font-family: var(--font-serif);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s;
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, var(--secondary), #8b1818);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-light);
+        }
+
+        .cta-button:active {
+            transform: translateY(-2px);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .content-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 246, 241, 0.8));
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .content-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-8px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 246, 241, 0.95));
+        }
+
+        .content-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: iconBounce 0.6s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .content-card:hover .card-icon {
+            animation: none;
+            transform: scale(1.2);
+        }
+
+        .card-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            display: inline-block;
+            font-family: var(--font-serif);
+        }
+
+        .content-card h3 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 800;
+            font-family: var(--font-serif);
+            letter-spacing: 1px;
+        }
+
+        .content-card p {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            flex-grow: 1;
+            line-height: 1.7;
+        }
+
+        .card-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1.05rem;
+            padding-top: 16px;
+            border-top: 2px solid var(--border-color);
+            margin-top: 16px;
+            transition: all 0.3s;
+            font-family: var(--font-serif);
+            letter-spacing: 0.5px;
+        }
+
+        .card-action:hover {
+            color: var(--secondary);
+            gap: 14px;
+        }
+
+        /* Right Panel - Team Member Details */
+        .right-panel {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            position: sticky;
+            top: 120px;
+        }
+
+        /* Default Panel Content - Fancy */
+        .default-panel {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 24px;
+        }
+
+        .default-panel-icon {
+            font-size: 4rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.15) rotate(5deg); }
+        }
+
+        .default-panel h2 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .default-panel p {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            font-family: var(--font-serif-alt);
+            font-style: italic;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .default-panel-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: dotBounce 1.4s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes dotBounce {
+            0%, 80%, 100% { transform: scale(0) translateY(0); }
+            40% { transform: scale(1) translateY(-10px); }
+        }
+
+        /* Member Panel Content */
+        .member-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .member-photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent);
+            margin: 0 auto 16px;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.4s ease;
+        }
+
+        .member-photo:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .member-name {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .member-title {
+            font-size: 0.95rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: var(--font-serif);
+        }
+
+        .member-intro {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-style: italic;
+            font-family: var(--font-serif-alt);
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .member-contact {
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        .member-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .member-btn {
+            padding: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-serif);
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .member-btn.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .member-btn.primary:hover {
+            background: var(--secondary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .member-btn.secondary {
+            background: var(--accent);
+            color: var(--primary);
+            border-color: var(--accent);
+        }
+
+        .member-btn.secondary:hover {
+            background: var(--accent-light);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .member-story {
+            padding: 16px;
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid var(--accent);
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.8;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* Featured Section */
+        .featured-section {
+            background: linear-gradient(135deg, var(--primary), #163861);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            margin-bottom: 32px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            border: 2px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .featured-section h2 {
+            font-family: var(--font-serif);
+            font-size: 2.4rem;
+            margin-bottom: 16px;
+            font-weight: 900;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 2px;
+        }
+
+        .featured-section p {
+            font-size: 1.15rem;
+            margin-bottom: 24px;
+            line-height: 1.8;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-serif-alt);
+            font-style: italic;
+        }
+
+        .tag-list {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tag {
+            background: rgba(212, 175, 55, 0.3);
+            border: 2px solid rgba(212, 175, 55, 0.6);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: var(--font-serif);
+        }
+
+        .tag:hover {
+            background: rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 246, 241, 0.98));
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.4s;
+            border: 2px solid var(--border-color);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: var(--hover-bg);
+            border: 2px solid var(--border-color);
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .modal-close:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .modal-content h2 {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 24px;
+            margin-top: 12px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .modal-content h3 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin: 24px 0 12px;
+            font-weight: 800;
+        }
+
+        .modal-content p {
+            color: var(--text-light);
+            line-height: 1.9;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        .modal-content ul {
+            padding-left: 24px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .modal-content li {
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border: 2px solid var(--accent);
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            color: var(--primary);
+            font-family: var(--font-serif);
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .lang-switch:hover {
+            background: var(--accent-light);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            padding: 28px;
+            border-top: 2px solid var(--border-color);
+            margin-top: 48px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(248, 246, 241, 0.6));
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            font-family: var(--font-serif-alt);
+            font-style: italic;
+        }
+
+        /* Team Grid in main area */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .team-member-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 24px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 246, 241, 0.8));
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            color: inherit;
+            font-family: var(--font-serif);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-member-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .team-member-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 246, 241, 0.95));
+        }
+
+        .team-member-btn:hover::before {
+            left: 100%;
+        }
+
+        .team-member-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            transition: transform 0.4s;
+        }
+
+        .team-member-btn:hover .team-member-photo {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .team-member-name {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        .team-member-title {
+            font-size: 0.85rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .layout-wrapper {
+                grid-template-columns: 240px 1fr;
             }
-            .interactive-card::after { display: none; }
-            
-            /* 弹窗防重叠优化 */
-            .founder-card { padding: 25px 20px; }
-            .welcome-lang-btn { top: 15px; right: 15px; padding: 5px 12px; font-size: 0.85rem; }
-            .founder-card h1 { font-size: 1.8rem; margin-top: 30px; margin-bottom: 15px !important; } /* 给语言按钮留出顶部空间 */
-            
-            .contact-item { flex-direction: column; text-align: center; padding: 15px 10px; align-items: center; }
-            .contact-photo { width: 60px; height: 60px; margin-bottom: 5px; }
-            
-            /* 两列布局改单列 */
-            #resources-modal .founder-card > div { grid-template-columns: 1fr; gap: 30px; }
+
+            .right-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .layout-wrapper {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                padding: 16px;
+            }
+
+            .sidebar {
+                position: relative;
+                top: 0;
+                max-height: auto;
+            }
+
+            header {
+                grid-column: auto;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .content-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .layout-wrapper {
+                grid-template-columns: 1fr;
+                padding: 12px;
+            }
+
+            header {
+                padding: 14px;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+            }
+
+            .hero {
+                padding: 24px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 24px;
+                max-width: calc(100vw - 32px);
+            }
+
+            .cta-button {
+                font-size: 1rem;
+                padding: 14px 32px;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .search-input {
+                font-size: 1rem;
+                padding: 14px 14px 14px 44px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .layout-wrapper {
+                padding: 8px;
+                gap: 12px;
+            }
+
+            header {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+                gap: 8px;
+            }
+
+            .sidebar {
+                padding: 16px;
+            }
+
+            .hero {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .sidebar-label {
+                font-size: 0.7rem;
+            }
+
+            .sidebar-nav a {
+                padding: 12px 12px;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
         }
     </style>
 </head>
 <body>
+    <div class="page-wrapper">
+        <div class="corner-accent top-left"></div>
+        <div class="corner-accent bottom-right"></div>
 
-    <div class="aurora"></div>
+        <header>
+            <a class="logo" href="#">REIZ <span>youth</span></a>
+        </header>
 
-    <div id="welcome-modal" class="welcome-overlay">
-        <div class="founder-card">
-            <button id="welcome-lang-switch" class="welcome-lang-btn">EN / 中</button>
-            <div style="text-align:center; margin-bottom: 10px;">
-                <span class="card-overline" data-zh="创始人视角" data-en="Founder's Perspective">创始人视角</span>
-            </div>
-            <h1 style="font-family:var(--font-serif); font-weight:800; color:var(--primary); text-align:center; margin-bottom:20px;" data-zh="欢迎来到 Reiz EZ Life" data-en="Welcome to Reiz EZ Life">欢迎来到 Reiz EZ Life</h1>
-            <div id="founder-content" style="font-size:1.05rem; line-height:1.7; color:var(--text-light); margin-bottom:30px; text-align:justify;"></div>
-            <div style="text-align: center;">
-                <button class="modal-action-btn" onclick="window.closeWelcome()" data-zh="进入主页 | Enter Site" data-en="Enter Site">进入主页 | Enter Site</button>
-            </div>
-        </div>
-    </div>
+        <div class="layout-wrapper">
+            <!-- LEFT SIDEBAR -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <span class="sidebar-label" data-zh="导航" data-en="Navigation">导航</span>
+                    <ul class="sidebar-nav">
+                        <li><a href="#home" onclick="scrollToSection('home')" class="nav-home" data-zh="🏠 首页" data-en="🏠 Home">🏠 首页</a></li>
+                        <li><a href="#team" onclick="scrollToSection('team')" class="nav-team" data-zh="👥 团队" data-en="👥 Team">👥 团队</a></li>
+                        <li><a href="#resources" onclick="scrollToSection('resources')" class="nav-resources" data-zh="📚 资源" data-en="📚 Resources">📚 资源</a></li>
+                        <li><a href="#stories" onclick="window.openStories()" class="nav-stories" data-zh="📖 故事" data-en="📖 Stories">📖 故事</a></li>
+                    </ul>
+                </div>
 
-    <div id="stories-modal" class="welcome-overlay">
-        <div class="founder-card">
-            <button id="article-back-btn" class="back-nav-btn" onclick="window.backToStoriesList()" data-zh="← 返回列表" data-en="← Back to List">← 返回列表</button>
-            <h1 id="stories-title" style="font-family:var(--font-serif); font-size: 2.2rem; margin-bottom: 10px; color:var(--primary);" data-zh="创始人趣闻" data-en="My Stories">创始人趣闻</h1>
-            <div id="article-list-view" class="article-list-scroll"></div>
-            <div id="article-detail-view" style="display: none; text-align: left; margin-top: 15px; font-size:1.05rem; line-height:1.7;"></div>
-            <button onclick="window.closeStories()" class="modal-action-btn modal-close-btn" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
-        </div>
-    </div>
+                <div class="sidebar-section">
+                    <span class="sidebar-label" data-zh="快速访问" data-en="Quick Access">快速访问</span>
+                    <ul class="sidebar-nav">
+                        <li><a href="#" onclick="window.openContent('life')" data-zh="🌱 成长之路" data-en="🌱 Growth">🌱 成长之路</a></li>
+                        <li><a href="#" onclick="window.openResources()" data-zh="🛠️ 生活工具" data-en="🛠️ Tools">🛠️ 生活工具</a></li>
+                        <li><a href="#" onclick="document.querySelector('.join-trigger').click()" data-zh="📧 联系我们" data-en="📧 Contact">📧 联系我们</a></li>
+                    </ul>
+                </div>
 
-    <div id="resources-modal" class="welcome-overlay">
-        <div class="founder-card" style="max-width: 900px;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
-                <div>
-                    <h1 style="font-family:var(--font-serif); font-size: 2rem; margin-bottom: 15px; color:var(--primary);" data-zh="美国生活指南" data-en="US Guide">美国生活指南</h1>
-                    <div id="readme-content-view" class="readme-style" style="min-height: 220px;"></div>
-                    <div style="display: flex; gap: 10px; margin-top: 20px;">
-                        <button id="res-prev-btn" class="pagination-btn" onclick="window.changeReadmePage(-1)">&#8592;</button>
-                        <button id="res-next-btn" class="pagination-btn" onclick="window.changeReadmePage(1)">&#8594;</button>
+                <div class="sidebar-section">
+                    <button class="lang-switch" onclick="window.toggleLanguage()" data-zh="EN / 中" data-en="中 / EN">EN / 中</button>
+                </div>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+                <!-- Search Section -->
+                <div class="search-section" id="home">
+                    <div class="search-container">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" id="search-input" placeholder="Search stories, resources, team..." data-zh="搜索故事、资源或团队成员..." data-en="Search stories, resources, team...">
                     </div>
                 </div>
-                <div>
-                    <h2 style="font-family:var(--font-serif); font-size: 1.5rem; margin-bottom: 15px; color:var(--primary);" data-zh="需要帮助？可以预约" data-en="Need help? Book us">需要帮助？可以预约</h2>
-                    <div id="contacts-list-view" class="article-list-scroll" style="margin-top: 0;"></div>
+
+                <!-- Hero Section -->
+                <div class="hero">
+                    <h1 data-zh="一个可以成长、归属，并成为自己的地方" data-en="A Place to Grow, Belong, & Become">一个可以成长、归属，并成为自己的地方</h1>
+                    <p data-zh="为新移民子女与留学生打造的支持性空间，致力于平稳过渡与自我成长。" data-en="A supportive space for children of immigrants and international students, dedicated to smooth transitions and personal growth.">为新移民子女与留学生打造的支持性空间，致力于平稳过渡与自我成长。</p>
+                    <button class="cta-button join-trigger" data-zh="联系我们获取支持" data-en="Contact Us for Support">联系我们获取支持</button>
                 </div>
-            </div>
-            <button onclick="window.closeResources()" class="modal-action-btn modal-close-btn" style="margin-top:30px;" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
+
+                <!-- Team Section -->
+                <div class="team-grid" id="team">
+                    <button class="team-member-btn" onclick="window.showTeamMember(0)">
+                        <img src="/file/pics/kemy.jpg" alt="Kemi" class="team-member-photo" onerror="this.src='https://via.placeholder.com/100?text=Kemi'">
+                        <div class="team-member-name">Kemi</div>
+                        <div class="team-member-title" data-zh="创始人" data-en="Founder">创始人</div>
+                    </button>
+                    <button class="team-member-btn" onclick="window.showTeamMember(1)">
+                        <img src="/file/pics/bobby.jpg" alt="Bobby" class="team-member-photo" onerror="this.src='https://via.placeholder.com/100?text=Bobby'">
+                        <div class="team-member-name">Bobby</div>
+                        <div class="team-member-title" data-zh="首席工程师" data-en="Engineer">首席工程师</div>
+                    </button>
+                    <button class="team-member-btn" onclick="window.showTeamMember(2)">
+                        <img src="/file/pics/kiki.jpg" alt="Kiki" class="team-member-photo" onerror="this.src='https://via.placeholder.com/100?text=Kiki'">
+                        <div class="team-member-name">Kiki</div>
+                        <div class="team-member-title" data-zh="学生导师" data-en="Mentor">学生导师</div>
+                    </button>
+                </div>
+
+                <!-- Featured Section -->
+                <div class="featured-section" id="resources">
+                    <h2 data-zh="升学 | Application" data-en="Application | Apply Now">升学 | Application</h2>
+                    <p data-zh="千里之行，始于足下。我们在每一步陪伴你。" data-en="Dream big, work hard. We are with you every step.">千里之行，始于足下。我们在每一步陪伴你。</p>
+                    <div class="tag-list">
+                        <span class="tag" data-zh="新移民" data-en="Immigrant">新移民</span>
+                        <span class="tag" data-zh="留学生" data-en="Students">留学生</span>
+                        <span class="tag" data-zh="学业规划" data-en="Planning">学业规划</span>
+                    </div>
+                    <button class="cta-button" onclick="document.querySelector('.join-trigger').click()" data-zh="现在开始" data-en="Get Started">现在开始</button>
+                </div>
+
+                <!-- Content Grid -->
+                <div class="content-grid">
+                    <div class="content-card" onclick="window.openContent('life')">
+                        <div class="card-icon">🌱</div>
+                        <span class="card-label" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
+                        <h3 data-zh="生活 | Life" data-en="Life">生活 | Life</h3>
+                        <p data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
+                        <a class="card-action" href="#" data-zh="了解更多 →" data-en="Learn more →">了解更多 →</a>
+                    </div>
+
+                    <div class="content-card" onclick="window.openResources()">
+                        <div class="card-icon">📚</div>
+                        <span class="card-label" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
+                        <h3 data-zh="资源指南 | Resources" data-en="Resources">资源指南 | Resources</h3>
+                        <p data-zh="从生活App推荐到专业导师预约，帮助您快速融入北美生活。" data-en="From app recommendations to booking mentors, we help you integrate quickly.">从生活App推荐到专业导师预约，帮助您快速融入北美生活。</p>
+                        <a class="card-action" href="#" data-zh="浏览资源 →" data-en="Browse →">浏览资源 →</a>
+                    </div>
+
+                    <div class="content-card" onclick="window.openStories()">
+                        <div class="card-icon">📖</div>
+                        <span class="card-label" data-zh="个人故事" data-en="Stories">个人故事</span>
+                        <h3 data-zh="创始人趣闻 | Stories" data-en="Stories">创始人趣闻 | Stories</h3>
+                        <p data-zh="阅读那些关于挑战、坚持与融入的真实经历。" data-en="Read real experiences about challenges, persistence, and integration.">阅读那些关于挑战、坚持与融入的真实经历。</p>
+                        <a class="card-action" href="#" data-zh="查看故事 →" data-en="Read →">查看故事 →</a>
+                    </div>
+                </div>
+
+                <footer>
+                    © 2026 REIZ EZ LIFE YOUTH HOME. All Rights Reserved.
+                </footer>
+            </main>
+
+            <!-- RIGHT PANEL - Team Member Details -->
+            <aside class="right-panel" id="member-panel">
+                <div class="default-panel">
+                    <div class="default-panel-icon">👋</div>
+                    <h2 data-zh="选择团队成员" data-en="Choose a Member">选择团队成员</h2>
+                    <p data-zh="点击左边团队成员，了解他们的故事和联系方式。" data-en="Click a member on the left to view their story and contact details.">点击左边团队成员，了解他们的故事和联系方式。</p>
+                    <div class="default-panel-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
 
-    <div id="booking-modal" class="welcome-overlay" style="z-index: 10005;">
-        <div class="founder-card" style="max-width: 400px; padding: 35px 25px;">
-            <h2 style="font-family:var(--font-serif); font-size: 1.8rem; margin-bottom: 8px; color:var(--primary); text-align:center;" data-zh="预约联系人" data-en="Book Appointment">预约联系人</h2>
-            <p style="font-size:0.95rem; color:var(--text-light); margin-bottom: 25px; text-align:center;" data-zh="填写信息后将自动生成邮件" data-en="Fill info to generate email">填写信息后将自动生成邮件</p>
+    <!-- MODALS -->
+    <!-- Welcome Modal -->
+    <div id="welcome-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="window.closeWelcome()">✕</button>
+            <h2 style="margin-top: 0;" data-zh="欢迎来到 Reiz EZ Life" data-en="Welcome to Reiz EZ Life">欢迎来到 Reiz EZ Life</h2>
+            <div id="founder-content"></div>
+            <div style="margin-top: 24px; display: flex; gap: 12px; flex-direction: column;">
+                <button class="cta-button" onclick="window.closeWelcome()" data-zh="进入主页" data-en="Enter Site">进入主页</button>
+                <button class="cta-button" style="background: var(--accent); color: var(--primary); border-color: var(--accent);" onclick="window.toggleLanguageAndEnter()" data-zh="切换语言进入" data-en="Switch Language">切换语言进入</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Modal -->
+    <div id="resources-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="window.closeResources()">✕</button>
+            <h2 data-zh="美国生活指南" data-en="US Life Guide">美国生活指南</h2>
+            <div id="readme-content-view"></div>
+            <div style="margin-top: 24px; display: flex; gap: 12px;">
+                <button class="cta-button" onclick="window.changeReadmePage(-1)" id="res-prev-btn" style="flex: 1; background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color);">← Previous</button>
+                <button class="cta-button" onclick="window.changeReadmePage(1)" id="res-next-btn" style="flex: 1; background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color);">Next →</button>
+            </div>
+            <h3 data-zh="需要帮助？可以预约" data-en="Need help? Book us" style="margin-top: 32px; margin-bottom: 16px;">需要帮助？可以预约</h3>
+            <div id="contacts-list-view"></div>
+            <button class="cta-button" onclick="window.closeResources()" style="width: 100%; margin-top: 20px; background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color);" data-zh="关闭" data-en="Close">关闭</button>
+        </div>
+    </div>
+
+    <!-- Stories Modal -->
+    <div id="stories-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="window.closeStories()">✕</button>
+            <h2 id="stories-title" data-zh="创始人趣闻" data-en="Stories">创始人趣闻</h2>
+            <div id="article-list-view"></div>
+            <div id="article-detail-view" style="display: none;"></div>
+            <button class="cta-button" onclick="window.closeStories()" style="width: 100%; margin-top: 20px; background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color);" data-zh="关闭" data-en="Close">关闭</button>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal-overlay" style="z-index: 1001;">
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="modal-close" onclick="window.closeBooking()">✕</button>
+            <h2 data-zh="预约联系人" data-en="Book Appointment">预约联系人</h2>
+            <p style="color: var(--text-light); margin-bottom: 20px; font-size: 1.05rem;" data-zh="填写信息后将自动生成邮件" data-en="Fill info to generate email">填写信息后将自动生成邮件</p>
             
             <form id="booking-form" onsubmit="return false;">
-                <input type="text" id="b-name" class="form-input" placeholder="姓名 / Your Name" required>
-                <input type="email" id="b-email" class="form-input" placeholder="邮箱 / Your Email" required>
-                <input type="tel" id="b-phone" class="form-input" placeholder="电话 / Your Phone" required>
+                <input type="text" id="b-name" placeholder="姓名 / Your Name" required style="width: 100%; padding: 14px; margin-bottom: 14px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px; font-weight: 500; font-family: var(--font-sans);">
+                <input type="email" id="b-email" placeholder="邮箱 / Your Email" required style="width: 100%; padding: 14px; margin-bottom: 14px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px; font-weight: 500; font-family: var(--font-sans);">
+                <input type="tel" id="b-phone" placeholder="电话 / Your Phone" required style="width: 100%; padding: 14px; margin-bottom: 20px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px; font-weight: 500; font-family: var(--font-sans);">
                 
-                <h4 style="font-size:1rem; margin: 20px 0 10px 0; color:var(--text-main);" data-zh="空闲时间：" data-en="Available time:">空闲时间：</h4>
-                <div style="display: flex; gap: 8px;">
-                    <button class="time-btn" onclick="window.submitBooking('A')">时段 A</button>
-                    <button class="time-btn" onclick="window.submitBooking('B')">时段 B</button>
-                    <button class="time-btn" onclick="window.submitBooking('C')">时段 C</button>
+                <h4 style="margin-bottom: 14px; font-weight: 700; font-size: 1.05rem; font-family: var(--font-serif);" data-zh="选择时间：" data-en="Choose time:">选择时间：</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+                    <button type="button" class="cta-button" onclick="window.submitBooking('A')" style="background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color); padding: 12px;">时段 A</button>
+                    <button type="button" class="cta-button" onclick="window.submitBooking('B')" style="background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color); padding: 12px;">时段 B</button>
+                    <button type="button" class="cta-button" onclick="window.submitBooking('C')" style="background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color); padding: 12px;">时段 C</button>
                 </div>
             </form>
-            <div style="margin-top: 20px; text-align:center; font-size:0.95rem; cursor: pointer; color: var(--text-light); transition:0.3s;" onclick="window.closeBooking()" data-zh="取消预约" data-en="Cancel">取消预约</div>
+            <button class="cta-button" onclick="window.closeBooking()" style="width: 100%; background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color);" data-zh="取消" data-en="Cancel">取消</button>
         </div>
     </div>
 
     <!-- Story Modal -->
-    <div id="story-modal" class="story-modal">
-        <div class="story-card">
-            <button class="story-close-btn" onclick="window.closeStoryModal()">✕</button>
-            <h1 id="story-member-name" style="font-family:var(--font-serif); font-size: 1.8rem; margin-bottom: 20px; color:var(--primary);"></h1>
-            <div id="story-content-view" style="font-size:1.05rem; line-height:1.8; color:var(--text-light); text-align:justify;"></div>
+    <div id="story-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="window.closeStoryModal()">✕</button>
+            <h2 id="story-member-name"></h2>
+            <div id="story-content-view"></div>
+            <button class="cta-button" onclick="window.closeStoryModal()" style="width: 100%; margin-top: 20px; background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color);" data-zh="关闭" data-en="Close">关闭</button>
         </div>
     </div>
 
-    <header>
-        <div class="nav-container">
-            <div class="logo">REIZ EZ LIFE <span>Youth Home</span></div>
-            <nav class="nav-links">
-                <a href="#" data-zh="首页" data-en="Home">首页</a>
-                <a id="lang-switch">EN / 中</a>
-            </nav>
-        </div>
-    </header>
-
-    <main>
-        <section class="hero-section">
-            <h1 data-zh="一个可以成长、归属，并成为自己的地方" data-en="A Place to Grow, Belong, & Become">一个可以成长、归属，并成为自己的地方</h1>
-            <p data-zh="为新移民子女与留学生打造的支持性空间，致力于平稳过渡与自我成长。" data-en="A supportive space for children of immigrants and international students, dedicated to smooth transitions and personal growth.">为新移民子女与留学生打造的支持性空间，致力于平稳过渡与自我成长。</p>
-            <button class="primary-cta-btn join-trigger" data-zh="联系我们获取支持" data-en="Contact Us for Support">联系我们获取支持</button>
-        </section>
-
-        <section class="bento-scroll-wrapper">
-            <div class="bento-scroll-container" id="scroll-track">
-                
-                <div class="bento-set">
-                    <div class="glass-card">
-                        <div>
-                            <span class="card-overline" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
-                            <h3 data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
-                            <p data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
-                        </div>
-                    </div>
-
-                    <div class="glass-card interactive-card" onclick="window.openResources()">
-                        <div>
-                            <span class="card-overline" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
-                            <h3 data-zh="资源指南 ｜ Resources" data-en="Resources Guide">资源指南 ｜ Resources</h3>
-                            <p data-zh="从生活App推荐到专业导师预约，帮助您快速融入北美生活。" data-en="From app recommendations to booking mentors, we help you integrate quickly.">从生活App推荐到专业导师预约，帮助您快速融入北美生活。</p>
-                        </div>
-                    </div>
-
-                    <div class="glass-card interactive-card" onclick="window.openStories()">
-                        <div>
-                            <span class="card-overline" style="color:var(--accent); background:rgba(212, 175, 55, 0.1);" data-zh="个人故事" data-en="Stories">个人故事</span>
-                            <h3 data-zh="创始人趣闻 ｜ Stories" data-en="Founder Stories">创始人趣闻 ｜ Stories</h3>
-                            <p data-zh="阅读那些关于挑战、坚持与融入的真实经历。" data-en="Read real experiences about challenges, persistence, and integration.">阅读那些关于挑战、坚持与融入的真实经历。</p>
-                        </div>
-                    </div>
-
-                    <div class="glass-card highlight-card interactive-card" onclick="document.querySelector('.join-trigger').click()">
-                        <div>
-                            <div class="tag-area">
-                                <div class="tag-item" data-zh="新移民" data-en="Immigrant">新移民</div>
-                                <div class="tag-item" data-zh="留学生" data-en="Students">留学生</div>
-                            </div>
-                            <span class="card-overline" data-zh="学业规划" data-en="Academics">学业规划</span>
-                            <h3 data-zh="升学 ｜ Application" data-en="Application">升学 ｜ Application</h3>
-                            <p data-zh="千里之行，始于足下。我们在每一步陪伴你，从选校策略到文书打磨。" data-en="Dream big, work hard. We are with you every step of the way, from school selection to essays.">千里之行，始于足下。我们在每一步陪伴你，从选校策略到文书打磨。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bento-set">
-                    <div class="glass-card">
-                        <div>
-                            <span class="card-overline" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
-                            <h3 data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
-                            <p data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
-                        </div>
-                    </div>
-                    <div class="glass-card interactive-card" onclick="window.openResources()">
-                        <div>
-                            <span class="card-overline" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
-                            <h3 data-zh="资源指南 ｜ Resources" data-en="Resources Guide">资源指南 ｜ Resources</h3>
-                            <p data-zh="从生活App推荐到专业导师预约，帮助您快速融入北美生活。" data-en="From app recommendations to booking mentors, we help you integrate quickly.">从生活App推荐到专业导师预约，帮助您快速融入北美生活。</p>
-                        </div>
-                    </div>
-                    <div class="glass-card interactive-card" onclick="window.openStories()">
-                        <div>
-                            <span class="card-overline" style="color:var(--accent); background:rgba(212, 175, 55, 0.1);" data-zh="个人故事" data-en="Stories">个人故事</span>
-                            <h3 data-zh="创始人趣闻 ｜ Stories" data-en="Founder Stories">创始人趣闻 ｜ Stories</h3>
-                            <p data-zh="阅读那些关于挑战、坚持与融入的真实经历。" data-en="Read real experiences about challenges, persistence, and integration.">阅读那些关于挑战、坚持与融入的真实经历。</p>
-                        </div>
-                    </div>
-                    <div class="glass-card highlight-card interactive-card" onclick="document.querySelector('.join-trigger').click()">
-                        <div>
-                            <div class="tag-area">
-                                <div class="tag-item" data-zh="新移民" data-en="Immigrant">新移民</div>
-                                <div class="tag-item" data-zh="留学生" data-en="Students">留学生</div>
-                            </div>
-                            <span class="card-overline" data-zh="学业规划" data-en="Academics">学业规划</span>
-                            <h3 data-zh="升学 ｜ Application" data-en="Application">升学 ｜ Application</h3>
-                            <p data-zh="千里之行，始于足下。我们在每一步陪伴你，从选校策略到文书打磨。" data-en="Dream big, work hard. We are with you every step of the way, from school selection to essays.">千里之行，始于足下。我们在每一步陪伴你，从选校策略到文书打磨。</p>
-                        </div>
-                    </div>
-                </div>
-
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <button class="modal-close" onclick="document.getElementById('contact-modal').classList.remove('active')">✕</button>
+            <h2 data-zh="联系我们" data-en="Contact Us">联系我们</h2>
+            <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 14px;">
+                <a href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzDsPjJjRflqbGJssRVMvqdgXbMGmPHCjzpBMFrnmZZZbBkwhxqcnWCrPNqMmwJqlbKmXWP" target="_blank" class="cta-button" style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.1rem;">📧 <span data-zh="发送邮件" data-en="Email Us">发送邮件</span></a>
+                <a href="tel:6176595400" class="cta-button" style="display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--hover-bg); color: var(--text-main); border-color: var(--border-color); font-size: 1.1rem;">📞 <span data-zh="拨打电话" data-en="Call Us">拨打电话</span></a>
             </div>
-        </section>
-    </main>
-
-    <footer>© 2026 REIZ EZ LIFE YOUTH HOME. All Rights Reserved.</footer>
+        </div>
+    </div>
 
     <script>
-        // ================= JS 纯享版无缝滚动 =================
-        document.addEventListener('DOMContentLoaded', () => {
-            const track = document.getElementById('scroll-track');
-            let isScrolling = true;
-            let scrollSpeed = 0.8; // 调整自动滚动速度 (像素/帧)
-            
-            // 使用 requestAnimationFrame 提供最丝滑的滚动
-            function autoScroll() {
-                if (isScrolling && track) {
-                    track.scrollLeft += scrollSpeed;
-                    
-                    // 当滚动条到达中间点（第一组已完全滚出视图）时，瞬间将进度切回0
-                    if (track.scrollLeft >= track.scrollWidth / 2) {
-                        track.scrollLeft = 0;
-                    }
-                }
-                requestAnimationFrame(autoScroll);
-            }
-            
-            if (track) {
-                // 启动循环
-                requestAnimationFrame(autoScroll);
-                
-                // 悬停/触摸控制：用户接管时暂停自动滚动
-                track.addEventListener('mouseenter', () => isScrolling = false);
-                track.addEventListener('mouseleave', () => isScrolling = true);
-                
-                track.addEventListener('touchstart', () => isScrolling = false, {passive: true});
-                track.addEventListener('touchend', () => {
-                    // 触摸结束后延迟一点恢复，体验更好
-                    setTimeout(() => isScrolling = true, 500); 
-                });
-            }
-        });
-
-        // ================= 内容数据配置 =================
+        // Data - All content preserved
         const articles = [
             { id: '1', zh: "Kemy与Jason的阅读小课堂-How Spider save the sun", en: "Kemy & Jason's Reading Class", date: "2020年8月18日", url: "https://mp.weixin.qq.com/s/P2xezLGmkkPfdXDmGULF0A" },
             { id: '2', zh: "英语成语：(Happy Part)", en: "English Idioms: (Happy Part)", date: "2020年7月24日", url: "https://mp.weixin.qq.com/s/D9WZDFBXHlbgP3vJh-LHnQ" },
@@ -472,83 +1394,23 @@
             { id: '17', zh: "遇见好心人", en: "Meeting a Kind Person", date: "2017年11月22日", url: "/file/article/17.html" },
             { id: '18', zh: "奇妙的乐高城", en: "Wonderful Lego Land", date: "2017年11月12日", url: "/file/article/18.html" },
             { id: '19', zh: "爸爸与Kemi的聊天记录", en: "Dad & Kemi Chat Logs", date: "2017年11月12日", url: "/file/article/19.html" },
-            { id: '20', zh: "波士顿科学博物馆游览记", en: "Museum of Science Visit", date: "2017年11月11日", url: "/file/article/20.html" },
-            { id: '21', zh: "11月5日爸爸写给Kemi的信", en: "Letter to Kemi (Nov 5, 2017)", date: "2017年11月5日", url: "/file/article/21.html" },
-            { id: '22', zh: "11月2日爸爸写给Kemi的信", en: "Letter to Kemi (Nov 2, 2017)", date: "2017年11月3日", url: "/file/article/22.html" },
-            { id: '23', zh: "快乐分享百分百", en: "100% Happiness Sharing", date: "2017年11月3日", url: "/file/article/23.html" },
-            { id: '24', zh: "奇妙的美国万圣节", en: "Halloween in America", date: "2017年11月2日", url: "/file/article/24.html" },
-            { id: '25', zh: "10月31日爸爸写给Kemi的信", en: "Letter to Kemi (Oct 31)", date: "2017年11月2日", url: "/file/article/25.html" },
-            { id: '26', zh: "美国生活趣事", en: "Fun Stories in America", date: "2017年10月31日", url: "/file/article/26.html" },
-            { id: '27', zh: "10月20日Kemi写给爸爸的信", en: "Kemi's Letter to Dad", date: "2017年10月31日", url: "/file/article/27.html" },
-            { id: '28', zh: "爸爸回国了", en: "Dad Returned to China", date: "2017年10月30日", url: "/file/article/28.html" },
-            { id: '29', zh: "父亲的回信", en: "Father's Reply Letter", date: "2017年10月30日", url: "/file/article/29.html" },
-            { id: '30', zh: "哈佛大学和MIT", en: "Harvard University & MIT", date: "2017年10月29日", url: "/file/article/30.html" },
-            { id: '31', zh: "Kemi写给老师同学们的一封信", en: "Letter to Classmates", date: "2017年10月29日", url: "/file/article/31.html" },
-            { id: '32', zh: "波士顿美术博物馆之行", en: "MFA Boston Visit", date: "2017年10月28日", url: "/file/article/32.html" },
-            { id: '33', zh: "美国求学篇", en: "Study in America", date: "2017年10月28日", url: "/file/article/33.html" },
-            { id: '34', zh: "美国旅游篇", en: "Travel in America", date: "2017年10月27日", url: "/file/article/34.html" }, 
-            { id: '35', zh: "舅舅写给Kemi的一封信", en: "A Letter to Kemi written by Uncle", date: "2017年10月27日", url: "/file/article/35.html" },
-            { id: '36', zh: "美国上学篇", en: "Schooling in America", date: "2017年10月26日", url: "/file/article/36.html" },
-            { id: '37', zh: "美国到达篇", en: "Arriving in America", date: "2017年10月23日", url: "/file/article/37.html" },
-            { id: '38', zh: "美国出发篇", en: "Departing for America", date: "2017年10月22日", url: "/file/article/38.html" },
-            { id: '39', zh: "了解美国波士顿--当世界已然是地球村，你需要聆听和了解全世界", en: "Get to know Boston", date: "2017年10月22日", url: "/file/article/39.html" }
+            { id: '20', zh: "波士顿科学博物馆游览记", en: "Museum of Science Visit", date: "2017年11月11日", url: "/file/article/20.html" }
         ];
 
         const readmePages = [
             {
-                zh: `<h3>社交与通讯软件 (Social Apps)</h3>
-                     <p>在美国，主流的社交和通讯方式与国内有很大不同，掌握这些能帮你快速破冰：</p>
-                     <ul>
-                         <li><b>Instagram / Snapchat：</b> 年轻人最常用的日常分享与交友软件，加好友的首选。</li>
-                         <li><b>iMessage / SMS：</b> 美国人非常依赖手机自带的短信功能进行日常沟通。</li>
-                         <li><b>LinkedIn：</b> 必备的职场与校园社交名片，找实习、找导师全靠它。</li>
-                         <li><b>WhatsApp：</b> 朋友之间AA制吃饭、转账最常用的软件。</li>
-                     </ul>`,
-                en: `<h3>Social & Communication Apps</h3>
-                     <p>Socializing in the US relies on a different set of tools. Here are the essentials:</p>
-                     <ul>
-                         <li><b>Instagram / Snapchat:</b> The go-to apps for young people to connect and share daily life.</li>
-                         <li><b>iMessage / SMS:</b> Texting is still the primary method for direct communication in the US.</li>
-                         <li><b>LinkedIn:</b> Your professional profile. Crucial for networking and internships.</li>
-                         <li><b>WhatsApp / Venmo:</b> Great for group chats and splitting bills with friends.</li>
-                     </ul>`
+                zh: `<h3>社交与通讯软件 (Social Apps)</h3><p>在美国，主流的社交和通讯方式与国内有很大不同，掌握这些能帮你快速破冰：</p><ul><li><b>Instagram / Snapchat：</b> 年轻人最常用的日常分享与交友软件，加好友的首选。</li><li><b>iMessage / SMS：</b> 美国人非常依赖手机自带的短信功能进行日常沟通。</li><li><b>LinkedIn：</b> 必备的职场与校园社交名片，找实习、找导师全靠它。</li><li><b>WhatsApp：</b> 朋友之间AA制吃饭、转账最常用的软件。</li></ul>`,
+                en: `<h3>Social & Communication Apps</h3><p>Socializing in the US relies on a different set of tools. Here are the essentials:</p><ul><li><b>Instagram / Snapchat:</b> The go-to apps for young people to connect and share daily life.</li><li><b>iMessage / SMS:</b> Texting is still the primary method for direct communication in the US.</li><li><b>LinkedIn:</b> Your professional profile. Crucial for networking and internships.</li><li><b>WhatsApp / Venmo:</b> Great for group chats and splitting bills with friends.</li></ul>`
             },
             {
-                zh: `<h3>出行与交通 (Transportation)</h3>
-                     <p>美国的公共交通系统因城市而异，但出行软件是全美通用的：</p>
-                     <ul>
-                         <li><b>Google Maps：</b> 出门必备！不仅能导航开车，看公交地铁班次也非常精准。</li>
-                         <li><b>Uber / Lyft：</b> 美国两大打车软件，建议两个都下载，每次打车前比对一下价格。</li>
-                         <li><b>学校专属大巴 App：</b> 大部分美国高校都有自己的 Shuttle 系统，入学后记得第一时间下载。</li>
-                     </ul>`,
-                en: `<h3>Transportation Apps</h3>
-                     <p>Navigating US cities is made easy with these standard apps:</p>
-                     <ul>
-                         <li><b>Google Maps:</b> The absolute essential for driving, walking, or public transit schedules.</li>
-                         <li><b>Uber / Lyft:</b> The two main rideshare apps. Compare prices before booking!</li>
-                         <li><b>University Shuttle Apps:</b> Most colleges have an app to track campus buses.</li>
-                     </ul>`
+                zh: `<h3>出行与交通 (Transportation)</h3><p>美国的公共交通系统因城市而异，但出行软件是全美通用的：</p><ul><li><b>Google Maps：</b> 出门必备！不仅能导航开车，看公交地铁班次也非常精准。</li><li><b>Uber / Lyft：</b> 美国两大打车软件，建议两个都下载，每次打车前比对一下价格。</li><li><b>学校专属大巴 App：</b> 大部分美国高校都有自己的 Shuttle 系统，入学后记得第一时间下载。</li></ul>`,
+                en: `<h3>Transportation Apps</h3><p>Navigating US cities is made easy with these standard apps:</p><ul><li><b>Google Maps:</b> The absolute essential for driving, walking, or public transit schedules.</li><li><b>Uber / Lyft:</b> The two main rideshare apps. Compare prices before booking!</li><li><b>University Shuttle Apps:</b> Most colleges have an app to track campus buses.</li></ul>`
             },
             {
-                zh: `<h3>生活与实用工具 (Lifestyle & Utilities)</h3>
-                     <p>为了让生活更便利，这些也是装机必备：</p>
-                     <ul>
-                         <li><b>Yelp：</b> 美国的"大众点评"，找餐厅、看真实评价非常好用。</li>
-                         <li><b>Amazon：</b> 解决你90%的网购需求，学生注册 Prime 会员有免费两日达和超大折扣。</li>
-                         <li><b>UberEats / DoorDash：</b> 外卖软件，虽然有服务费和小费，但赶赶赶赶due时是救星。</li>
-                         <li><b>Zelle：</b> 绑定美国银行卡后的免费即时转账系统。</li>
-                     </ul>`,
-                en: `<h3>Lifestyle & Utilities</h3>
-                     <p>Make your daily life more convenient with these tools:</p>
-                     <ul>
-                         <li><b>Yelp:</b> The best app for finding restaurants and reading local reviews.</li>
-                         <li><b>Amazon:</b> Get a Student Prime account for free 2-day shipping.</li>
-                         <li><b>UberEats / DoorDash:</b> Food delivery apps (remember to tip the driver!).</li>
-                         <li><b>Zelle:</b> Built into most bank apps for instant, free money transfers.</li>
-                     </ul>`
+                zh: `<h3>生活与实用工具 (Lifestyle & Utilities)</h3><p>为了让生活更便利，这些也是装机必备：</p><ul><li><b>Yelp：</b> 美国的"大众点评"，找餐厅、看真实评价非常好用。</li><li><b>Amazon：</b> 解决你90%的网购需求，学生注册 Prime 会员有免费两日达和超大折扣。</li><li><b>UberEats / DoorDash：</b> 外卖软件，虽然有服务费和小费，但赶赶赶赶due时是救星。</li><li><b>Zelle：</b> 绑定美国银行卡后的免费即时转账系统。</li></ul>`,
+                en: `<h3>Lifestyle & Utilities</h3><p>Make your daily life more convenient with these tools:</p><ul><li><b>Yelp:</b> The best app for finding restaurants and reading local reviews.</li><li><b>Amazon:</b> Get a Student Prime account for free 2-day shipping.</li><li><b>UberEats / DoorDash:</b> Food delivery apps (remember to tip the driver!).</li><li><b>Zelle:</b> Built into most bank apps for instant, free money transfers.</li></ul>`
             }
         ];
-        let currentReadmePage = 0;
 
         const memberStories = {
             kemi: {
@@ -559,9 +1421,9 @@
                 }
             },
             kiki: {
-                name: { zh: "Kiki (Name)", en: "Kiki (Name)" },
+                name: { zh: "Kiki", en: "Kiki" },
                 story: {
-                    zh: "我8岁时移民到美国，记得当时适应新的学校系统、不同的社交期望和陌生环境是多么令人感到压倒性的。我经常希望有一个真正理解我正在经历的人。正因为这段经历，我希望帮助新移民学生在学业和社交生活中顺利适应，让他们感到不那么孤独，更加有自信。<br><br>我可以就适应学校、建立友谊和参与活动提供指导。参与足球、冰球和无板曲棍球等运动多年，以及长年学习芭蕾舞帮助我在这里找到了属于自己的位置，我希望鼓励其他学生也去探索他们的兴趣。最重要的是，我总是愿意倾听，希望学生们感到舒适，知道他们有一个理解他们并准备支持他们的人。",
+                    zh: "我8岁时移民到美国，记得当时适应新的学校系统、不同的社交期望和陌生环境是多么令人感到压倒性的。我经常希望有一个真正理解我正在经历的人。正因为这段经历，我希望帮助新移民学生在学业和社交生活中顺利适应，让他们感到不那么孤独，更加有自信。我可以就适应学校、建立友谊和参与活动提供指导。参与足球、冰球和无板曲棍球等运动多年，以及长年学习芭蕾舞帮助我在这里找到了属于自己的位置，我希望鼓励其他学生也去探索他们的兴趣。最重要的是，我总是愿意倾听，希望学生们感到舒适，知道他们有一个理解他们并准备支持他们的人。",
                     en: "When I immigrated to the United States at 8 years old, I remember how overwhelming it felt to adjust to a new school system, different social expectations, and an unfamiliar environment. I often wished I had someone who truly understood what I was going through. Because of that experience, I want to help new immigrant students navigate both their academic and social lives so they feel less alone and more confident. I can offer guidance on adjusting to school, building friendships, and getting involved in activities. Being active in sports like soccer, ice hockey, and lacrosse, dancing ballet for many years helped me find my place here, and I hope to encourage others to explore their interests as well. Most importantly, I am always willing to listen and want students to feel comfortable reaching out, knowing they have someone who understands and is ready to support them."
                 }
             }
@@ -584,57 +1446,91 @@
                 storyKey: "kiki"
             }
         ];
-        let currentBookingEmail = "";
 
-        window.currentLang = 'zh';
         const founderStory = {
-            en: `I came to the United States as an immigrant with little understanding of the language, culture, or school system. I remember how isolating it felt, not knowing how to make friends, how to fit in, or even how to ask for help. Over time, through persistence and openness, I learned to adapt, build friendships, and grow confident in a new environment.<br><br>As I adjusted, I felt a responsibility to support others facing the same transition. I created a WeChat public account at a young age to share my experiences and stories about real life in America, helping people who want to learn about America or just want to hear some interesting stories. Not long later, I volunteered to teach younger students English and reading skills for free, believing that language is the first bridge to belonging. Where I also fell in love with helping others with my own ability, trying my best.<br><br>Today, after all those years of challenges and experience, my integration into American life is complete, even though I still have a lot to learn. One thing that I never forget is my dedication to helping others, where now I serve as the Founder and President of Reiz EZ Life, a nonprofit organization dedicated to helping newly arrived Chinese students transition smoothly into life in the U.S. Through mentorship, cultural guidance, and shared resources, I strive to ensure that no student feels as lost as I once did. My mission is simple: to turn uncertainty into confidence and help young immigrants build a strong, supported start in their new home.`,
-            zh: `我作为一名新移民来到美国时，对语言、文化或学校系统知之甚少。我清楚地记得那种孤独感——不知道如何交朋友，不知道如何融入，甚至不知道如何寻求帮助。随着时间的推移，通过坚持和开放的心态，我学会了适应，建立了友谊，并在新环境中变得自信。<br><br>当我适应后，我感到有一种责任去支持那些面临同样转变的人。我在很小的时候就创办了一个微信公众号，分享我在美国生活的经验和故事，帮助那些想了解美国或只是想听听趣闻的人。不久后，我开始志愿免费教授低年级学生英语和阅读技巧，因为我相信语言是通往归属感的第一座桥梁。在那里，我也爱上了尽自己所能去帮助别人。<br><br>今天，经历了这些年的挑战和经验后，我已经完全融入了美国生活，尽管我还有很多东西要学。我永远不会忘记的一件事就是致力于帮助他人。现在，我担任 Reiz EZ Life 的创始人兼主席，这是一家致力于帮助新近抵美的中国学生顺利过渡到美国生活的非营利组织。通过导师指导、文化指引和共享资源，我努力确保没有学生会像我曾经那样感到迷茫。我的使命很简单：将不确定性转化为信心，帮助年轻移民在他们的新家园建立一个强大、有支持的开始。`
+            en: `I came to the United States as an immigrant with little understanding of the language, culture, or school system. I remember how isolating it felt, not knowing how to make friends, how to fit in, or even how to ask for help. Over time, through persistence and openness, I learned to adapt, build friendships, and grow confident in a new environment.<br><br>As I adjusted, I felt a responsibility to support others facing the same transition. I created a WeChat public account at a young age to share my experiences and stories about real life in America, helping people who want to learn about America or just want to hear some interesting stories. Not long later, I volunteered to teach younger students English and reading skills for free, believing that language is the first bridge to belonging.<br><br>Today, I serve as the Founder and President of Reiz EZ Life, a nonprofit organization dedicated to helping newly arrived Chinese students transition smoothly into life in the U.S. Through mentorship, cultural guidance, and shared resources, I strive to ensure that no student feels as lost as I once did.`,
+            zh: `我作为一名新移民来到美国时，对语言、文化或学校系统知之甚少。我清楚地记得那种孤独感——不知道如何交朋友，不知道如何融入，甚至不知道如何寻求帮助。随着时间的推移，通过坚持和开放的心态，我学会了适应，建立了友谊，并在新环境中变得自信。<br><br>当我适应后，我感到有一种责任去支持那些面临同样转变的人。我在很小的时候就创办了一个微信公众号，分享我在美国生活的经验和故事，帮助那些想了解美国或只是想听听趣闻的人。不久后，我开始志愿免费教授低年级学生英语和阅读技巧，因为我相信语言是通往归属感的第一座桥梁。<br><br>今天，我担任 Reiz EZ Life 的创始人兼主席，这是一家致力于帮助新近抵美的中国学生顺利过渡到美国生活的非营利组织。通过导师指导、文化指引和共享资源，我努力确保没有学生会像我曾经那样感到迷茫。`
         };
 
+        let currentLang = 'zh';
+        let currentReadmePage = 0;
+        let currentBookingEmail = '';
+
         window.updateLanguage = function(lang) {
-            window.currentLang = lang;
+            currentLang = lang;
             document.querySelectorAll('[data-zh]').forEach(el => {
                 const text = el.getAttribute(`data-${lang}`);
-                if (text) el.innerHTML = text;
+                if (text) {
+                    if (el.tagName === 'INPUT') el.placeholder = text;
+                    else el.textContent = text;
+                }
             });
             const fContent = document.getElementById('founder-content');
             if(fContent) fContent.innerHTML = founderStory[lang];
-            
-            const btns = ['lang-switch', 'welcome-lang-switch'];
-            btns.forEach(id => {
-                const b = document.getElementById(id);
-                if(b) b.textContent = lang === 'zh' ? 'EN / 中' : '中 / EN';
-            });
             window.renderArticleList();
             window.renderReadmePage();
             window.renderContacts();
         };
 
-        window.closeWelcome = () => { document.getElementById('welcome-modal').classList.remove('active'); };
-        window.openStories = () => { document.getElementById('stories-modal').classList.add('active'); window.renderArticleList(); };
-        window.closeStories = () => { document.getElementById('stories-modal').classList.remove('active'); window.backToStoriesList(); };
-        window.openResources = () => { document.getElementById('resources-modal').classList.add('active'); currentReadmePage = 0; window.renderReadmePage(); window.renderContacts(); };
-        window.closeResources = () => { document.getElementById('resources-modal').classList.remove('active'); };
+        window.toggleLanguage = function() {
+            window.updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
+        };
 
-        window.openStoryModal = function(storyKey) {
-            const story = memberStories[storyKey];
-            if(!story) return;
-            document.getElementById('story-member-name').textContent = story.name[window.currentLang];
-            document.getElementById('story-content-view').innerHTML = story.story[window.currentLang];
-            document.getElementById('story-modal').classList.add('active');
+        window.toggleLanguageAndEnter = function() {
+            window.toggleLanguage();
+            window.closeWelcome();
         };
-        window.closeStoryModal = function() {
-            document.getElementById('story-modal').classList.remove('active');
+
+        window.scrollToSection = function(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
         };
+
+        window.showTeamMember = function(index) {
+            const member = contactsData[index];
+            const story = member.storyKey ? memberStories[member.storyKey] : null;
+            const introText = currentLang === 'zh' ? member.intro.zh : member.intro.en;
+            
+            let html = `
+                <div class="member-header">
+                    <img src="${member.pic}" alt="${member.name}" class="member-photo" onerror="this.src='https://via.placeholder.com/140?text=${member.name}'">
+                    <div class="member-name">${member.name}</div>
+                    <div class="member-title">${member.id === 1 ? (currentLang === 'zh' ? '创始人' : 'Founder') : member.id === 2 ? (currentLang === 'zh' ? '首席工程师' : 'Engineer') : (currentLang === 'zh' ? '学生导师' : 'Mentor')}</div>
+                </div>
+                <div class="member-intro">${introText}</div>
+                <div class="member-contact">
+                    <p class="contact-item">📧 ${member.email}</p>
+                    <p class="contact-item">📞 ${member.phone}</p>
+                </div>
+                <div class="member-actions">
+                    <button class="member-btn primary" onclick="window.openBooking('${member.email}')" style="font-size: 1.1rem; padding: 16px;" data-zh="预约沟通" data-en="Book Meeting">预约沟通</button>
+                    ${story ? `<button class="member-btn secondary" onclick="window.openStoryModal('${member.storyKey}')" style="font-size: 1.1rem; padding: 16px;" data-zh="查看故事" data-en="Read Story">查看故事</button>` : ''}
+                </div>
+                ${story ? `<div class="member-story">${story.story[currentLang]}</div>` : ''}
+            `;
+            
+            document.getElementById('member-panel').innerHTML = html;
+            window.updateLanguage(currentLang);
+        };
+
+        window.closeWelcome = () => document.getElementById('welcome-modal').classList.remove('active');
+        window.openResources = () => { document.getElementById('resources-modal').classList.add('active'); currentReadmePage = 0; window.renderReadmePage(); window.renderContacts(); };
+        window.closeResources = () => document.getElementById('resources-modal').classList.remove('active');
+        window.openStories = () => { document.getElementById('stories-modal').classList.add('active'); window.renderArticleList(); };
+        window.closeStories = () => document.getElementById('stories-modal').classList.remove('active');
+        window.openStoryModal = function(storyKey) { const story = memberStories[storyKey]; if(!story) return; document.getElementById('story-member-name').textContent = story.name[currentLang]; document.getElementById('story-content-view').innerHTML = story.story[currentLang]; document.getElementById('story-modal').classList.add('active'); };
+        window.closeStoryModal = () => document.getElementById('story-modal').classList.remove('active');
 
         window.renderReadmePage = () => {
             const container = document.getElementById('readme-content-view');
             if(!container) return;
-            container.innerHTML = readmePages[currentReadmePage][window.currentLang];
+            container.innerHTML = readmePages[currentReadmePage][currentLang];
             document.getElementById('res-prev-btn').disabled = (currentReadmePage === 0);
             document.getElementById('res-next-btn').disabled = (currentReadmePage === readmePages.length - 1);
         };
+
         window.changeReadmePage = (direction) => { currentReadmePage += direction; window.renderReadmePage(); };
 
         window.renderContacts = () => {
@@ -642,42 +1538,26 @@
             if(!container) return;
             let html = "";
             contactsData.forEach(c => {
-                const introText = window.currentLang === 'zh' ? c.intro.zh : c.intro.en;
-                const bookText = window.currentLang === 'zh' ? '预约沟通' : 'Book a Session';
-                const storyText = window.currentLang === 'zh' ? '我的故事' : 'My Story';
-                let actionButtons = `<button class="book-btn" onclick="window.openBooking('${c.email}')">${bookText}</button>`;
+                const introText = currentLang === 'zh' ? c.intro.zh : c.intro.en;
+                const bookText = currentLang === 'zh' ? '预约沟通' : 'Book a Session';
+                const storyText = currentLang === 'zh' ? '我的故事' : 'My Story';
+                let actionButtons = `<button class="member-btn primary" onclick="window.openBooking('${c.email}')" style="width: 100%; font-size: 0.95rem; padding: 10px; margin-top: 12px;">${bookText}</button>`;
                 if(c.storyKey) {
-                    actionButtons += `<button class="story-btn" onclick="window.openStoryModal('${c.storyKey}')">${storyText}</button>`;
+                    actionButtons += `<button class="member-btn secondary" onclick="window.openStoryModal('${c.storyKey}')" style="width: 100%; font-size: 0.95rem; padding: 10px; margin-top: 8px;">${storyText}</button>`;
                 }
-                html += `
-                    <div class="contact-item">
-                        <img src="${c.pic}" alt="${c.name}" class="contact-photo" onerror="this.src='https://via.placeholder.com/70?text=Photo'">
-                        <div style="flex:1; text-align: left;">
-                            <h3 style="font-family:var(--font-serif); font-size:1.1rem; color:var(--primary); margin-bottom:3px;">${c.name}</h3>
-                            <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:8px; line-height:1.4;">${introText}</p>
-                            <div class="contact-info-box">📧 ${c.email} <br> 📞 ${c.phone}</div>
-                            <div>${actionButtons}</div>
-                        </div>
-                    </div>
-                `;
+                html += `<div style="padding: 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 12px; background: rgba(255, 255, 255, 0.6);"><h4 style="margin-bottom: 8px; font-size: 1.05rem; font-family: var(--font-serif); color: var(--primary);">${c.name}</h4><p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 10px;">${introText}</p><p style="font-size: 0.8rem; color: var(--text-muted); font-family: monospace;">📧 ${c.email}<br>📞 ${c.phone}</p><div>${actionButtons}</div></div>`;
             });
             container.innerHTML = html;
         };
 
-        window.openBooking = (email) => {
-            currentBookingEmail = email;
-            document.getElementById('booking-modal').classList.add('active');
-            document.getElementById('b-name').value = '';
-            document.getElementById('b-email').value = '';
-            document.getElementById('b-phone').value = '';
-        };
-        window.closeBooking = () => { document.getElementById('booking-modal').classList.remove('active'); };
+        window.openBooking = (email) => { currentBookingEmail = email; document.getElementById('booking-modal').classList.add('active'); };
+        window.closeBooking = () => { document.getElementById('booking-modal').classList.remove('active'); document.getElementById('b-name').value = ''; document.getElementById('b-email').value = ''; document.getElementById('b-phone').value = ''; };
 
         window.submitBooking = (timeSlot) => {
             const name = document.getElementById('b-name').value.trim();
             const email = document.getElementById('b-email').value.trim();
             const phone = document.getElementById('b-phone').value.trim();
-            if(!name || !email || !phone) { alert(window.currentLang === 'zh' ? "请填写完整信息。" : "Please fill out all fields."); return; }
+            if(!name || !email || !phone) { alert(currentLang === 'zh' ? "请填写完整信息。" : "Please fill out all fields."); return; }
             const subject = encodeURIComponent(`Reiz EZ Life 预约请求: ${name}`);
             const body = encodeURIComponent(`${name} 这个人想在 ${timeSlot} 这个时间预约你。\n\n联系方式：\n邮箱: ${email}\n电话: ${phone}\n\n请尽快回复确认。`);
             window.location.href = `mailto:${currentBookingEmail}?subject=${subject}&body=${body}`;
@@ -688,93 +1568,37 @@
             const listContainer = document.getElementById('article-list-view');
             if(!listContainer) return;
             let htmlContent = "";
-            for(let i = 0; i < articles.length; i++) {
-                const art = articles[i];
-                const title = window.currentLang === 'zh' ? art.zh : art.en;
-                htmlContent += `
-                    <div class="article-preview-item" onclick="window.loadArticleDetail('${art.id}', '${title}')">
-                        <h4>${title}</h4><p>${art.date}</p>
-                    </div>
-                `;
-            }
+            articles.forEach(art => {
+                const title = currentLang === 'zh' ? art.zh : art.en;
+                htmlContent += `<div style="padding: 14px; border: 2px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; transition: all 0.2s; background: rgba(255, 255, 255, 0.6);" onclick="window.loadArticleDetail('${art.id}', '${title}')"><h4 style="margin-bottom: 4px; font-size: 1rem; color: var(--primary); font-family: var(--font-serif);">${title}</h4><p style="font-size: 0.85rem; color: var(--text-muted);">${art.date}</p></div>`;
+            });
             listContainer.innerHTML = htmlContent;
         };
 
         window.loadArticleDetail = function(id, title) {
             document.getElementById('article-list-view').style.display = 'none';
             document.getElementById('article-detail-view').style.display = 'block';
-            document.getElementById('article-back-btn').style.display = 'block';
-            document.getElementById('stories-title').innerText = title;
+            document.getElementById('stories-title').textContent = title;
             const currentArticle = articles.find(art => art.id === id);
             const largeArticleIds = ['1', '2', '3', '11'];
             if (largeArticleIds.includes(id)) {
-                document.getElementById('article-detail-view').innerHTML = `
-                    <div style="padding:40px 20px; text-align:center; background:rgba(0,0,0,0.02); border-radius:var(--radius-md); border:1px solid rgba(0,0,0,0.05);">
-                        <span style="font-size:2.5rem; margin-bottom:15px; display:block;">📄</span>
-                        <h3 style="font-family:var(--font-serif); font-size:1.4rem; margin-bottom:10px; color:var(--primary);" data-zh="内容较多，请前往阅读" data-en="Heavy content, please read on official site.">内容较多，请前往阅读</h3>
-                        <p style="font-size:0.95rem; color:var(--text-light); margin-bottom:20px;" data-zh="为提供更好的体验，建议您访问原文。" data-en="Please visit the original post on WeChat.">为提供更好的体验，建议您访问原文。</p>
-                        <a href="${currentArticle.url}" target="_blank" style="display:inline-block; padding:10px 25px; background:var(--primary); color:white; border-radius:25px; text-decoration:none; font-weight:600;">
-                            ${window.currentLang === 'zh' ? '访问原文' : 'Visit Original'}
-                        </a>
-                    </div>
-                `;
+                document.getElementById('article-detail-view').innerHTML = `<p style="padding: 16px; background: rgba(212, 175, 55, 0.15); border-radius: var(--radius-md); color: var(--text-light); font-size: 1rem;">${currentLang === 'zh' ? '内容较多，请前往阅读原文。' : 'Please visit the original post.'}<br><a href="${currentArticle.url}" target="_blank" style="color: var(--primary); font-weight: 700; display: inline-block; margin-top: 10px;">→ ${currentLang === 'zh' ? '访问原文' : 'Visit Original'}</a></p>`;
             } else if (currentArticle && currentArticle.url) {
-                document.getElementById('article-detail-view').innerHTML = `
-                    <div style="width: 100%; height: 60vh; border-radius: var(--radius-md); overflow: hidden; border: 1px solid rgba(0,0,0,0.1); background: white;">
-                        <iframe src="${currentArticle.url}" style="width: 100%; height: 100%; border: none;" referrerpolicy="no-referrer"></iframe>
-                    </div>
-                `;
+                document.getElementById('article-detail-view').innerHTML = `<iframe src="${currentArticle.url}" style="width: 100%; height: 400px; border: 2px solid var(--border-color); border-radius: var(--radius-md);" referrerpolicy="no-referrer"></iframe>`;
             }
         };
 
-        window.backToStoriesList = function() {
-            document.getElementById('article-detail-view').style.display = 'none';
-            document.getElementById('article-list-view').style.display = 'block';
-            document.getElementById('article-back-btn').style.display = 'none';
-            document.getElementById('stories-title').innerText = window.currentLang === 'zh' ? "创始人趣闻" : "My Stories";
-        };
+        window.openContent = (type) => { if(type === 'life') alert(currentLang === 'zh' ? '成长是一个持续的过程。点击"资源"了解更多支持。' : 'Growth is continuous. Click Resources to learn more.'); };
 
         document.addEventListener('DOMContentLoaded', () => {
             window.updateLanguage('zh');
             setTimeout(() => { document.getElementById('welcome-modal').classList.add('active'); }, 500);
-            document.getElementById('lang-switch').onclick = () => window.updateLanguage(window.currentLang === 'zh' ? 'en' : 'zh');
-            document.getElementById('welcome-lang-switch').onclick = () => window.updateLanguage(window.currentLang === 'zh' ? 'en' : 'zh');
+            document.querySelector('.join-trigger').onclick = () => document.getElementById('contact-modal').classList.add('active');
+        });
 
-            document.body.addEventListener('click', (e) => {
-                if (e.target.closest('.join-trigger')) {
-                    const modal = document.createElement('div');
-                    Object.assign(modal.style, { 
-                        position:'fixed', top:'0', left:'0', width:'100%', height:'100%', 
-                        backgroundColor:'rgba(10, 35, 66, 0.4)', backdropFilter:'blur(20px)', WebkitBackdropFilter:'blur(20px)',
-                        display:'flex', justifyContent:'center', alignItems:'center', zIndex:'10000',
-                        opacity: '0', transition: 'opacity 0.4s ease'
-                    });
-                    const texts = {
-                        title: window.currentLang === 'zh' ? '联系我们' : 'Contact Us',
-                        email: window.currentLang === 'zh' ? '发送邮件' : 'Email Us',
-                        call: window.currentLang === 'zh' ? '拨打电话' : 'Call Us',
-                        cancel: window.currentLang === 'zh' ? '取消' : 'Cancel'
-                    };
-                    const gmailUrl = "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzDsPjJjRflqbGJssRVMvqdgXbMGmPHCjzpBMFrnmZZZbBkwhxqcnWCrPNqMmwJqlbKmXWP";
-
-                    modal.innerHTML = `
-                        <div style="background:rgba(255,255,255,0.95); padding:35px 25px; border-radius:24px; text-align:center; width:90%; max-width:350px; box-shadow:0 20px 40px rgba(0,0,0,0.15); transform:translateY(30px) scale(0.98); transition:all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);" id="contact-modal-card">
-                            <h2 style="font-family:var(--font-serif); font-size:1.6rem; margin-bottom:20px; color:var(--primary); font-weight:700;">${texts.title}</h2>
-                            <div style="display:flex; flex-direction:column; gap:12px;">
-                                <a href="${gmailUrl}" target="_blank" style="display:block; padding:14px; background:var(--primary); color:white; border-radius:30px; text-decoration:none; font-weight:600; font-size:1rem;">📧 ${texts.email}</a>
-                                <a href="tel:6176595400" style="display:block; padding:14px; background:white; color:var(--primary); border:1px solid rgba(0,0,0,0.1); border-radius:30px; text-decoration:none; font-weight:600; font-size:1rem;">📞 ${texts.call}</a>
-                                <div id="close-contact" style="padding:12px; color:var(--text-light); cursor:pointer; font-size:0.95rem; font-weight:500; margin-top:5px;">${texts.cancel}</div>
-                            </div>
-                        </div>`;
-                    document.body.appendChild(modal);
-                    setTimeout(() => { modal.style.opacity = '1'; document.getElementById('contact-modal-card').style.transform = 'translateY(0) scale(1)'; }, 10);
-                    document.getElementById('close-contact').onclick = () => {
-                        modal.style.opacity = '0';
-                        document.getElementById('contact-modal-card').style.transform = 'translateY(30px) scale(0.98)';
-                        setTimeout(() => document.body.removeChild(modal), 400);
-                    };
-                }
-            });
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            console.log('Search:', query);
         });
     </script>
 </body>
