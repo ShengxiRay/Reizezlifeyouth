@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youth Home | Reiz EZ Life</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap">
+    <style>
+        :root {
+            --primary: #8da9c4;
+            --secondary: #d4a373;
+            --apple-blue: #0071e3;
+            --text-main: #1d1d1f;
+            --glass-white: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --radius-xl: 40px;
+            --radius-md: 24px;
+            --bezier: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+            background: radial-gradient(circle at 10% 10%, #f0f4f8 0%, #e2ebf0 50%, #fef9e7 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        .aurora {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            filter: blur(100px);
+            background: radial-gradient(circle at 20% 30%, #e9edc9 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, #faedcd 0%, transparent 40%);
+        }
+
+        /* --- 弹窗样式 --- */
+        .welcome-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(45px) saturate(180%);
+            -webkit-backdrop-filter: blur(45px) saturate(180%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s var(--bezier);
+        }
+
+        .welcome-overlay.active { opacity: 1; visibility: visible; }
+
+        .founder-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 60px;
+            border-radius: var(--radius-xl);
+            width: 95%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
+            transform: translateY(30px);
+            transition: transform 0.6s var(--bezier);
+        }
+
+        .welcome-overlay.active .founder-card { transform: translateY(0); }
+
+        /* --- 统一互动的可点击响应板块 --- */
+        .glass-card, .sub-card, .tag-item, .cta-btn, .enter-site-btn, .article-preview-item, .join-trigger {
+            cursor: pointer;
+            transition: all 0.4s var(--bezier) !important;
+        }
+
+        .glass-card:hover, .sub-card:hover, .tag-item:hover, .cta-btn:hover, .enter-site-btn:hover {
+            transform: scale(1.03) translateY(-5px);
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        .join-trigger:hover {
+            transform: scale(1.03) translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .glass-card:active, .sub-card:active, .tag-item:active, .cta-btn:active, .enter-site-btn:active, .join-trigger:active {
+            transform: scale(0.97) translateY(0);
+            transition: all 0.1s ease !important;
+        }
+
+        /* --- 弹窗内部按钮样式 --- */
+        .welcome-lang-btn {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: rgba(0,0,0,0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--apple-blue);
+            cursor: pointer;
+            border: 1px solid rgba(0,113,227,0.2);
+            transition: 0.3s;
+        }
+
+        .welcome-lang-btn:hover { background: rgba(0,113,227,0.1); }
+
+        .enter-site-btn {
+            background: var(--text-main);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 40px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            border: none;
+            float: right;
+            margin-top: 10px;
+        }
+
+        /* --- 拆分方框 --- */
+        .split-card-container { display: flex; flex-direction: column; gap: 20px; height: 100%; }
+        
+        .sub-card {
+            background: var(--glass-white);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* --- 文章与资源列表样式 --- */
+        .article-list-scroll { max-height: 450px; overflow-y: auto; padding-right: 15px; margin-top: 20px; }
+        .article-list-scroll::-webkit-scrollbar { width: 6px; }
+        .article-list-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+        .article-preview-item {
+            background: rgba(0,0,0,0.03);
+            margin-bottom: 15px;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: left;
+        }
+        .article-preview-item:hover {
+            background: rgba(0,113,227,0.08);
+            transform: translateX(10px);
+        }
+
+        .back-nav-btn {
+            display: none;
+            background: rgba(0,0,0,0.08);
+            padding: 12px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+            width: fit-content;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        .back-nav-btn:hover { background: rgba(0,0,0,0.15); transform: translateX(-5px); }
+
+        /* --- 新增：Readme 样式与联系人卡片样式 --- */
+        .readme-style {
+            font-size: 1.4rem; line-height: 1.7; color: #333; text-align: left;
+        }
+        .readme-style h3 { font-size: 1.8rem; margin: 15px 0 10px 0; color: var(--text-main); }
+        .readme-style ul { padding-left: 20px; margin-bottom: 15px; }
+        .readme-style li { margin-bottom: 8px; }
+        .readme-style p { margin-bottom: 15px; }
+
+        .pagination-btn {
+            background: rgba(0,0,0,0.05); border: none; padding: 10px 20px; border-radius: 20px;
+            font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: 0.3s;
+        }
+        .pagination-btn:hover:not(:disabled) { background: rgba(0,113,227,0.1); color: var(--apple-blue); }
+        .pagination-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .contact-item {
+            display: flex; gap: 20px; background: rgba(255,255,255,0.6); padding: 20px;
+            border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05);
+        }
+        .contact-photo {
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+            background: #eee; border: 2px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .contact-info-box {
+            background: rgba(0,0,0,0.03); padding: 10px 15px; border-radius: 12px;
+            font-size: 1.1rem; color: #555; margin-top: 10px; display: inline-block;
+        }
+        .book-btn {
+            background: var(--text-main); color: white; border: none; padding: 8px 20px;
+            border-radius: 20px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.3s;
+        }
+        .book-btn:hover { background: var(--apple-blue); transform: translateY(-2px); }
+
+        /* 表单输入框样式 */
+        .form-input {
+            width: 100%; padding: 15px 20px; margin-bottom: 15px; border-radius: 15px;
+            border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.8);
+            font-size: 1.2rem; outline: none; transition: 0.3s; font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+        }
+        .form-input:focus { border-color: var(--apple-blue); box-shadow: 0 0 0 3px rgba(0,113,227,0.1); }
+        .time-btn {
+            flex: 1; padding: 12px; border: 1px solid var(--glass-border); background: white;
+            border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s;
+        }
+        .time-btn:hover { background: var(--apple-blue); color: white; border-color: var(--apple-blue); transform: translateY(-2px); }
+
+        /* --- 主容器布局 --- */
+        .container-glass {
+            width: 95%; max-width: 1400px; background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid var(--glass-border); border-radius: var(--radius-xl);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); padding: 50px;
+            display: grid; gap: 28px;
+            grid-template-areas: 
+                "nav nav nav"
+                "main card1 card2"
+                "tag card3 card4"
+                "footer footer footer";
+            grid-template-columns: 1.3fr 1fr 1fr;
+        }
+
+        nav { grid-area: nav; display: flex; justify-content: space-between; align-items: center; padding-bottom: 30px; }
+        .logo { font-weight: 800; font-size: 1.9rem; letter-spacing: 1px; }
+        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links a { text-decoration: none; color: var(--text-main); font-size: 1.45rem; cursor: pointer; transition: 0.3s; }
+        .nav-links a:hover { color: var(--apple-blue); transform: translateY(-2px); }
+        
+        .hero-section { grid-area: main; padding: 20px; }
+        .hero-section h1 { font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.1; font-weight: 600; }
+        .hero-section p { font-size: 1.7rem; opacity: 0.8; margin-bottom: 2.5rem; line-height: 1.4; }
+
+        .glass-card { background: var(--glass-white); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 35px; }
+        .tag-area { grid-area: tag; display: flex; flex-wrap: wrap; gap: 12px; align-content: flex-start; padding: 15px; }
+        .tag-item { background: rgba(255,255,255,0.5); border: 1px solid var(--glass-border); padding: 10px 20px; border-radius: 25px; font-size: 1.35rem; }
+        
+        footer { grid-area: footer; text-align: center; font-size: 1.4rem; opacity: 0.4; padding-top: 50px; }
+
+        @media (max-width: 1100px) {
+            .container-glass { grid-template-areas: "nav" "main" "card1" "card2" "tag" "card3" "card4" "footer"; grid-template-columns: 1fr; }
+            .contact-item { flex-direction: column; align-items: center; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aurora"></div>
+
+    <div id="welcome-modal" class="welcome-overlay">
+        <div class="founder-card">
+            <div id="welcome-lang-switch" class="welcome-lang-btn">EN / 中</div>
+            <h1 style="font-size:2.8rem; margin-bottom:10px; font-weight:800;" data-zh="欢迎来到 Reiz EZ Life Youth Home" data-en="Welcome to Reiz EZ Life Youth Home">欢迎来到 Reiz EZ Life Youth Home</h1>
+            <div style="color:var(--secondary); font-size:1.4rem; font-weight:700; margin-bottom:25px; text-transform:uppercase; border-bottom:1px solid rgba(0,0,0,0.05); padding-bottom:15px;" data-zh="创始人视角 ｜ Founder's Perspective" data-en="Founder's Perspective">创始人视角 ｜ Founder's Perspective</div>
+            <div id="founder-content" style="font-size:1.4rem; line-height:1.7; color:#333; margin-bottom:40px; text-align:justify;"></div>
+            <button class="enter-site-btn" onclick="window.closeWelcome()" data-zh="进入网站 | Enter Website" data-en="Enter Website">进入网站 | Enter Website</button>
+        </div>
+    </div>
+
+    <div id="stories-modal" class="welcome-overlay">
+        <div class="founder-card" style="max-width: 950px;">
+            <div id="article-back-btn" class="back-nav-btn" onclick="window.backToStoriesList()" data-zh="← 返回列表" data-en="← Back to List">← 返回列表</div>
+            <h1 id="stories-title" style="font-size: 2.8rem; margin-bottom: 20px; font-weight:800;" data-zh="创始人趣闻" data-en="My Stories">创始人趣闻</h1>
+            <div id="article-list-view" class="article-list-scroll"></div>
+            <div id="article-detail-view" style="display: none; text-align: left; margin-top: 20px; font-size:1.4rem; line-height:1.7;"></div>
+            <button onclick="window.closeStories()" class="enter-site-btn" style="float:none; display:inline-block; margin-top:30px; background:rgba(0,0,0,0.1); color:var(--text-main);" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
+        </div>
+    </div>
+
+    <div id="resources-modal" class="welcome-overlay">
+        <div class="founder-card" style="max-width: 950px; display: flex; flex-direction: column; gap: 40px; padding: 50px;">
+            
+            <div style="flex: 1; border-bottom: 2px dashed rgba(0,0,0,0.05); padding-bottom: 30px; position: relative;">
+                <h1 style="font-size: 2.6rem; margin-bottom: 20px; font-weight:800;" data-zh="美国生活融入指南" data-en="US Integration Guide">美国生活融入指南</h1>
+                <div id="readme-content-view" class="readme-style" style="min-height: 220px;">
+                    </div>
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                    <button id="res-prev-btn" class="pagination-btn" onclick="window.changeReadmePage(-1)">&#8592; <span data-zh="上一页" data-en="Prev">上一页</span></button>
+                    <button id="res-next-btn" class="pagination-btn" onclick="window.changeReadmePage(1)"><span data-zh="下一页" data-en="Next">下一页</span> &#8594;</button>
+                </div>
+            </div>
+
+            <div style="flex: 1;">
+                <h2 style="font-size: 2rem; margin-bottom: 20px; font-weight:700;" data-zh="需要更多帮助？可以预约" data-en="Need more help? Book a session">需要更多帮助？可以预约</h2>
+                <div id="contacts-list-view" class="article-list-scroll" style="max-height: 350px; margin-top: 0;">
+                    </div>
+            </div>
+            
+            <button onclick="window.closeResources()" class="enter-site-btn" style="float:none; align-self: center; margin-top: 10px; background:rgba(0,0,0,0.1); color:var(--text-main);" data-zh="关闭窗口" data-en="Close">关闭窗口</button>
+        </div>
+    </div>
+
+    <div id="booking-modal" class="welcome-overlay" style="z-index: 10005;">
+        <div class="founder-card" style="max-width: 500px; padding: 40px; text-align: center;">
+            <h2 style="font-size: 2.2rem; margin-bottom: 10px; font-weight:800;" data-zh="预约联系人" data-en="Book Appointment">预约联系人</h2>
+            <p style="font-size:1.3rem; opacity:0.6; margin-bottom: 25px;" data-zh="填写信息后将自动为您生成预约邮件" data-en="Fill info to generate booking email">填写信息后将自动为您生成预约邮件</p>
+            
+            <form id="booking-form" onsubmit="return false;" style="text-align: left;">
+                <input type="text" id="b-name" class="form-input" placeholder="您的姓名 / Your Name" required>
+                <input type="email" id="b-email" class="form-input" placeholder="您的邮箱 / Your Email" required>
+                <input type="tel" id="b-phone" class="form-input" placeholder="您的电话 / Your Phone" required>
+                
+                <h4 style="font-size:1.4rem; margin: 20px 0 15px 0; color:var(--text-main);" data-zh="请选择联系人的空闲时间：" data-en="Select available time:">请选择联系人的空闲时间：</h4>
+                <div style="display: flex; gap: 10px;">
+                    <button class="time-btn" onclick="window.submitBooking('A')">时间 A</button>
+                    <button class="time-btn" onclick="window.submitBooking('B')">时间 B</button>
+                    <button class="time-btn" onclick="window.submitBooking('C')">时间 C</button>
+                </div>
+            </form>
+            
+            <div style="margin-top: 30px; font-weight: 600; cursor: pointer; color: #888;" onclick="window.closeBooking()" data-zh="取消预约" data-en="Cancel">取消预约</div>
+        </div>
+    </div>
+
+    <div class="container-glass">
+        <nav>
+            <div class="logo">REIZ EZ LIFE <span style="font-weight:300; opacity:0.6">YOUTH HOME</span></div>
+            <div class="nav-links">
+                <a href="#" data-zh="进入空间" data-en="Zone Entrance">进入空间</a>
+                <a class="join-trigger" style="color:var(--secondary); border:2px solid var(--secondary); padding:8px 25px; border-radius:60px; font-weight:600;" data-zh="加入我们" data-en="Join Us">加入我们</a>
+                <a id="lang-switch" style="color: var(--apple-blue); font-weight: 600;">EN / 中</a>
+            </div>
+        </nav>
+
+        <main class="hero-section">
+            <h1 data-zh="一个可以成长、归属，并成为自己的地方" data-en="A Place to Grow, Belong, & Become">一个可以成长、归属，并成为自己的地方</h1>
+            <p data-zh="Youth Home 是为新移民子女与留学生打造的支持性空间。" data-en="Supportive space for children of immigrants and international students.">Youth Home 是为新移民子女与留学生打造的支持性空间。</p>
+            <button class="join-trigger" style="background:var(--text-main); color:white; border:none; padding:16px 35px; border-radius:45px; font-weight:600; font-size:1.4rem;" data-zh="保持联系" data-en="Stay Connected">保持联系</button>
+        </main>
+
+        <div class="glass-card">
+            <span style="font-size:1.3rem; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="内在与能力成长" data-en="Growth">内在与能力成长</span>
+            <h3 style="font-size:2rem; margin-bottom:15px;" data-zh="生活 ｜ Life" data-en="Life">生活 ｜ Life</h3>
+            <p style="font-size:1.55rem; opacity:0.7;" data-zh="成长不一定要张扬，它是安静且只属于你自己的过程。" data-en="Growth is a quiet process that belongs only to you.">成长不一定要张扬，它是安静且只属于你自己的过程。</p>
+        </div>
+
+        <div class="split-card-container">
+            <div class="sub-card" onclick="window.openResources()">
+                <span style="font-size:1.3rem; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="关系与安全感" data-en="Safety">关系与安全感</span>
+                <h3 style="font-size:1.8rem;" data-zh="资源 ｜ Resources" data-en="Resources">资源 ｜ Resources</h3>
+            </div>
+            <div class="sub-card" onclick="window.openStories()">
+                <span style="font-size:1.3rem; font-weight:800; color:var(--secondary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="个人故事" data-en="Stories">个人故事</span>
+                <h3 style="font-size:1.8rem;" data-zh="创始人趣闻 ｜ MyStories" data-en="MyStories">创始人趣闻 ｜ MyStories</h3>
+            </div>
+        </div>
+
+        <div class="tag-area">
+            <div class="tag-item" data-zh="新移民家庭" data-en="Immigrant Youth">新移民家庭</div>
+            <div class="tag-item" data-zh="北美留学生" data-en="Students">北美留学生</div>
+            <div class="tag-item" data-zh="身份认同" data-en="Identity">身份认同</div>
+            <div class="tag-item" data-zh="允许慢下来" data-en="Slow Down">允许慢下来</div>
+        </div>
+
+        <div class="glass-card">
+            <span style="font-size:1.3rem; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:12px; display:block;" data-zh="主体性" data-en="Agency">主体性</span>
+            <h3 style="font-size:2rem; margin-bottom:15px;" data-zh="升学 ｜ Application" data-en="Application">升学 ｜ Application</h3>
+            <p style="font-size:1.55rem; opacity:0.7;" data-zh="千里之行，始于足下。" data-en="Dream big, work hard.">千里之行，始于足下。</p>
+        </div>
+
+        <div class="glass-card" style="background: rgba(255,255,255,0.6); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <h3 style="font-size: 2.5rem; margin-bottom:10px;">Ready?</h3>
+                <p style="font-size:1.6rem; opacity:0.8;">Whether you want to join our community or just say hi ...</p>
+            </div>
+            <button class="join-trigger" style="width:100%; background:var(--text-main); color:white; border:none; padding:15px; border-radius:30px; font-weight:600; font-size:1.4rem; margin-top:20px;" data-zh="加入我们" data-en="Join Us">加入我们</button>
+        </div>
+
+        <footer>© 2026 REIZ EZ LIFE YOUTH HOME</footer>
+    </div>
+
+    <script>
+        // --- 文章数据 (39篇) ---
+        const articles = [
+            { id: '1', zh: "Kemy与Jason的阅读小课堂-How Spider save the sun", en: "Kemy & Jason's Reading Class", date: "2020年8月18日", url: "https://mp.weixin.qq.com/s/P2xezLGmkkPfdXDmGULF0A" },
+            { id: '2', zh: "英语成语：(Happy Part) ~~~", en: "English Idioms: (Happy Part)", date: "2020年7月24日", url: "https://mp.weixin.qq.com/s/D9WZDFBXHlbgP3vJh-LHnQ" },
+            { id: '3', zh: "英你而语—for your English", en: "English for You", date: "2020年7月16日", url: "https://mp.weixin.qq.com/s/pZ-xmK6rg8dfDmY7mrnx_A" },
+            { id: '4', zh: "难忘的美国夏令营", en: "Unforgettable Summer Camp", date: "2018年9月11日", url: "/file/article/4.html" },
+            { id: '5', zh: "Fright dream day", en: "Fright Dream Day", date: "2018年5月5日", url: "/file/article/5.html" },
+            { id: '6', zh: "我和最强大脑王峰&李威的近距离接触", en: "Meeting 'Super Brain' Champions", date: "2018年3月26日", url: "/file/article/6.html" },
+            { id: '7', zh: "迪士尼邮轮上过春节", en: "CNY on Disney Cruise", date: "2018年3月14日", url: "/file/article/7.html" },
+            { id: '8', zh: "奥兰多之行", en: "Trip to Orlando", date: "2018年3月14日", url: "/file/article/8.html" },
+            { id: '9', zh: "去医院", en: "Going to the Hospital", date: "2018年3月8日", url: "/file/article/9.html" },
+            { id: '10', zh: "小提琴表演记", en: "Violin Performance", date: "2018年2月3日", url: "/file/article/10.html" },
+            { id: '11', zh: "补发Pierce School滑冰记滑雪视频", en: "Pierce School Skating Videos", date: "2018年1月15日", url: "https://mp.weixin.qq.com/s/fz-JUVUMSclvViL8oQi4hw" },
+            { id: '12', zh: "第一次亲密接触击剑", en: "First Experience with Fencing", date: "2018年1月15日", url: "/file/article/12.html" },
+            { id: '13', zh: "Pierce School滑冰记", en: "Skating at Pierce School", date: "2018年1月9日", url: "/file/article/13.html" },
+            { id: '14', zh: "写在圣诞节前", en: "Written Before Christmas", date: "2017年12月31日", url: "/file/article/14.html" },
+            { id: '15', zh: "波士顿的第二场雪", en: "Second Snow in Boston", date: "2017年12月26日", url: "/file/article/15.html" },
+            { id: '16', zh: "波士顿的第一场雪", en: "First Snow in Boston", date: "2017年12月14日", url: "/file/article/16.html" },
+            { id: '17', zh: "遇见好心人", en: "Meeting a Kind Person", date: "2017年11月22日", url: "/file/article/17.html" },
+            { id: '18', zh: "奇妙的乐高城", en: "Wonderful Lego Land", date: "2017年11月12日", url: "/file/article/18.html" },
+            { id: '19', zh: "爸爸与Kemi的聊天记录", en: "Dad & Kemi Chat Logs", date: "2017年11月12日", url: "/file/article/19.html" },
+            { id: '20', zh: "波士顿科学博物馆游览记", en: "Museum of Science Visit", date: "2017年11月11日", url: "/file/article/20.html" },
+            { id: '21', zh: "11月5日爸爸写给Kemi的信", en: "Letter to Kemi (Nov 5， 2017)", date: "2017年11月5日", url: "/file/article/21.html" },
+            { id: '22', zh: "11月2日爸爸写给Kemi的信", en: "Letter to Kemi (Nov 2， 2017)", date: "2017年11月3日", url: "/file/article/22.html" },
+            { id: '23', zh: "快乐分享百分百", en: "100% Happiness Sharing", date: "2017年11月3日", url: "/file/article/23.html" },
+            { id: '24', zh: "奇妙的美国万圣节", en: "Halloween in America", date: "2017年11月2日", url: "/file/article/24.html" },
+            { id: '25', zh: "10月31日爸爸写给Kemi的信", en: "Letter to Kemi (Oct 31)", date: "2017年11月2日", url: "/file/article/25.html" },
+            { id: '26', zh: "美国生活趣事", en: "Fun Stories in America", date: "2017年10月31日", url: "/file/article/26.html" },
+            { id: '27', zh: "10月20日Kemi写给爸爸的信", en: "Kemi's Letter to Dad", date: "2017年10月31日", url: "/file/article/27.html" },
+            { id: '28', zh: "爸爸回国了", en: "Dad Returned to China", date: "2017年10月30日", url: "/file/article/28.html" },
+            { id: '29', zh: "父亲的回信", en: "Father's Reply Letter", date: "2017年10月30日", url: "/file/article/29.html" },
+            { id: '30', zh: "哈佛大学和MIT", en: "Harvard University & MIT", date: "2017年10月29日", url: "/file/article/30.html" },
+            { id: '31', zh: "Kemi写给老师同学们的一封信", en: "Letter to Classmates", date: "2017年10月29日", url: "/file/article/31.html" },
+            { id: '32', zh: "波士顿美术博物馆之行", en: "MFA Boston Visit", date: "2017年10月28日", url: "/file/article/32.html" },
+            { id: '33', zh: "美国求学篇", en: "Study in America", date: "2017年10月28日", url: "/file/article/33.html" },
+            { id: '34', zh: "美国旅游篇", en: "Travel in America", date: "2017年10月27日", url: "/file/article/34.html" }, 
+            { id: '35', zh: "舅舅写给Kemi的一封信", en: "A Letter to Kemi written by Uncle", date: "2017年10月27日", url: "/file/article/35.html" },
+            { id: '36', zh: "美国上学篇", en: "Schooling in America", date: "2017年10月26日", url: "/file/article/36.html" },
+            { id: '37', zh: "美国到达篇", en: "Arriving in America", date: "2017年10月23日", url: "/file/article/37.html" },
+            { id: '38', zh: "美国出发篇", en: "Departing for America", date: "2017年10月22日", url: "/file/article/38.html" },
+            { id: '39', zh: "了解美国波士顿--当世界已然是地球村，你需要聆听和了解全世界", en: "Get to know Boston", date: "2017年10月22日", url: "/file/article/39.html" }
+        ];
+
+        // --- 资源 Readme 数据库 (分3页) ---
+        const readmePages = [
+            {
+                zh: `<h3>社交与通讯软件 (Social Apps)</h3>
+                     <p>在美国，主流的社交和通讯方式与国内有很大不同，掌握这些能帮你快速破冰：</p>
+                     <ul>
+                         <li><b>Instagram / Snapchat：</b> 年轻人最常用的日常分享与交友软件，加好友的首选。</li>
+                         <li><b>iMessage / SMS：</b> 美国人非常依赖手机自带的短信功能进行日常沟通。</li>
+                         <li><b>LinkedIn：</b> 必备的职场与校园社交名片，找实习、找导师全靠它。</li>
+                         <li><b>WhatsApp：</b> 朋友之间AA制吃饭、转账最常用的软件。</li>
+                     </ul>`,
+                en: `<h3>Social & Communication Apps</h3>
+                     <p>Socializing in the US relies on a different set of tools. Here are the essentials:</p>
+                     <ul>
+                         <li><b>Instagram / Snapchat:</b> The go-to apps for young people to connect and share daily life.</li>
+                         <li><b>iMessage / SMS:</b> Texting is still the primary method for direct communication in the US.</li>
+                         <li><b>LinkedIn:</b> Your professional profile. Crucial for networking and internships.</li>
+                         <li><b>WhatsApp / Venmo:</b> Great for group chats and splitting bills with friends.</li>
+                     </ul>`
+            },
+            {
+                zh: `<h3>出行与交通 (Transportation)</h3>
+                     <p>美国的公共交通系统因城市而异，但出行软件是全美通用的：</p>
+                     <ul>
+                         <li><b>Google Maps：</b> 出门必备！不仅能导航开车，看公交地铁班次也非常精准。</li>
+                         <li><b>Uber / Lyft：</b> 美国两大打车软件，建议两个都下载，每次打车前比对一下价格。</li>
+                         <li><b>学校专属大巴 App：</b> 大部分美国高校都有自己的 Shuttle 系统，入学后记得第一时间下载。</li>
+                     </ul>`,
+                en: `<h3>Transportation Apps</h3>
+                     <p>Navigating US cities is made easy with these standard apps:</p>
+                     <ul>
+                         <li><b>Google Maps:</b> The absolute essential for driving, walking, or public transit schedules.</li>
+                         <li><b>Uber / Lyft:</b> The two main rideshare apps. Compare prices before booking!</li>
+                         <li><b>University Shuttle Apps:</b> Most colleges have an app to track campus buses.</li>
+                     </ul>`
+            },
+            {
+                zh: `<h3>生活与实用工具 (Lifestyle & Utilities)</h3>
+                     <p>为了让生活更便利，这些也是装机必备：</p>
+                     <ul>
+                         <li><b>Yelp：</b> 美国的“大众点评”，找餐厅、看真实评价非常好用。</li>
+                         <li><b>Amazon：</b> 解决你90%的网购需求，学生注册 Prime 会员有免费两日达和超大折扣。</li>
+                         <li><b>UberEats / DoorDash：</b> 外卖软件，虽然有服务费和小费，但赶赶赶赶due时是救星。</li>
+                         <li><b>Zelle：</b> 绑定美国银行卡后的免费即时转账系统。</li>
+                     </ul>`,
+                en: `<h3>Lifestyle & Utilities</h3>
+                     <p>Make your daily life more convenient with these tools:</p>
+                     <ul>
+                         <li><b>Yelp:</b> The best app for finding restaurants and reading local reviews.</li>
+                         <li><b>Amazon:</b> Get a Student Prime account for free 2-day shipping.</li>
+                         <li><b>UberEats / DoorDash:</b> Food delivery apps (remember to tip the driver!).</li>
+                         <li><b>Zelle:</b> Built into most bank apps for instant, free money transfers.</li>
+                     </ul>`
+            }
+        ];
+        let currentReadmePage = 0;
+
+        // --- 联系人数据库 ---
+        const contactsData = [
+            {
+                id: 1,
+                name: "Kemi (Yuannan Huang)",
+                pic: "/file/pics/kemy.jpg", 
+                email: "kemy0906@gmail.com",
+                phone: "617-659-5400",
+                intro: {
+                    zh: "Reiz EZ Life 创始人。熟悉美国校园文化与新移民适应过程，乐意解答关于学业规划、生活融入的各种问题。",
+                    en: "Founder of Reiz EZ Life. Experienced in US campus culture and immigrant adaptation. Happy to help with academic and lifestyle queries."
+                }
+            },
+            // 你可以在这里继续复制粘贴添加联系人 2, 3...
+            {
+                id: 2,
+                name: "Bobby (Shengxi Lei)",
+                pic: "/file/pics/bobby.jpg", 
+                email: "shengxilei@gmail.com",
+                phone: "617-593-4866",
+                intro: {
+                    zh: "Reiz EZ Life 首席工程师。本科就读于埃默里大学，熟悉美国本科升学过程，乐意解答关于升学规划、职业规划的各种问题。",
+                    en: "Chief Engineer of Reiz EZ Life. Undergraduate at Emory University, experienced in US undergraduate admission process. Happy to help with college and career planning."
+                }
+            }
+        ];
+        let currentBookingEmail = "";
+
+        // --- 全局语言管理与创始人寄语 ---
+        window.currentLang = 'zh';
+        const founderStory = {
+            en: `I came to the United States as an immigrant with little understanding of the language, culture, or school system. I remember how isolating it felt, not knowing how to make friends, how to fit in, or even how to ask for help. Over time, through persistence and openness, I learned to adapt, build friendships, and grow confident in a new environment.<br><br>As I adjusted, I felt a responsibility to support others facing the same transition. I created a WeChat public account at a young age to share my experiences and stories about real life in America, helping people who want to learn about America or just want to hear some interesting stories. Not long later, I volunteered to teach younger students English and reading skills for free, believing that language is the first bridge to belonging. Where I also fell in love with helping others with my own ability, trying my best.<br><br>Today, after all those years of challenges and experience, my integration into American life is complete, even though I still have a lot to learn. One thing that I never forget is my dedication to helping others, where now I serve as the Founder and President of Reiz EZ Life, a nonprofit organization dedicated to helping newly arrived Chinese students transition smoothly into life in the U.S. Through mentorship, cultural guidance, and shared resources, I strive to ensure that no student feels as lost as I once did. My mission is simple: to turn uncertainty into confidence and help young immigrants build a strong, supported start in their new home.`,
+            zh: `我作为一名新移民来到美国时，对语言、文化或学校系统知之甚少。我清楚地记得那种孤独感——不知道如何交朋友，不知道如何融入，甚至不知道如何寻求帮助。随着时间的推移，通过坚持和开放的心态，我学会了适应，建立了友谊，并在新环境中变得自信。<br><br>当我适应后，我感到有一种责任去支持那些面临同样转变的人。我在很小的时候就创办了一个微信公众号，分享我在美国生活的经验和故事，帮助那些想了解美国或只是想听听趣闻的人。不久后，我开始志愿免费教授低年级学生英语和阅读技巧，因为我相信语言是通往归属感的第一座桥梁。在那里，我也爱上了尽自己所能去帮助别人。<br><br>今天，经历了这些年的挑战和经验后，我已经完全融入了美国生活，尽管我还有很多东西要学。我永远不会忘记的一件事就是致力于帮助他人。现在，我担任 Reiz EZ Life 的创始人兼主席，这是一家致力于帮助新近抵美的中国学生顺利过渡到美国生活的非营利组织。通过导师指导、文化指引和共享资源，我努力确保没有学生会像我曾经那样感到迷茫。我的使命很简单：将不确定性转化为信心，帮助年轻移民在他们的新家园建立一个强大、有支持的开始。`
+        };
+
+        window.updateLanguage = function(lang) {
+            window.currentLang = lang;
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                const text = el.getAttribute(`data-${lang}`);
+                if (text) el.innerHTML = text;
+            });
+            // 如果存在 founder-content 则更新
+            const fContent = document.getElementById('founder-content');
+            if(fContent) fContent.innerHTML = founderStory[lang];
+            
+            const btns = ['lang-switch', 'welcome-lang-switch'];
+            btns.forEach(id => {
+                const b = document.getElementById(id);
+                if(b) b.textContent = lang === 'zh' ? 'EN / 中' : '中 / EN';
+            });
+            
+            window.renderArticleList();
+            window.renderReadmePage();
+            window.renderContacts();
+        };
+
+        // --- 弹窗开关逻辑 ---
+        window.closeWelcome = () => { document.getElementById('welcome-modal').classList.remove('active'); };
+        
+        window.openStories = () => { document.getElementById('stories-modal').classList.add('active'); window.renderArticleList(); };
+        window.closeStories = () => { document.getElementById('stories-modal').classList.remove('active'); window.backToStoriesList(); };
+        
+        // --- 资源弹窗与 Readme 翻页逻辑 ---
+        window.openResources = () => { 
+            document.getElementById('resources-modal').classList.add('active'); 
+            currentReadmePage = 0;
+            window.renderReadmePage();
+            window.renderContacts();
+        };
+        window.closeResources = () => { document.getElementById('resources-modal').classList.remove('active'); };
+
+        window.renderReadmePage = () => {
+            const container = document.getElementById('readme-content-view');
+            if(!container) return;
+            container.innerHTML = readmePages[currentReadmePage][window.currentLang];
+            
+            document.getElementById('res-prev-btn').disabled = (currentReadmePage === 0);
+            document.getElementById('res-next-btn').disabled = (currentReadmePage === readmePages.length - 1);
+        };
+
+        window.changeReadmePage = (direction) => {
+            currentReadmePage += direction;
+            window.renderReadmePage();
+        };
+
+        // --- 渲染联系人列表 ---
+        window.renderContacts = () => {
+            const container = document.getElementById('contacts-list-view');
+            if(!container) return;
+            let html = "";
+            contactsData.forEach(c => {
+                const introText = window.currentLang === 'zh' ? c.intro.zh : c.intro.en;
+                const bookText = window.currentLang === 'zh' ? '预约沟通' : 'Book a Session';
+                html += `
+                    <div class="contact-item">
+                        <img src="${c.pic}" alt="${c.name}" class="contact-photo" onerror="this.src='https://via.placeholder.com/100?text=Photo'">
+                        <div style="flex:1; text-align: left;">
+                            <h3 style="font-size:1.6rem; color:var(--text-main); margin-bottom:5px;">${c.name}</h3>
+                            <p style="font-size:1.2rem; opacity:0.8; margin-bottom:10px; line-height:1.5;">${introText}</p>
+                            <div class="contact-info-box">
+                                📧 ${c.email} &nbsp;|&nbsp; 📞 ${c.phone}
+                            </div><br>
+                            <button class="book-btn" onclick="window.openBooking('${c.email}')">${bookText}</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        };
+
+        // --- 预约表单小弹窗逻辑 ---
+        window.openBooking = (email) => {
+            currentBookingEmail = email;
+            document.getElementById('booking-modal').classList.add('active');
+            // 清空表单
+            document.getElementById('b-name').value = '';
+            document.getElementById('b-email').value = '';
+            document.getElementById('b-phone').value = '';
+        };
+
+        window.closeBooking = () => {
+            document.getElementById('booking-modal').classList.remove('active');
+        };
+
+        window.submitBooking = (timeSlot) => {
+            const name = document.getElementById('b-name').value.trim();
+            const email = document.getElementById('b-email').value.trim();
+            const phone = document.getElementById('b-phone').value.trim();
+            
+            if(!name || !email || !phone) {
+                alert(window.currentLang === 'zh' ? "请填写完整您的姓名、邮箱和电话。" : "Please fill out all fields.");
+                return;
+            }
+
+            // 构造邮件内容
+            const subject = encodeURIComponent(`Reiz EZ Life 预约请求: ${name}`);
+            const body = encodeURIComponent(`${name} 这个人想在 ${timeSlot} 这个时间预约你。\n\n以下是此人的联系方式：\n邮箱: ${email}\n电话: ${phone}\n\n请尽快回复确认。`);
+            
+            // 调起本地邮件客户端
+            window.location.href = `mailto:${currentBookingEmail}?subject=${subject}&body=${body}`;
+            
+            // 关闭小弹窗
+            window.closeBooking();
+        };
+
+        // --- 文章列表生成与加载逻辑 ---
+        window.renderArticleList = function() {
+            const listContainer = document.getElementById('article-list-view');
+            if(!listContainer) return;
+            let htmlContent = "";
+            for(let i = 0; i < articles.length; i++) {
+                const art = articles[i];
+                const title = window.currentLang === 'zh' ? art.zh : art.en;
+                htmlContent += `
+                    <div class="article-preview-item" onclick="window.loadArticleDetail('${art.id}', '${title}')">
+                        <h4 style="font-size:1.8rem; margin-bottom:5px; font-weight:600; color:var(--text-main);">${title}</h4>
+                        <p style="opacity:0.5; font-size:1.2rem; color:var(--text-main);">${art.date}</p>
+                    </div>
+                `;
+            }
+            listContainer.innerHTML = htmlContent;
+        };
+
+        window.loadArticleDetail = function(id, title) {
+            document.getElementById('article-list-view').style.display = 'none';
+            document.getElementById('article-detail-view').style.display = 'block';
+            document.getElementById('article-back-btn').style.display = 'block';
+            document.getElementById('stories-title').innerText = title;
+            
+            const currentArticle = articles.find(art => art.id === id);
+            // 判断是否为需要跳转的超大文章 (ID: 1, 2, 3, 11)
+            const largeArticleIds = ['1', '2', '3', '11'];
+
+            if (largeArticleIds.includes(id)) {
+                // 显示跳转提示界面
+                document.getElementById('article-detail-view').innerHTML = `
+                    <div style="padding:80px 40px; text-align:center; background:rgba(255,255,255,0.5); border-radius:24px; border:1px solid rgba(0,0,0,0.05); backdrop-filter:blur(10px);">
+                        <span style="font-size:5rem; margin-bottom:20px; display:block;">📦</span>
+                        <h3 style="font-size:1.8rem; margin-bottom:15px;" data-zh="内容较多，请前往官网阅读" data-en="Heavy content, please read on official site.">内容较多，请前往官网阅读</h3>
+                        <p style="font-size:1.3rem; opacity:0.6; margin-bottom:30px;" data-zh="为了给您提供更好的加载体验，建议您直接访问微信原文。" data-en="To ensure a smooth loading experience, please visit the original post on WeChat.">为了给您提供更好的加载体验，建议您直接访问微信原文。</p>
+                        <a href="${currentArticle.url}" target="_blank" style="display:inline-block; padding:15px 40px; background:var(--apple-blue); color:white; border-radius:30px; text-decoration:none; font-weight:600; font-size:1.4rem; transition:0.3s;">
+                            ${window.currentLang === 'zh' ? '点击访问官网' : 'Visit Official Link'}
+                        </a>
+                    </div>
+                `;
+            } else if (currentArticle && currentArticle.url) {
+                // 普通文章依然使用本地 iframe 加载
+                document.getElementById('article-detail-view').innerHTML = `
+                    <div style="width: 100%; height: 65vh; border-radius: 20px; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); background: white;">
+                        <iframe src="${currentArticle.url}" style="width: 100%; height: 100%; border: none;" referrerpolicy="no-referrer"></iframe>
+                    </div>
+                `;
+            }
+        };
+
+        window.backToStoriesList = function() {
+            document.getElementById('article-detail-view').style.display = 'none';
+            document.getElementById('article-list-view').style.display = 'block';
+            document.getElementById('article-back-btn').style.display = 'none';
+            document.getElementById('stories-title').innerText = window.currentLang === 'zh' ? "创始人趣闻" : "My Stories";
+        };
+
+        // --- DOM 加载完毕后执行初始化 ---
+        document.addEventListener('DOMContentLoaded', () => {
+            window.updateLanguage('zh');
+            setTimeout(() => { document.getElementById('welcome-modal').classList.add('active'); }, 500);
+
+            document.getElementById('lang-switch').onclick = () => window.updateLanguage(window.currentLang === 'zh' ? 'en' : 'zh');
+            document.getElementById('welcome-lang-switch').onclick = () => window.updateLanguage(window.currentLang === 'zh' ? 'en' : 'zh');
+
+            // 右下角全局 "加入我们" 联系弹窗
+            document.body.addEventListener('click', (e) => {
+                if (e.target.closest('.join-trigger')) {
+                    const modal = document.createElement('div');
+                    Object.assign(modal.style, { 
+                        position:'fixed', top:'0', left:'0', width:'100%', height:'100%', 
+                        backgroundColor:'rgba(29, 29, 31, 0.4)', backdropFilter:'blur(20px)', 
+                        display:'flex', justifyContent:'center', alignItems:'center', zIndex:'10000',
+                        opacity: '0', transition: 'opacity 0.3s ease'
+                    });
+                    const texts = {
+                        title: window.currentLang === 'zh' ? '您想如何联系我们？' : 'How would you like to reach us?',
+                        email: window.currentLang === 'zh' ? '发送邮件' : 'Email Us',
+                        call: window.currentLang === 'zh' ? '拨打电话' : 'Call Us',
+                        cancel: window.currentLang === 'zh' ? '取消' : 'Cancel'
+                    };
+                    const gmailUrl = "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzDsPjJjRflqbGJssRVMvqdgXbMGmPHCjzpBMFrnmZZZbBkwhxqcnWCrPNqMmwJqlbKmXWP";
+
+                    modal.innerHTML = `
+                        <div style="background:rgba(255,255,255,0.95); padding:50px; border-radius:40px; text-align:center; width:90%; max-width:500px; box-shadow:0 30px 60px rgba(0,0,0,0.15); transform:translateY(20px); transition:all 0.3s ease;" id="contact-modal-card">
+                            <h2 style="font-size:2.2rem; margin-bottom:30px; font-weight:700; color:var(--text-main);">${texts.title}</h2>
+                            <div style="display:flex; flex-direction:column; gap:15px;">
+                                <a href="${gmailUrl}" target="_blank" style="display:block; padding:20px; background:var(--primary); color:white; border-radius:25px; text-decoration:none; font-weight:600; font-size:1.5rem; transition:0.3s;">📧 ${texts.email}</a>
+                                <a href="tel:6176595400" style="display:block; padding:20px; background:var(--secondary); color:white; border-radius:25px; text-decoration:none; font-weight:600; font-size:1.5rem; transition:0.3s;">📞 ${texts.call}</a>
+                                <div id="close-contact" style="padding:20px; background:rgba(0,0,0,0.05); color:var(--text-main); border-radius:25px; cursor:pointer; font-weight:600; font-size:1.3rem; margin-top:10px; transition:0.3s;">${texts.cancel}</div>
+                            </div>
+                        </div>`;
+                    document.body.appendChild(modal);
+                    setTimeout(() => { modal.style.opacity = '1'; document.getElementById('contact-modal-card').style.transform = 'translateY(0)'; }, 10);
+                    document.getElementById('close-contact').onclick = () => {
+                        modal.style.opacity = '0';
+                        document.getElementById('contact-modal-card').style.transform = 'translateY(20px)';
+                        setTimeout(() => document.body.removeChild(modal), 300);
+                    };
+                }
+            });
+        });
+    </script>
+</body>
+</html>
