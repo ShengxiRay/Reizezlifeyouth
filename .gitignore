@@ -1,12 +1,13 @@
-# 忽略 VS Code 配置
+#
 .vscode/settings.json
-
 .env
-
-.Version Control
-# 忽略操作系统自动生成的文件
+.gitignore
+.github
+#
+Version Control
+file
+#
 .DS_Store
 Thumbs.db
-
-# 忽略日志文件
+#
 *.log
