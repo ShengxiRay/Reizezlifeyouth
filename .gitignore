@@ -1,11 +1,9 @@
 #
 .vscode/settings.json
 .env
-.gitignore
 .github
 #
 Version Control
-file
 #
 .DS_Store
 Thumbs.db
