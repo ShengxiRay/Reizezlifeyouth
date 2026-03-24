@@ -1202,7 +1202,7 @@
                     <button class="team-member-btn" onclick="window.showTeamMember(0)">
                         <img src="/file/pics/kemy.jpg" alt="Kemi" class="team-member-photo" onerror="this.src='https://via.placeholder.com/100?text=Kemi'">
                         <div class="team-member-name">Kemi</div>
-                        <div class="team-member-title" data-zh="创始人" data-en="Founder">创始人</div>
+                        <div class="team-member-title" data-zh="创始人 & 主席" data-en="Founder & President">创始人 & 主席</div>
                     </button>
                     <button class="team-member-btn" onclick="window.showTeamMember(1)">
                         <img src="/file/pics/bobby.jpg" alt="Bobby" class="team-member-photo" onerror="this.src='https://via.placeholder.com/100?text=Bobby'">
@@ -1464,7 +1464,7 @@
         const contactsData = [
             {
                 id: 1, name: "Kemi (Yuannan Huang)", pic: "/file/pics/kemy.jpg", email: "kemy0906@gmail.com", phone: "617-659-5400",
-                intro: { zh: "Reiz EZ Life 创始人。乐意解答关于学业规划、生活融入的各种问题。", en: "Founder & Presidentof Reiz EZ Life. Happy to help with academic and lifestyle queries." },
+                intro: { zh: "Reiz EZ Life 创始人兼主席。乐意解答关于学业规划、生活融入的各种问题。", en: "Founder & Presidentof Reiz EZ Life. Happy to help with academic and lifestyle queries." },
                 storyKey: "kemi"
             },
             {
@@ -1531,7 +1531,7 @@
             const introText = currentLang === 'zh' ? member.intro.zh : member.intro.en;
 
             const titleMap = {
-                1: { zh: '创始人', en: 'Founder' },
+                1: { zh: '创始人 & 主席', en: 'Founder & President' },
                 2: { zh: '首席工程师', en: 'Engineer' },
                 3: { zh: '副主席', en: 'Vice President' },
                 4: { zh: '学生导师', en: 'Mentor' }
@@ -1586,7 +1586,7 @@
             const container = document.getElementById('contacts-list-view');
             if(!container) return;
             const titleMap = {
-                1: { zh: '创始人', en: 'Founder' },
+                1: { zh: '创始人 & 主席', en: 'Founder & President' },
                 2: { zh: '首席工程师', en: 'Engineer' },
                 3: { zh: '副主席', en: 'Vice President' },
                 4: { zh: '学生导师', en: 'Mentor' }
