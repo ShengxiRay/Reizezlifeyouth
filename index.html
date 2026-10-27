@@ -912,7 +912,7 @@
             font-style: italic;
         }
 
-        /* Team Grid - updated to support 4 members */
+        /* Team Grid - updated to support multiple members dynamically */
         .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -1219,6 +1219,11 @@
                         <div class="team-member-name">Peter</div>
                         <div class="team-member-title" data-zh="学生导师" data-en="Mentor">学生导师</div>
                     </button>
+                    <button class="team-member-btn" onclick="window.showTeamMember(4)">
+                        <img src="/file/pics/Ian.jpg" alt="Ian" class="team-member-photo" onerror="this.src='/file/pics/Ian.jpg'; if(this.status==404) this.src='https://via.placeholder.com/100?text=Ian'">
+                        <div class="team-member-name">Ian</div>
+                        <div class="team-member-title" data-zh="STEM 导师" data-en="STEM Mentor">STEM 导师</div>
+                    </button>
                 </div>
 
                 <!-- Content Grid -->
@@ -1481,6 +1486,14 @@
                 id: 4, name: "Peter", pic: "/file/pics/peter.jpg", email: "tb3532@stern.nyu.edu", phone: "617-460-5855",
                 intro: { zh: "Reiz EZ Life 学生导师。就读于纽约大学商科，曾就读于康涅狄格州萨尔兹伯里学校，乐意帮助国际学生了解美国留学生活。", en: "Mentor at Reiz EZ Life. Business student at NYU, Salisbury School alum. Happy to help international students understand what studying in the U.S. is really like." },
                 storyKey: "peter"
+            },
+            {
+                id: 5, name: "Ian Chen", pic: "/file/pics/Ian.jpg", email: "chenian0610@gmail.com", phone: "978-795-7746",
+                intro: { 
+                    zh: "指导关于 STEM 实作学习与实践活动，分享机器人比赛应用技巧，帮助新学生适应美高生活、分享社团经验、社区服务与跨文化融入心得。", 
+                    en: "Provides guidance on STEM hands-on learning and practical activities, shares application skills for robotics competitions, and helps new students adapt to American high school life by sharing insights on club experiences, community service, and cross-cultural integration." 
+                },
+                storyKey: null
             }
         ];
 
@@ -1534,13 +1547,14 @@
                 1: { zh: '创始人 & 主席', en: 'Founder & President' },
                 2: { zh: '首席工程师', en: 'Engineer' },
                 3: { zh: '副主席', en: 'Vice President' },
-                4: { zh: '学生导师', en: 'Mentor' }
+                4: { zh: '学生导师', en: 'Mentor' },
+                5: { zh: 'STEM 导师', en: 'STEM Mentor' }
             };
             const memberTitle = (titleMap[member.id] || { zh: '成员', en: 'Member' })[currentLang];
             
             let html = `
                 <div class="member-header">
-                    <img src="${member.pic}" alt="${member.name}" class="member-photo" onerror="this.src='https://via.placeholder.com/140?text=${member.name}'">
+                    <img src="${member.pic}" alt="${member.name}" class="member-photo" onerror="this.src='https://via.placeholder.com/140?text=${encodeURIComponent(member.name)}'">
                     <div class="member-name">${member.name}</div>
                     <div class="member-title">${memberTitle}</div>
                 </div>
@@ -1589,7 +1603,8 @@
                 1: { zh: '创始人 & 主席', en: 'Founder & President' },
                 2: { zh: '首席工程师', en: 'Engineer' },
                 3: { zh: '副主席', en: 'Vice President' },
-                4: { zh: '学生导师', en: 'Mentor' }
+                4: { zh: '学生导师', en: 'Mentor' },
+                5: { zh: 'STEM 导师', en: 'STEM Mentor' }
             };
             let html = "";
             contactsData.forEach(c => {
